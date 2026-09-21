@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SI JFT — Sistem Informasi Jabatan Fungsional Tertentu | Kemendikdasmen</title>
+  <title>SI JFT - Sistem Informasi Jabatan Fungsional Tertentu | Kemendikdasmen</title>
   <meta name="description" content="Sistem Informasi Jabatan Fungsional Tertentu - Kementerian Pendidikan Dasar dan Menengah Republik Indonesia">
   <meta name="theme-color" content="#1A5F7A">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -225,7 +225,7 @@
                 +4%
               </div>
             </div>
-            <div class="kpi-number">847</div>
+            <div class="kpi-number" id="kpi-total-jft">63</div>
             <div class="kpi-label">TOTAL JFT</div>
             <div style="font-size:11px;color:var(--text-light);margin-top:4px;">Pegawai Aktif saat ini</div>
           </div>
@@ -240,7 +240,7 @@
                 +2
               </div>
             </div>
-            <div class="kpi-number">12</div>
+            <div class="kpi-number" id="kpi-jenis-jft">8</div>
             <div class="kpi-label">JENIS JFT</div>
             <div style="font-size:11px;color:var(--text-light);margin-top:4px;">Kategori Jabatan Fungsional</div>
           </div>
@@ -293,8 +293,8 @@
                   <div class="activity-line"></div>
                 </div>
                 <div class="activity-content">
-                  <div class="activity-title">SK Pengangkatan JFT Baru</div>
-                  <div class="activity-desc">Bambang Susanto telah ditetapkan sebagai JFT Guru Madya.</div>
+                  <div class="activity-title">SK Penetapan JFT Terbit</div>
+                  <div class="activity-desc">Drs. Yuli Cahyono, M.Pd. telah ditetapkan sebagai Widyaiswara Ahli Madya.</div>
                   <div class="activity-time">10 Menit yang lalu</div>
                 </div>
               </div>
@@ -304,8 +304,8 @@
                   <div class="activity-line"></div>
                 </div>
                 <div class="activity-content">
-                  <div class="activity-title">Usulan Diterima</div>
-                  <div class="activity-desc">Pusdatin mengirimkan 5 usulan penetapan angka kredit baru.</div>
+                  <div class="activity-title">Usulan Konversi AK Diterima</div>
+                  <div class="activity-desc">BBGTK Jateng mengirimkan usulan penetapan angka kredit konversi 2025.</div>
                   <div class="activity-time">2 Jam yang lalu</div>
                 </div>
               </div>
@@ -316,7 +316,7 @@
                 </div>
                 <div class="activity-content">
                   <div class="activity-title">Verifikasi Berkas Selesai</div>
-                  <div class="activity-desc">Berkas JFT atas nama Siti Aminah telah diverifikasi oleh pusat.</div>
+                  <div class="activity-desc">Berkas JFT atas nama Fety Marhayuni, S.Pd., M.Pd. telah diverifikasi.</div>
                   <div class="activity-time">5 Jam yang lalu</div>
                 </div>
               </div>
@@ -326,8 +326,8 @@
                   <div class="activity-line"></div>
                 </div>
                 <div class="activity-content">
-                  <div class="activity-title">Usulan Ditolak</div>
-                  <div class="activity-desc">Ahmad Fauzi - berkas tidak lengkap, perlu revisi.</div>
+                  <div class="activity-title">Usulan Perlu Revisi</div>
+                  <div class="activity-desc">Son Kuncara Edhie, S.Kom. - berkas kelengkapan SK perlu diperbarui.</div>
                   <div class="activity-time">8 Jam yang lalu</div>
                 </div>
               </div>
@@ -362,32 +362,7 @@
                   <th>AKSI</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><div class="avatar-cell"><div class="table-avatar av-blue">AW</div><div><div class="cell-name">Andi Wijaya</div></div></div></td>
-                  <td>PTP Ahli Pertama</td>
-                  <td>BBGTK Prov. Jawa Tengah</td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Lihat Detail</a></td>
-                </tr>
-                <tr>
-                  <td><div class="avatar-cell"><div class="table-avatar av-red">SR</div><div><div class="cell-name">Siti Rahma</div></div></div></td>
-                  <td>PTP Ahli Muda</td>
-                  <td>BBGTK Prov. Jawa Tengah</td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Lihat Detail</a></td>
-                </tr>
-                <tr>
-                  <td><div class="avatar-cell"><div class="table-avatar av-green">BS</div><div><div class="cell-name">Budi Santoso</div></div></div></td>
-                  <td>PTP Ahli Madya</td>
-                  <td>BBGTK Prov. Jawa Tengah</td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Lihat Detail</a></td>
-                </tr>
-                <tr>
-                  <td><div class="avatar-cell"><div class="table-avatar av-purple">DL</div><div><div class="cell-name">Dewi Lestari</div></div></div></td>
-                  <td>Arsiparis Ahli Pertama</td>
-                  <td>BBGTK Prov. Jawa Tengah</td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Lihat Detail</a></td>
-                </tr>
-              </tbody>
+              <tbody id="tbody-dashboard-pegawai"></tbody>
             </table>
           </div>
         </div>
@@ -415,33 +390,7 @@
                   <th>AKSI</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Wi (Widyaiswara)</strong></td>
-                  <td>124 Pegawai</td>
-                  <td>BBGTK Prov. Jawa Tengah</td>
-                  <td><span class="badge badge-aktif">AKTIF</span></td>
-                  <td>
-                    <button class="btn-icon" title="Lihat Detail" onclick="navigate('daftar-jft')">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>PTP (Pengembang Teknologi Pembelajaran)</strong></td>
-                  <td>86 Pegawai</td>
-                  <td>BBGTK Prov. Jawa Tengah</td>
-                  <td><span class="badge badge-aktif">AKTIF</span></td>
-                  <td><button class="btn-icon" onclick="navigate('daftar-jft')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></td>
-                </tr>
-                <tr>
-                  <td><strong>Laboran</strong></td>
-                  <td>42 Pegawai</td>
-                  <td>BBGTK Prov. Jawa Tengah</td>
-                  <td><span class="badge badge-proses">PROSES</span></td>
-                  <td><button class="btn-icon" onclick="navigate('daftar-jft')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></td>
-                </tr>
-              </tbody>
+              <tbody id="tbody-dashboard-jft-summary"></tbody>
             </table>
           </div>
           <div class="table-footer">
@@ -477,10 +426,19 @@
         <div class="filter-bar">
           <div class="search-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" class="search-input" placeholder="Cari jenis jabatan, kode...">
+            <input type="text" class="search-input" id="search-daftar-jft" placeholder="Cari jenis jabatan, kode..." oninput="handleDaftarJftFilter()">
           </div>
-          <select class="select-filter"><option>Status: Semua</option><option>Aktif</option><option>Nonaktif</option><option>Dalam Proses</option></select>
-          <select class="select-filter"><option>Golongan: Semua</option><option>Ahli Pertama</option><option>Ahli Muda</option><option>Ahli Madya</option><option>Ahli Utama</option></select>
+          <select class="select-filter" id="filter-jft-jenjang" onchange="handleDaftarJftFilter()">
+            <option value="Semua">Jenjang: Semua</option>
+            <option value="Madya">Ahli Madya</option>
+            <option value="Muda">Ahli Muda</option>
+            <option value="Pertama">Ahli Pertama</option>
+            <option value="Penyelia">Penyelia / Keterampilan</option>
+          </select>
+          <select class="select-filter" id="filter-jft-status" onchange="handleDaftarJftFilter()">
+            <option value="Semua">Status: Semua</option>
+            <option value="Aktif">Aktif</option>
+          </select>
         </div>
 
         <div class="card">
@@ -497,21 +455,11 @@
                   <th>AKSI</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-001</code></td><td><strong>Widyaiswara</strong></td><td>Ahli Madya</td><td>124</td><td>150</td><td><span class="badge badge-aktif">Aktif</span></td><td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-002</code></td><td><strong>Pengembang Teknologi Pembelajaran</strong></td><td>Ahli Muda</td><td>86</td><td>100</td><td><span class="badge badge-aktif">Aktif</span></td><td><a href="#" class="link-action" onclick="return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-003</code></td><td><strong>Pranata Komputer</strong></td><td>Ahli Madya</td><td>142</td><td>160</td><td><span class="badge badge-aktif">Aktif</span></td><td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-004</code></td><td><strong>Auditor</strong></td><td>Ahli Pertama</td><td>128</td><td>140</td><td><span class="badge badge-aktif">Aktif</span></td><td><a href="#" class="link-action" onclick="return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-005</code></td><td><strong>Pustakawan</strong></td><td>Ahli Muda</td><td>95</td><td>120</td><td><span class="badge badge-aktif">Aktif</span></td><td><a href="#" class="link-action" onclick="return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-006</code></td><td><strong>Laboran</strong></td><td>Terampil</td><td>42</td><td>50</td><td><span class="badge badge-proses">Dalam Proses</span></td><td><a href="#" class="link-action" onclick="return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-007</code></td><td><strong>Arsiparis</strong></td><td>Ahli Pertama</td><td>67</td><td>80</td><td><span class="badge badge-aktif">Aktif</span></td><td><a href="#" class="link-action" onclick="return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-008</code></td><td><strong>Analis Kebijakan</strong></td><td>Ahli Utama</td><td>87</td><td>90</td><td><span class="badge badge-aktif">Aktif</span></td><td><a href="#" class="link-action" onclick="return false">Detail →</a></td></tr>
-                <tr><td><code style="font-size:11px;color:var(--text-muted)">JFT-009</code></td><td><strong>Instruktur</strong></td><td>Ahli Muda</td><td>54</td><td>70</td><td><span class="badge badge-nonaktif">Nonaktif</span></td><td><a href="#" class="link-action" onclick="return false">Detail →</a></td></tr>
-              </tbody>
+              <tbody id="tbody-daftar-jft"></tbody>
             </table>
           </div>
           <div class="table-footer">
-            <div class="table-info">Menampilkan 9 dari 12 Jenis Jabatan</div>
+            <div class="table-info">Menampilkan 11 Rumpun Jabatan Fungsional Tertentu</div>
             <div class="pagination">
               <button class="page-btn" disabled><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
               <button class="page-btn active">1</button>
@@ -542,11 +490,37 @@
         <div class="filter-bar">
           <div class="search-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" class="search-input" placeholder="Cari nama, NIP, atau unit kerja...">
+            <input type="text" class="search-input" id="search-individu" placeholder="Cari nama, NIP, atau jabatan..." oninput="handleIndividuFilter()">
           </div>
-          <select class="select-filter"><option>Jenis JFT: Semua</option><option>Pranata Komputer</option><option>Widyaiswara</option><option>PTP</option><option>Auditor</option><option>Pustakawan</option></select>
-          <select class="select-filter"><option>Golongan: Semua</option><option>III/a</option><option>III/b</option><option>III/c</option><option>III/d</option><option>IV/a</option><option>IV/b</option></select>
-          <select class="select-filter"><option>Unit Kerja: Semua</option><option>Ditjen Dikti</option><option>Ditjen GTK</option><option>Setjen</option><option>Inspektorat</option><option>BRIN</option></select>
+          <select class="select-filter" id="filter-jft" onchange="handleIndividuFilter()">
+            <option value="Semua">Semua Jenis JFT</option>
+            <option value="Pengembang Teknologi Pembelajaran">Pengembang Teknologi Pembelajaran (PTP)</option>
+            <option value="Widyaiswara">Widyaiswara</option>
+            <option value="Pranata Komputer">Pranata Komputer</option>
+            <option value="Arsiparis">Arsiparis</option>
+            <option value="Analis Sumber Daya Manusia Aparatur">Analis SDM Aparatur</option>
+            <option value="Analis Pengelolaan Keuangan APBN">Analis Pengelolaan Keuangan APBN</option>
+            <option value="Analis Pengembangan Kompetensi ASN">Analis Pengembangan Kompetensi ASN</option>
+            <option value="Perencana">Perencana</option>
+            <option value="Statistisi">Statistisi</option>
+            <option value="Pranata Hubungan Masyarakat">Pranata Hubungan Masyarakat</option>
+            <option value="Pranata Sumber Daya Manusia Aparatur">Pranata SDM Aparatur</option>
+          </select>
+          <select class="select-filter" id="filter-gol" onchange="handleIndividuFilter()">
+            <option value="Semua">Golongan: Semua</option>
+            <option value="IV/c">IV/c</option>
+            <option value="IV/b">IV/b</option>
+            <option value="IV/a">IV/a</option>
+            <option value="III/d">III/d</option>
+            <option value="III/c">III/c</option>
+            <option value="III/b">III/b</option>
+            <option value="III/a">III/a</option>
+            <option value="II/d">II/d</option>
+          </select>
+          <select class="select-filter" id="filter-status" onchange="handleIndividuFilter()">
+            <option value="Semua">Status: Semua</option>
+            <option value="Aktif">Aktif</option>
+          </select>
         </div>
 
         <div class="card">
@@ -564,100 +538,13 @@
                   <th>AKSI</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">198205152005011002</td>
-                  <td><div class="cell-name">Dr. Kandu Prakosa, SE, MM</div></td>
-                  <td><span class="badge badge-pk">Pranata Komputer</span></td>
-                  <td>III/c</td>
-                  <td>Ditjen Dikti</td>
-                  <td><span class="badge badge-aktif">Aktif</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">198702201009012002</td>
-                  <td><div class="cell-name">Ahmad Fauzi, S.E., M.M.</div></td>
-                  <td><span class="badge badge-audit">Auditor</span></td>
-                  <td>III/d</td>
-                  <td>Inspektorat</td>
-                  <td><span class="badge badge-aktif">Aktif</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">199003051011013003</td>
-                  <td><div class="cell-name">Dr. Rini Handayani, M.Pd.</div></td>
-                  <td><span class="badge badge-wi">Widyaiswara</span></td>
-                  <td>IV/a</td>
-                  <td>BBGTK Jawa Tengah</td>
-                  <td><span class="badge badge-proses">Proses Kenaikan</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">198811121007014004</td>
-                  <td><div class="cell-name">Budi Prasetyo, S.T.</div></td>
-                  <td><span class="badge badge-pk">Pranata Komputer</span></td>
-                  <td>III/b</td>
-                  <td>Setjen</td>
-                  <td><span class="badge badge-aktif">Aktif</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">198604091008015005</td>
-                  <td><div class="cell-name">Dewi Lestari, M.Si.</div></td>
-                  <td><span class="badge badge-analis">Analis Kebijakan</span></td>
-                  <td>IV/b</td>
-                  <td>Balitbang</td>
-                  <td><span class="badge badge-aktif">Aktif</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">199105201012016006</td>
-                  <td><div class="cell-name">Hendra Gunawan, S.Sos.</div></td>
-                  <td><span class="badge badge-ptp">PTP</span></td>
-                  <td>III/a</td>
-                  <td>Ditjen GTK</td>
-                  <td><span class="badge badge-nonaktif">Nonaktif</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">198907301010017007</td>
-                  <td><div class="cell-name">Maya Sari, S.IP.</div></td>
-                  <td><span class="badge badge-pustak">Pustakawan</span></td>
-                  <td>III/c</td>
-                  <td>BRIN</td>
-                  <td><span class="badge badge-aktif">Aktif</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" style="accent-color:var(--primary)"></td>
-                  <td style="font-size:12px;color:var(--text-muted)">199212151013018008</td>
-                  <td><div class="cell-name">Rizal Firmansyah, S.H.</div></td>
-                  <td><span class="badge badge-audit">Auditor</span></td>
-                  <td>IV/a</td>
-                  <td>Inspektorat</td>
-                  <td><span class="badge badge-aktif">Aktif</span></td>
-                  <td><a href="#" class="link-action" onclick="navigate('detail-individu'); return false">Detail →</a></td>
-                </tr>
-              </tbody>
+              <tbody id="tbody-daftar-individu"></tbody>
             </table>
           </div>
           <div class="table-footer">
-            <div class="table-info">Menampilkan 1–25 dari 847 data</div>
-            <div class="pagination">
-              <button class="page-btn" disabled><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
-              <button class="page-btn active">1</button>
-              <button class="page-btn">2</button>
-              <button class="page-btn">3</button>
-              <button class="page-btn" style="letter-spacing:1px">…</button>
-              <button class="page-btn">34</button>
-              <button class="page-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
+            <div class="table-info" id="info-daftar-individu">Menampilkan 1–10 dari 63 data</div>
+            <div class="pagination" id="pagination-daftar-individu">
+              <!-- Dynamic pagination buttons -->
             </div>
           </div>
         </div>
@@ -673,25 +560,24 @@
           <span class="breadcrumb-current">Detail</span>
         </div>
 
-        <!-- Profile Header Card -->
+                <!-- Profile Header Card -->
         <div class="profile-header-card">
           <button class="profile-back-btn" onclick="navigate('daftar-individu')" title="Kembali">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
           </button>
-          <div class="profile-photo">
-            <!-- Profile photo placeholder -->
-            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1A5F7A,#2A7F9A);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;font-weight:700;">KP</div>
+          <div class="profile-photo" id="detail-photo-wrap">
+            <div id="detail-avatar" style="width:100%;height:100%;background:linear-gradient(135deg,#1A5F7A,#2A7F9A);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;font-weight:700;">YC</div>
           </div>
           <div class="profile-info">
-            <div class="profile-name">Dr. Kandu Prakosa, SE, MM</div>
-            <div class="profile-nip">NIP. 198205152005011002</div>
+            <div class="profile-name" id="detail-nama">Drs. Yuli Cahyono, M.Pd.</div>
+            <div class="profile-nip" id="detail-nip">NIP. 196807151994031019</div>
           </div>
           <div class="profile-actions">
-            <button class="btn btn-danger-outline" onclick="openModal('modal-nonaktifkan')">
+            <button class="btn btn-danger-outline" onclick="openNonaktifkanModal()">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M4.93 4.93l14.14 14.14"/></svg>
               Nonaktifkan
             </button>
-            <button class="btn btn-primary" onclick="openModal('modal-edit-profil')">
+            <button class="btn btn-primary" onclick="openEditProfilModal()">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               Edit Profil
             </button>
@@ -704,15 +590,15 @@
           <div class="status-card">
             <div class="status-card-head">
               <span class="status-card-label">Status Kepegawaian</span>
-              <span class="badge badge-aktif">PNS AKTIF</span>
+              <span class="badge badge-aktif" id="detail-status-badge">PNS AKTIF</span>
             </div>
             <div class="status-card-body">
               <div class="status-card-ico-wrap ico-blue">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2"/></svg>
               </div>
               <div class="status-card-info">
-                <div class="status-card-sub">Golongan / Ruang</div>
-                <div class="status-card-val">III/c - Penata</div>
+                <div class="status-card-sub">Pangkat / Golongan</div>
+                <div class="status-card-val" id="detail-golongan">Pembina Utama Muda IV/c</div>
               </div>
             </div>
           </div>
@@ -731,20 +617,20 @@
               </div>
               <div class="status-card-info">
                 <div class="status-card-sub">Jenis JFT</div>
-                <div class="status-card-val">Pranata Komputer Madya</div>
+                <div class="status-card-val" id="detail-jabatan">Widyaiswara Ahli Madya</div>
               </div>
             </div>
             <div class="ak-progress-wrap">
               <div class="ak-progress-head">
                 <span class="ak-progress-label">Progress Angka Kredit</span>
-                <span class="ak-progress-val"><span>452.500</span> / 600.000</span>
+                <span class="ak-progress-val" id="detail-ak-val"><span>527.780</span> / 450.000</span>
               </div>
               <div class="ak-progress-bar">
-                <div class="ak-progress-fill" style="width:75%"></div>
+                <div class="ak-progress-fill" id="detail-ak-bar" style="width:100%"></div>
               </div>
               <div class="ak-kekurangan">
-                <span class="ak-kekurangan-label">Kekurangan: <strong class="ak-kekurangan-val">147.500 AK</strong></span>
-                <span class="ak-pct">75%</span>
+                <span class="ak-kekurangan-label" id="detail-ak-kekurangan">Status: <strong>Memenuhi Syarat</strong></span>
+                <span class="ak-pct" id="detail-ak-pct">100%</span>
               </div>
             </div>
           </div>
@@ -762,8 +648,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
               </div>
               <div class="status-card-info">
-                <div class="status-card-sub">Unit Kerja</div>
-                <div class="status-card-val">Ditjen Pendidikan Tinggi</div>
+                <div class="status-card-sub">Unit Kerja / Satker</div>
+                <div class="status-card-val" id="detail-satker" style="font-size:13px;line-height:1.3;">Balai Besar GTK Provinsi Jawa Tengah</div>
               </div>
             </div>
           </div>
@@ -778,7 +664,7 @@
             <button class="tab-btn" id="tab-ak-btn" onclick="switchTab('ak')">Riwayat Angka Kredit</button>
           </div>
 
-          <!-- TAB: Profil Utama -->
+                    <!-- TAB: Profil Utama -->
           <div id="tab-profil" class="tab-pane active">
             <div class="profile-form-grid">
               <!-- Identitas Personal -->
@@ -787,12 +673,19 @@
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                   <span class="profile-section-title">Identitas Personal</span>
                 </div>
-                <div class="profile-field"><span class="field-label">Nama Lengkap</span><span class="field-sep">:</span><span class="field-val">Dr. Kandu Prakosa, SE, MM</span></div>
-                <div class="profile-field"><span class="field-label">NIP</span><span class="field-sep">:</span><span class="field-val">198205152005011002</span></div>
-                <div class="profile-field"><span class="field-label">Tempat, Tgl Lahir</span><span class="field-sep">:</span><span class="field-val">Jakarta, 12 Agustus 1975</span></div>
-                <div class="profile-field"><span class="field-label">Jenis Kelamin</span><span class="field-sep">:</span><span class="field-val">Laki-laki</span></div>
-                <div class="profile-field"><span class="field-label">Pendidikan Terakhir</span><span class="field-sep">:</span><span class="field-val">S3 – Teknik Hukum Santet</span></div>
-                <div class="profile-field"><span class="field-label">Email Institusi</span><span class="field-sep">:</span><span class="field-val">kandu.prakosa@kemdikbud.go.id</span></div>
+                <div class="profile-field"><span class="field-label">Nama Lengkap</span><span class="field-sep">:</span><span class="field-val" id="dt-nama">Drs. Yuli Cahyono, M.Pd.</span></div>
+                <div class="profile-field"><span class="field-label">NIP</span><span class="field-sep">:</span><span class="field-val" id="dt-nip">196807151994031019</span></div>
+                <div class="profile-field"><span class="field-label">NIK</span><span class="field-sep">:</span><span class="field-val" id="dt-nik">3276315076800040</span></div>
+                <div class="profile-field"><span class="field-label">Tempat, Tgl Lahir</span><span class="field-sep">:</span><span class="field-val" id="dt-ttl">MAGETAN, 15 Juli 1968</span></div>
+                <div class="profile-field"><span class="field-label">Jenis Kelamin</span><span class="field-sep">:</span><span class="field-val" id="dt-jk">Laki-laki</span></div>
+                <div class="profile-field"><span class="field-label">Usia</span><span class="field-sep">:</span><span class="field-val" id="dt-usia">58 Tahun</span></div>
+                <div class="profile-field"><span class="field-label">Tgl. Pensiun</span><span class="field-sep">:</span><span class="field-val" id="dt-pensiun">15 Juli 2028</span></div>
+                <div class="profile-field"><span class="field-label">Agama</span><span class="field-sep">:</span><span class="field-val" id="dt-agama">Islam</span></div>
+                <div class="profile-field"><span class="field-label">Pendidikan Terakhir</span><span class="field-sep">:</span><span class="field-val" id="dt-pendidikan">S-2 MAGISTER PENELITIAN DAN EVALUASI</span></div>
+                <div class="profile-field"><span class="field-label">Nomor HP</span><span class="field-sep">:</span><span class="field-val" id="dt-nohp">081210756510</span></div>
+                <div class="profile-field"><span class="field-label">Nomor Darurat</span><span class="field-sep">:</span><span class="field-val" id="dt-darurat">Rodliyah Muzdalifah/08111514789</span></div>
+                <div class="profile-field"><span class="field-label">Email Pribadi</span><span class="field-sep">:</span><span class="field-val" id="dt-email">yulicahyono@gmail.com</span></div>
+                <div class="profile-field"><span class="field-label">Email Kemendikdasmen</span><span class="field-sep">:</span><span class="field-val" id="dt-email-dikbud">yuli.cahyono@kemendikdasmen.go.id</span></div>
               </div>
 
               <div class="profile-form-divider"></div>
@@ -803,23 +696,29 @@
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                   <span class="profile-section-title">Administrasi Jabatan</span>
                 </div>
-                <div class="profile-field"><span class="field-label">TMT PNS</span><span class="field-sep">:</span><span class="field-val">01 Maret 2000</span></div>
-                <div class="profile-field"><span class="field-label">TMT Jabatan</span><span class="field-sep">:</span><span class="field-val">01 Januari 2021</span></div>
-                <div class="profile-field"><span class="field-label">Angka Kredit</span><span class="field-sep">:</span><span class="field-val">452.500 <span class="badge badge-aktif" style="margin-left:6px">Terverifikasi</span></span></div>
-                <div class="profile-field"><span class="field-label">Pejabat Pengusul</span><span class="field-sep">:</span><span class="field-val">Kepala Pusat Data dan Informasi</span></div>
-                <div class="profile-field"><span class="field-label">Instansi Pembina</span><span class="field-sep">:</span><span class="field-val">Badan Pusat Statistik (BPS)</span></div>
-                <div class="profile-field"><span class="field-label">Alamat Kantor</span><span class="field-sep">:</span><span class="field-val">Gedung C Lt. 18, Senayan, Jakarta</span></div>
+                <div class="profile-field"><span class="field-label">Jenis Jabatan</span><span class="field-sep">:</span><span class="field-val" id="dt-jenis-jab">Jabatan Fungsional Tertentu</span></div>
+                <div class="profile-field"><span class="field-label">Jabatan & Jenjang</span><span class="field-sep">:</span><span class="field-val" id="dt-jabatan-jenjang">Widyaiswara Ahli Madya</span></div>
+                <div class="profile-field"><span class="field-label">Kelas Jabatan</span><span class="field-sep">:</span><span class="field-val" id="dt-kelas-jab">12</span></div>
+                <div class="profile-field"><span class="field-label">Pangkat / Golongan</span><span class="field-sep">:</span><span class="field-val" id="dt-pangkat-gol">Pembina Utama Muda IV/c</span></div>
+                <div class="profile-field"><span class="field-label">TMT Pangkat</span><span class="field-sep">:</span><span class="field-val" id="dt-tmt">01 April 2021</span></div>
+                <div class="profile-field"><span class="field-label">Status Pegawai</span><span class="field-sep">:</span><span class="field-val" id="dt-status-pegawai"><span class="badge badge-aktif">Aktif</span></span></div>
+                <div class="profile-field"><span class="field-label">Nomor SK</span><span class="field-sep">:</span><span class="field-val" id="dt-no-sk">2678/I04/C/1994/SK</span></div>
+                <div class="profile-field"><span class="field-label">Tanggal SK</span><span class="field-sep">:</span><span class="field-val" id="dt-tgl-sk">10 Mei 1995</span></div>
+                <div class="profile-field"><span class="field-label">TMT / Tgl Lantik</span><span class="field-sep">:</span><span class="field-val" id="dt-lantik">-</span></div>
+                <div class="profile-field"><span class="field-label">Satuan Kerja</span><span class="field-sep">:</span><span class="field-val" id="dt-satker">Balai Besar GTK Provinsi Jawa Tengah, Kemendikdasmen</span></div>
+                <div class="profile-field"><span class="field-label">Predikat Kinerja 2025</span><span class="field-sep">:</span><span class="field-val" id="dt-predikat"><span class="badge badge-aktif">Sangat Baik</span></span></div>
+                <div class="profile-field"><span class="field-label">Usulan Kenaikan Pangkat</span><span class="field-sep">:</span><span class="field-val" id="dt-usul-kp">-</span></div>
               </div>
             </div>
 
             <!-- Sync bar -->
             <div class="sync-bar">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-              Data terakhir disinkronisasi dengan SIASN BKN pada 14 Mei 2024, 09:12 WIB
+              Data terintegrasi resmi dari Rekapitulasi Angka Kredit JF BBGTK Jawa Tengah Kemendikdasmen
             </div>
           </div>
 
-          <!-- TAB: Riwayat Jabatan -->
+                    <!-- TAB: Riwayat Jabatan -->
           <div id="tab-jabatan" class="tab-pane">
             <div class="table-wrap">
               <table>
@@ -828,185 +727,79 @@
                     <th>NO</th>
                     <th>JABATAN</th>
                     <th>GOLONGAN</th>
-                    <th>INSTANSI</th>
+                    <th>UNIT KERJA / INSTANSI</th>
                     <th>TMT</th>
-                    <th>SAMPAI</th>
+                    <th>NOMOR SK</th>
                     <th>STATUS</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody-riwayat-jabatan">
                   <tr class="jabatan-active-row">
                     <td>1.</td>
-                    <td><strong>Pranata Komputer Madya</strong></td>
-                    <td>III/c</td>
-                    <td>Ditjen Dikti</td>
-                    <td>01 Jan 2021</td>
-                    <td>Sekarang</td>
+                    <td><strong>Widyaiswara Ahli Madya</strong></td>
+                    <td>IV/c</td>
+                    <td>Balai Besar GTK Provinsi Jawa Tengah, Kemendikdasmen</td>
+                    <td>01 April 2021</td>
+                    <td><code>2678/I04/C/1994/SK</code></td>
                     <td><span class="badge badge-aktif">Aktif</span></td>
-                  </tr>
-                  <tr>
-                    <td>2.</td>
-                    <td>Pranata Komputer Muda</td>
-                    <td>III/b</td>
-                    <td>Ditjen Dikti</td>
-                    <td>01 Jan 2018</td>
-                    <td>31 Des 2020</td>
-                    <td><span class="badge badge-draft">Selesai</span></td>
-                  </tr>
-                  <tr>
-                    <td>3.</td>
-                    <td>Pranata Komputer Pertama</td>
-                    <td>III/a</td>
-                    <td>Pusdatin</td>
-                    <td>01 Mar 2005</td>
-                    <td>31 Des 2017</td>
-                    <td><span class="badge badge-draft">Selesai</span></td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- TAB: Riwayat Kinerja -->
+                    <!-- TAB: Riwayat Kinerja -->
           <div id="tab-kinerja" class="tab-pane">
             <div class="section-head-row">
               <div class="section-head-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                Riwayat Predikat Kinerja
+                Riwayat Predikat Kinerja &amp; Konversi Angka Kredit
               </div>
-              <button class="btn btn-primary btn-sm" onclick="openModal('modal-tambah-kinerja')">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                Tambah data
-              </button>
             </div>
             <div class="table-wrap">
               <table class="kinerja-table">
                 <thead>
                   <tr>
-                    <th rowspan="2" style="vertical-align:middle">NO</th>
-                    <th colspan="2" class="periode-header" style="text-align:center;border-bottom:1px solid var(--border)">PERIODE</th>
-                    <th rowspan="2" style="vertical-align:middle">TAHUN</th>
-                    <th rowspan="2" style="vertical-align:middle">PREDIKAT KINERJA</th>
-                    <th rowspan="2" style="vertical-align:middle">AK</th>
-                    <th rowspan="2" style="vertical-align:middle">#</th>
-                  </tr>
-                  <tr class="sub-header">
-                    <th>Dari</th>
-                    <th>Sampai</th>
+                    <th>NO</th>
+                    <th>TAHUN EVALUASI</th>
+                    <th>PERIODE</th>
+                    <th>PREDIKAT KINERJA</th>
+                    <th>KOEFISIEN TAHUNAN</th>
+                    <th>ANGKA KREDIT KONVERSI</th>
+                    <th>STATUS EVALUASI</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>1.</td>
-                    <td>Januari</td>
-                    <td>Desember</td>
-                    <td>2023</td>
-                    <td>Baik</td>
-                    <td><strong>12.50</strong></td>
-                    <td>
-                      <div style="display:flex;gap:6px;">
-                        <button class="btn-icon btn-icon-blue" title="Lihat Dokumen">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        </button>
-                        <button class="btn-icon btn-icon-orange" title="Edit" onclick="openModal('modal-tambah-kinerja')">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2.</td>
-                    <td>Januari</td>
-                    <td>Desember</td>
-                    <td>2022</td>
-                    <td>Sangat Baik</td>
-                    <td><strong>18.75</strong></td>
-                    <td>
-                      <div style="display:flex;gap:6px;">
-                        <button class="btn-icon btn-icon-blue" title="Lihat Dokumen">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        </button>
-                        <button class="btn-icon btn-icon-orange" title="Edit" onclick="openModal('modal-tambah-kinerja')">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3.</td>
-                    <td>Januari</td>
-                    <td>Desember</td>
-                    <td>2021</td>
-                    <td>Baik</td>
-                    <td><strong>11.25</strong></td>
-                    <td>
-                      <div style="display:flex;gap:6px;">
-                        <button class="btn-icon btn-icon-blue" title="Lihat Dokumen">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        </button>
-                        <button class="btn-icon btn-icon-orange" title="Edit" onclick="openModal('modal-tambah-kinerja')">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                <tbody id="tbody-riwayat-kinerja">
+                  <!-- Dynamic from data.js -->
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- TAB: Riwayat Angka Kredit -->
+                    <!-- TAB: Riwayat Angka Kredit -->
           <div id="tab-ak" class="tab-pane">
             <div class="section-head-row">
               <div class="section-head-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                Riwayat Penetapan Angka Kredit
+                Rekapitulasi Riwayat Angka Kredit &amp; Kebutuhan Kenaikan
               </div>
-              <button class="btn btn-primary btn-sm" onclick="openModal('modal-tambah-kinerja')">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                Tambah data
-              </button>
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>NO</th>
-                    <th>NO. SK PAK</th>
-                    <th>TANGGAL PAK</th>
-                    <th>TOTAL AK</th>
-                    <th>AK BARU</th>
-                    <th>PEJABAT TTD</th>
+                    <th>TAHAP / TAHUN</th>
+                    <th>KETERANGAN DOKUMEN / SUMBER</th>
+                    <th>NILAI ANGKA KREDIT</th>
                     <th>STATUS</th>
-                    <th>#</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>1.</td>
-                    <td><code style="font-size:11px">PAK/2024/0042</code></td>
-                    <td>14 Mei 2024</td>
-                    <td><strong>452.500</strong></td>
-                    <td>+45.000</td>
-                    <td>Kepala BBGTK</td>
-                    <td><span class="badge badge-aktif">Ditetapkan</span></td>
-                    <td><button class="btn-icon btn-icon-blue"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>2.</td>
-                    <td><code style="font-size:11px">PAK/2023/0018</code></td>
-                    <td>10 Jan 2023</td>
-                    <td><strong>407.500</strong></td>
-                    <td>+62.750</td>
-                    <td>Kepala BBGTK</td>
-                    <td><span class="badge badge-aktif">Ditetapkan</span></td>
-                    <td><button class="btn-icon btn-icon-blue"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></button></td>
-                  </tr>
+                <tbody id="tbody-riwayat-ak">
+                  <!-- Dynamic from data.js -->
                 </tbody>
               </table>
             </div>
           </div>
-
         </div><!-- /.tabs-card -->
 
         <!-- Quick Actions Footer -->
@@ -1108,40 +901,40 @@
               <tbody>
                 <tr>
                   <td>1</td>
-                  <td><div class="cell-name">Bambang Susanto</div><div class="cell-sub">198504121008011003</div></td>
-                  <td>Pengangkatan JFT</td>
+                  <td><div class="cell-name">Drs. Yuli Cahyono, M.Pd.</div><div class="cell-sub">196807151994031019</div></td>
+                  <td>Penetapan Angka Kredit 2025</td>
                   <td>28 Jul 2026</td>
                   <td><span class="badge badge-proses">Menunggu Verifikasi</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-primary btn-sm" onclick="showToast('success','Berhasil','Usulan sedang diverifikasi.')">Verifikasi</button><button class="btn btn-ghost btn-sm">Lihat</button></div></td>
+                  <td><div style="display:flex;gap:6px;"><button class="btn btn-primary btn-sm" onclick="showToast('success','Berhasil','Usulan sedang diverifikasi.')">Verifikasi</button><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(1)">Lihat</button></div></td>
                 </tr>
                 <tr>
                   <td>2</td>
-                  <td><div class="cell-name">Siti Aminah, S.Pd.</div><div class="cell-sub">199002281011012004</div></td>
+                  <td><div class="cell-name">Fety Marhayuni, S.Pd., M.Pd.</div><div class="cell-sub">197302191997032006</div></td>
                   <td>Kenaikan Jenjang</td>
                   <td>25 Jul 2026</td>
                   <td><span class="badge badge-info">Dalam Proses</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-success btn-sm" onclick="showToast('success','Berhasil','Usulan telah disetujui.')">Setujui</button><button class="btn btn-ghost btn-sm" style="color:var(--danger);border-color:var(--danger)">Tolak</button></div></td>
+                  <td><div style="display:flex;gap:6px;"><button class="btn btn-success btn-sm" onclick="showToast('success','Berhasil','Usulan telah disetujui.')">Setujui</button><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(4)">Lihat</button></div></td>
                 </tr>
                 <tr>
                   <td>3</td>
-                  <td><div class="cell-name">Ahmad Fauzi, SE</div><div class="cell-sub">198702201009012002</div></td>
+                  <td><div class="cell-name">Son Kuncara Edhie, S.Kom.</div><div class="cell-sub">197208112005011001</div></td>
                   <td>Penetapan Angka Kredit</td>
                   <td>20 Jul 2026</td>
-                  <td><span class="badge badge-nonaktif">Ditolak</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-ghost btn-sm">Lihat</button></div></td>
+                  <td><span class="badge badge-nonaktif">Perlu Revisi</span></td>
+                  <td><div style="display:flex;gap:6px;"><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(27)">Lihat</button></div></td>
                 </tr>
                 <tr>
                   <td>4</td>
-                  <td><div class="cell-name">Dewi Lestari, M.Si.</div><div class="cell-sub">198604091008015005</div></td>
-                  <td>Kenaikan Jenjang</td>
+                  <td><div class="cell-name">Ari Sulistiyowati, S.Pd., M.Pd.</div><div class="cell-sub">197209231998022002</div></td>
+                  <td>Kenaikan Pangkat</td>
                   <td>18 Jul 2026</td>
                   <td><span class="badge badge-aktif">Disetujui ✓</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-ghost btn-sm">Lihat</button></div></td>
+                  <td><div style="display:flex;gap:6px;"><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(6)">Lihat</button></div></td>
                 </tr>
                 <tr>
                   <td>5</td>
-                  <td><div class="cell-name">Rizal Firmansyah, SH</div><div class="cell-sub">199212151013018008</div></td>
-                  <td>Pengangkatan JFT</td>
+                  <td><div class="cell-name">Manikowati, M.Pd.</div><div class="cell-sub">197710282002122002</div></td>
+                  <td>Kenaikan Jenjang Madya</td>
                   <td>15 Jul 2026</td>
                   <td><span class="badge badge-draft">Draft</span></td>
                   <td><div style="display:flex;gap:6px;"><button class="btn btn-primary btn-sm" onclick="showToast('info','Diajukan','Usulan berhasil diajukan.')">Ajukan</button></div></td>
@@ -1224,10 +1017,10 @@
               <table>
                 <thead><tr><th>NAMA (EMAIL)</th><th>ROLE</th><th>UNIT KERJA</th><th>LAST LOGIN</th><th>STATUS</th><th>AKSI</th></tr></thead>
                 <tbody>
-                  <tr><td><div class="cell-name">Budi Santoso</div><div class="cell-sub">budi.santoso@kemdikbud.go.id</div></td><td><span class="badge badge-admin-utama">Administrator Utama</span></td><td>Kemendikbudristek</td><td>4 Agt 2026, 08:42</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-                  <tr><td><div class="cell-name">Sari Dewi</div><div class="cell-sub">sari.dewi@kemdikbud.go.id</div></td><td><span class="badge badge-verif">Verifikator</span></td><td>Ditjen Dikti</td><td>3 Agt 2026, 15:20</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-                  <tr><td><div class="cell-name">Hendra Gunawan</div><div class="cell-sub">hendra.g@kemdikbud.go.id</div></td><td><span class="badge badge-operator">Operator</span></td><td>Ditjen GTK</td><td>2 Agt 2026, 11:05</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-                  <tr><td><div class="cell-name">Dr. Kandu Prakosa</div><div class="cell-sub">kandu.prakosa@kemdikbud.go.id</div></td><td><span class="badge badge-asn">ASN</span></td><td>Ditjen Dikti</td><td>1 Agt 2026, 09:30</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+                  <tr><td><div class="cell-name">Drs. Yuli Cahyono, M.Pd.</div><div class="cell-sub">yuli.cahyono@kemendikdasmen.go.id</div></td><td><span class="badge badge-admin-utama">Widyaiswara Ahli Madya</span></td><td>BBGTK Prov. Jawa Tengah</td><td>4 Agt 2026, 08:42</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(1)">Lihat</button></td></tr>
+                  <tr><td><div class="cell-name">Kandu Prakoso, S.E</div><div class="cell-sub">kandu.prakoso@kemendikdasmen.go.id</div></td><td><span class="badge badge-verif">Analis SDM Aparatur</span></td><td>BBGTK Prov. Jawa Tengah</td><td>3 Agt 2026, 15:20</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(55)">Lihat</button></td></tr>
+                  <tr><td><div class="cell-name">Fatma Luvy Purborini, S.T</div><div class="cell-sub">fatma.luvy@kemendikdasmen.go.id</div></td><td><span class="badge badge-operator">Pranata Komputer Penyelia</span></td><td>BBGTK Prov. Jawa Tengah</td><td>2 Agt 2026, 11:05</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(56)">Lihat</button></td></tr>
+                  <tr><td><div class="cell-name">Nico Arif Murdika Wibawa</div><div class="cell-sub">nico.arif@kemendikdasmen.go.id</div></td><td><span class="badge badge-asn">Analis Bangkom ASN</span></td><td>BBGTK Prov. Jawa Tengah</td><td>1 Agt 2026, 09:30</td><td><span class="badge badge-aktif">Aktif</span></td><td><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(53)">Lihat</button></td></tr>
                 </tbody>
               </table>
             </div>
@@ -1239,9 +1032,9 @@
             <div class="settings-section">
               <div class="settings-section-title">Konfigurasi Sistem</div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                <div class="modal-field"><label class="modal-label">Nama Instansi</label><input class="modal-input" value="BBGTK Provinsi Jawa Tengah"></div>
-                <div class="modal-field"><label class="modal-label">Kode Instansi</label><input class="modal-input" value="BBGTK-JATENG-001"></div>
-                <div class="modal-field"><label class="modal-label">Email Admin</label><input class="modal-input" type="email" value="admin@bbgtk-jateng.go.id"></div>
+                <div class="modal-field"><label class="modal-label">Nama Instansi</label><input class="modal-input" value="Balai Besar GTK Provinsi Jawa Tengah"></div>
+                <div class="modal-field"><label class="modal-label">Kode Instansi</label><input class="modal-input" value="BBGTK-JATENG-KEMENDIKDASMEN"></div>
+                <div class="modal-field"><label class="modal-label">Email Admin</label><input class="modal-input" type="email" value="admin@bbgtkjateng.kemdikbud.go.id"></div>
                 <div class="modal-field"><label class="modal-label">Tahun Aktif</label><select class="modal-select"><option>2026</option><option>2025</option></select></div>
               </div>
             </div>
@@ -1254,10 +1047,10 @@
               <table>
                 <thead><tr><th>WAKTU</th><th>PENGGUNA</th><th>AKSI</th><th>TARGET</th><th>IP ADDRESS</th></tr></thead>
                 <tbody>
-                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-04 08:42:15</td><td>budi.santoso</td><td><span class="badge badge-info">LOGIN</span></td><td>Dashboard</td><td>10.0.1.45</td></tr>
-                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-04 08:40:02</td><td>sari.dewi</td><td><span class="badge badge-aktif">UPDATE</span></td><td>Dr. Kandu Prakosa</td><td>10.0.1.22</td></tr>
-                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-03 15:20:44</td><td>sari.dewi</td><td><span class="badge badge-proses">VERIFIKASI</span></td><td>Usulan #US-2026-042</td><td>10.0.1.22</td></tr>
-                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-03 14:15:30</td><td>hendra.g</td><td><span class="badge badge-info">CREATE</span></td><td>Individu Baru</td><td>10.0.2.10</td></tr>
+                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-04 08:42:15</td><td>yuli.cahyono</td><td><span class="badge badge-info">LOGIN</span></td><td>Dashboard</td><td>10.0.1.45</td></tr>
+                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-04 08:40:02</td><td>kandu.prakoso</td><td><span class="badge badge-aktif">UPDATE</span></td><td>Fety Marhayuni, S.Pd., M.Pd.</td><td>10.0.1.22</td></tr>
+                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-03 15:20:44</td><td>fatma.luvy</td><td><span class="badge badge-proses">VERIFIKASI</span></td><td>Usulan #US-2026-042</td><td>10.0.1.22</td></tr>
+                  <tr><td style="font-size:11px;color:var(--text-muted)">2026-08-03 14:15:30</td><td>nico.arif</td><td><span class="badge badge-info">CREATE</span></td><td>Penetapan AK</td><td>10.0.2.10</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1319,6 +1112,7 @@
 </div>
 
 <!-- Modal: Nonaktifkan -->
+<!-- Modal: Nonaktifkan -->
 <div id="modal-nonaktifkan" class="modal-overlay" style="display:none" onclick="closeModalOutside(event,'modal-nonaktifkan')">
   <div class="modal-panel">
     <div class="modal-header">
@@ -1326,41 +1120,98 @@
       <button class="modal-close" onclick="closeModal('modal-nonaktifkan')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <div class="modal-body">
-      <p style="font-size:14px;color:var(--text);margin-bottom:16px;">Apakah Anda yakin ingin menonaktifkan <strong>Dr. Kandu Prakosa, SE, MM</strong> dari sistem JFT?</p>
+      <p style="font-size:14px;color:var(--text);margin-bottom:16px;" id="nonaktif-text">Apakah Anda yakin ingin menonaktifkan ASN ini dari sistem JFT?</p>
       <div style="background:var(--danger-bg);border:1px solid #F5C6CB;border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--danger-tx);">
-        ⚠️ Tindakan ini akan menghentikan akses ASN ke sistem dan memerlukan reaktivasi oleh administrator.
+        ⚠️ Tindakan ini akan mengubah status kepegawaian di sistem dan memerlukan reaktivasi oleh administrator.
       </div>
-      <div class="modal-field" style="margin-top:16px;margin-bottom:0"><label class="modal-label">Alasan Penonaktifan</label><textarea class="modal-input" style="height:80px;padding-top:8px;" placeholder="Masukkan alasan penonaktifan..."></textarea></div>
+      <div class="modal-field" style="margin-top:16px;margin-bottom:0"><label class="modal-label">Alasan Penonaktifan</label><textarea class="modal-input" id="nonaktif-alasan" style="height:80px;padding-top:8px;" placeholder="Contoh: Pensiun, Mutasi, Cuti Luar Tanggungan Negara..."></textarea></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-nonaktifkan')">Batal</button>
-      <button class="btn" style="background:var(--danger);color:#fff" onclick="saveModal('modal-nonaktifkan','warning','Dinonaktifkan','Status ASN berhasil dinonaktifkan.')">Ya, Nonaktifkan</button>
+      <button class="btn" style="background:var(--danger);color:#fff" onclick="confirmNonaktifkanPegawai()">Ya, Nonaktifkan</button>
     </div>
   </div>
 </div>
 
 <!-- Modal: Edit Profil -->
 <div id="modal-edit-profil" class="modal-overlay" style="display:none" onclick="closeModalOutside(event,'modal-edit-profil')">
-  <div class="modal-panel">
+  <div class="modal-panel" style="max-width:620px;">
     <div class="modal-header">
-      <span class="modal-title">Edit Profil ASN</span>
+      <span class="modal-title">Edit Profil Pegawai JFT</span>
       <button class="modal-close" onclick="closeModal('modal-edit-profil')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <div class="modal-body">
       <div class="modal-row">
-        <div class="modal-field"><label class="modal-label">Nama Lengkap</label><input class="modal-input" value="Dr. Kandu Prakosa, SE, MM"></div>
-        <div class="modal-field"><label class="modal-label">NIP</label><input class="modal-input" value="198205152005011002" readonly style="background:var(--bg-app)"></div>
+        <div class="modal-field"><label class="modal-label">Nama Lengkap &amp; Gelar</label><input class="modal-input" id="edit-nama"></div>
+        <div class="modal-field"><label class="modal-label">NIP</label><input class="modal-input" id="edit-nip" readonly style="background:var(--bg-app);font-family:monospace"></div>
       </div>
       <div class="modal-row">
-        <div class="modal-field"><label class="modal-label">Golongan</label><select class="modal-select"><option>III/c - Penata</option><option>III/d - Penata Tk. I</option><option>IV/a - Pembina</option></select></div>
-        <div class="modal-field"><label class="modal-label">Jenis JFT</label><select class="modal-select"><option>Pranata Komputer Madya</option><option>Widyaiswara Madya</option><option>Auditor Madya</option></select></div>
+        <div class="modal-field"><label class="modal-label">Pangkat / Golongan</label>
+          <select class="modal-select" id="edit-gol">
+            <option value="IV/c">Pembina Utama Muda (IV/c)</option>
+            <option value="IV/b">Pembina Tingkat I (IV/b)</option>
+            <option value="IV/a">Pembina (IV/a)</option>
+            <option value="III/d">Penata Tingkat I (III/d)</option>
+            <option value="III/c">Penata (III/c)</option>
+            <option value="III/b">Penata Muda Tingkat I (III/b)</option>
+            <option value="III/a">Penata Muda (III/a)</option>
+            <option value="II/d">Pengatur Tingkat I (II/d)</option>
+          </select>
+        </div>
+        <div class="modal-field"><label class="modal-label">Jabatan Fungsional</label>
+          <select class="modal-select" id="edit-jabatan">
+            <option value="Pengembang Teknologi Pembelajaran Ahli Madya">Pengembang Teknologi Pembelajaran Ahli Madya</option>
+            <option value="Pengembang Teknologi Pembelajaran Ahli Muda">Pengembang Teknologi Pembelajaran Ahli Muda</option>
+            <option value="Pengembang Teknologi Pembelajaran Ahli Pertama">Pengembang Teknologi Pembelajaran Ahli Pertama</option>
+            <option value="Widyaiswara Ahli Madya">Widyaiswara Ahli Madya</option>
+            <option value="Widyaiswara Ahli Muda">Widyaiswara Ahli Muda</option>
+            <option value="Widyaiswara Ahli Pertama">Widyaiswara Ahli Pertama</option>
+            <option value="Pranata Komputer Ahli Pertama">Pranata Komputer Ahli Pertama</option>
+            <option value="Pranata Komputer Penyelia">Pranata Komputer Penyelia</option>
+            <option value="Pranata Komputer Mahir">Pranata Komputer Mahir</option>
+            <option value="Pranata Komputer Terampil">Pranata Komputer Terampil</option>
+            <option value="Arsiparis Ahli Muda">Arsiparis Ahli Muda</option>
+            <option value="Arsiparis Ahli Pertama">Arsiparis Ahli Pertama</option>
+            <option value="Arsiparis Mahir">Arsiparis Mahir</option>
+            <option value="Analis Sumber Daya Manusia Aparatur Ahli Pertama">Analis Sumber Daya Manusia Aparatur Ahli Pertama</option>
+            <option value="Analis Pengelolaan Keuangan APBN Ahli Muda">Analis Pengelolaan Keuangan APBN Ahli Muda</option>
+            <option value="Analis Pengembangan Kompetensi ASN Ahli Pertama">Analis Pengembangan Kompetensi ASN Ahli Pertama</option>
+            <option value="Perencana Ahli Pertama">Perencana Ahli Pertama</option>
+            <option value="Statistisi Ahli Pertama">Statistisi Ahli Pertama</option>
+            <option value="Pranata Hubungan Masyarakat Ahli Pertama">Pranata Hubungan Masyarakat Ahli Pertama</option>
+            <option value="Pranata Sumber Daya Manusia Aparatur Penyelia">Pranata Sumber Daya Manusia Aparatur Penyelia</option>
+          </select>
+        </div>
       </div>
-      <div class="modal-field"><label class="modal-label">Unit Kerja</label><select class="modal-select"><option>Ditjen Pendidikan Tinggi</option><option>Ditjen GTK</option><option>Setjen</option><option>Inspektorat</option></select></div>
-      <div class="modal-field"><label class="modal-label">Email Institusi</label><input class="modal-input" type="email" value="kandu.prakosa@kemdikbud.go.id"></div>
+      <div class="modal-row">
+        <div class="modal-field"><label class="modal-label">Unit Kerja / Satker</label>
+          <input class="modal-input" id="edit-satker">
+        </div>
+        <div class="modal-field"><label class="modal-label">Status Pegawai</label>
+          <select class="modal-select" id="edit-status">
+            <option value="Aktif">Aktif</option>
+            <option value="Nonaktif">Nonaktif</option>
+            <option value="Cuti">Cuti</option>
+            <option value="Tugas Belajar">Tugas Belajar</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field"><label class="modal-label">Email Kemendikdasmen</label><input class="modal-input" type="email" id="edit-email-dikbud"></div>
+        <div class="modal-field"><label class="modal-label">Email Pribadi</label><input class="modal-input" type="email" id="edit-email"></div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field"><label class="modal-label">Nomor HP</label><input class="modal-input" id="edit-nohp"></div>
+        <div class="modal-field"><label class="modal-label">Nomor Darurat</label><input class="modal-input" id="edit-darurat"></div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field"><label class="modal-label">Pendidikan Terakhir</label><input class="modal-input" id="edit-pendidikan"></div>
+        <div class="modal-field"><label class="modal-label">Nomor SK</label><input class="modal-input" id="edit-no-sk"></div>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-edit-profil')">Batal</button>
-      <button class="btn btn-primary" onclick="saveModal('modal-edit-profil','success','Berhasil','Profil ASN berhasil diperbarui.')">Simpan Perubahan</button>
+      <button class="btn btn-primary" onclick="saveEditProfil()">Simpan Perubahan</button>
     </div>
   </div>
 </div>
@@ -1433,6 +1284,7 @@
   </div>
 </div>
 
+<script src="data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
