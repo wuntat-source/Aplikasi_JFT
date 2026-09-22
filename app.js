@@ -130,6 +130,7 @@ function navigate(page) {
 
   const navMap = {
     'dashboard':       'nav-dashboard',
+    'perhitungan-ak':  'nav-perhitungan-ak',
     'daftar-jft':      'nav-daftar-jft',
     'daftar-individu': 'nav-daftar-individu',
     'detail-individu': 'nav-daftar-individu',
@@ -140,6 +141,7 @@ function navigate(page) {
 
   const bnavMap = {
     'dashboard':       'bnav-dashboard',
+    'perhitungan-ak':  'bnav-dashboard',
     'daftar-jft':      'bnav-dashboard',
     'daftar-individu': 'bnav-daftar-individu',
     'detail-individu': 'bnav-daftar-individu',
@@ -164,6 +166,8 @@ function navigate(page) {
   if (page === 'dashboard') {
     renderDashboard();
     setTimeout(initDashboardChart, 100);
+  } else if (page === 'perhitungan-ak') {
+    renderPerhitunganAk();
   } else if (page === 'daftar-jft') {
     renderDaftarJft();
   } else if (page === 'daftar-individu') {
@@ -378,6 +382,370 @@ function initDashboardChart() {
       }
     }
   });
+}
+
+/* ----------------------------------------------------------------
+   PERHITUNGAN AK & SIMULATOR PAGE
+   ---------------------------------------------------------------- */
+let pakCurrentPage = 1;
+const pakItemsPerPage = 10;
+let pakFilteredData = [];
+
+function renderPerhitunganAk() {
+  if (typeof PEGAWAI_DATA === 'undefined') return;
+
+  // KPI Calculations
+  let totalMemenuhi = 0;
+  let totalKurang = 0;
+  let sumAk = 0;
+
+  PEGAWAI_DATA.forEach(p => {
+    const totalAk = p.ak_total_2025 || 0;
+    const target = p.kebutuhan_naik_pangkat || p.kebutuhan_naik_jenjang || 100;
+    if (totalAk >= target) {
+      totalMemenuhi++;
+    } else {
+      totalKurang++;
+    }
+    sumAk += totalAk;
+  });
+
+  const avgAk = PEGAWAI_DATA.length ? (sumAk / PEGAWAI_DATA.length).toFixed(1) : '0';
+
+  const kpiTotal = document.getElementById('pak-kpi-total');
+  const kpiMemenuhi = document.getElementById('pak-kpi-memenuhi');
+  const kpiKurang = document.getElementById('pak-kpi-kurang');
+  const kpiAvg = document.getElementById('pak-kpi-avg-ak');
+
+  if (kpiTotal) kpiTotal.textContent = PEGAWAI_DATA.length;
+  if (kpiMemenuhi) kpiMemenuhi.textContent = totalMemenuhi;
+  if (kpiKurang) kpiKurang.textContent = totalKurang;
+  if (kpiAvg) kpiAvg.textContent = avgAk;
+
+  populateSimPegawaiDropdown();
+  calcSimulasiAk();
+  handlePakFilter();
+}
+
+function populateSimPegawaiDropdown() {
+  const sel = document.getElementById('sim-pegawai-select');
+  if (!sel || sel.options.length > 1) return;
+
+  PEGAWAI_DATA.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = `${p.nama} (${p.jabatan} - Gol. ${p.pagol})`;
+    sel.appendChild(opt);
+  });
+}
+
+function handleSimPegawaiChange() {
+  const sel = document.getElementById('sim-pegawai-select');
+  if (!sel) return;
+  const pId = parseInt(sel.value, 10);
+  if (!pId) {
+    resetSimulasiAk();
+    return;
+  }
+
+  const p = PEGAWAI_DATA.find(item => item.id === pId);
+  if (!p) return;
+
+  // Set Jenjang
+  const selJenjang = document.getElementById('sim-jenjang');
+  if (selJenjang) {
+    for (let i = 0; i < selJenjang.options.length; i++) {
+      if (selJenjang.options[i].value === p.jenjang) {
+        selJenjang.selectedIndex = i;
+        break;
+      }
+    }
+  }
+
+  // Set Predikat
+  const selPredikat = document.getElementById('sim-predikat');
+  if (selPredikat) {
+    const pred = (p.predikat_kinerja_2025 || '').toLowerCase();
+    if (pred.includes('sangat baik')) selPredikat.value = '1.5';
+    else if (pred.includes('baik')) selPredikat.value = '1.0';
+    else if (pred.includes('cukup') || pred.includes('butuh perbaikan')) selPredikat.value = '0.75';
+    else if (pred.includes('kurang')) selPredikat.value = '0.5';
+    else selPredikat.value = '1.0';
+  }
+
+  // Set Bulan & AK Saat ini
+  const inBulan = document.getElementById('sim-bulan');
+  if (inBulan) inBulan.value = 12;
+
+  const inAk = document.getElementById('sim-ak-saat-ini');
+  if (inAk) inAk.value = p.ak_total_2025 || 0;
+
+  calcSimulasiAk();
+}
+
+function calcSimulasiAk() {
+  const selJenjang = document.getElementById('sim-jenjang');
+  const selPredikat = document.getElementById('sim-predikat');
+  const inBulan = document.getElementById('sim-bulan');
+  const inAk = document.getElementById('sim-ak-saat-ini');
+
+  if (!selJenjang || !selPredikat) return;
+
+  const opt = selJenjang.options[selJenjang.selectedIndex];
+  const koef = parseFloat(opt.getAttribute('data-koef')) || 37.5;
+  const targetKp = parseFloat(opt.getAttribute('data-kp')) || 150;
+  const targetKj = parseFloat(opt.getAttribute('data-kj')) || 450;
+
+  const faktor = parseFloat(selPredikat.value) || 1.0;
+  const bulan = Math.min(12, Math.max(1, parseInt(inBulan?.value || '12', 10)));
+  const akSaatIni = parseFloat(inAk?.value || '0') || 0;
+
+  // Rumus Konversi PermenPAN-RB 1/2023: Faktor * Koefisien * (Bulan / 12)
+  const perolehanAk = faktor * koef * (bulan / 12);
+  const totalAkBaru = akSaatIni + perolehanAk;
+
+  // Render Elements
+  const elKoef = document.getElementById('res-koef');
+  const elFaktor = document.getElementById('res-faktor');
+  const elPerolehan = document.getElementById('res-perolehan-ak');
+  const elRumus = document.getElementById('res-rumus-text');
+  const elTotalBaru = document.getElementById('res-total-baru');
+  const elTarget = document.getElementById('res-target-ak');
+  const elBadge = document.getElementById('res-status-badge');
+  const elDesc = document.getElementById('res-status-desc');
+
+  if (elKoef) elKoef.textContent = koef.toFixed(3);
+  if (elFaktor) elFaktor.textContent = `${Math.round(faktor * 100)}%`;
+  if (elPerolehan) elPerolehan.textContent = `+${perolehanAk.toFixed(3)}`;
+  if (elRumus) elRumus.textContent = `Rumus: ${Math.round(faktor * 100)}% × ${koef.toFixed(2)} × (${bulan}/12) bln`;
+  if (elTotalBaru) elTotalBaru.textContent = totalAkBaru.toFixed(3);
+  if (elTarget) elTarget.textContent = targetKj > 0 ? `${targetKp.toFixed(1)} (KP) / ${targetKj.toFixed(1)} (KJ)` : `${targetKp.toFixed(1)} (KP)`;
+
+  if (elBadge && elDesc) {
+    const primaryTarget = targetKj > 0 ? targetKj : targetKp;
+    if (totalAkBaru >= primaryTarget) {
+      elBadge.className = 'badge badge-aktif';
+      elBadge.textContent = 'Memenuhi Syarat Kenaikan ✓';
+      elDesc.textContent = `Surplus +${(totalAkBaru - primaryTarget).toFixed(3)} AK di atas target (${primaryTarget})`;
+    } else {
+      const def = (primaryTarget - totalAkBaru).toFixed(3);
+      elBadge.className = 'badge badge-proses';
+      elBadge.textContent = `Perlu +${def} AK lagi`;
+      elDesc.textContent = `Menuju target kumulatif ${primaryTarget.toFixed(1)}`;
+    }
+  }
+}
+
+function resetSimulasiAk() {
+  const selPeg = document.getElementById('sim-pegawai-select');
+  if (selPeg) selPeg.value = '';
+  const selJenjang = document.getElementById('sim-jenjang');
+  if (selJenjang) selJenjang.selectedIndex = 0;
+  const selPredikat = document.getElementById('sim-predikat');
+  if (selPredikat) selPredikat.value = '1.0';
+  const inBulan = document.getElementById('sim-bulan');
+  if (inBulan) inBulan.value = 12;
+  const inAk = document.getElementById('sim-ak-saat-ini');
+  if (inAk) inAk.value = 0;
+  calcSimulasiAk();
+}
+
+function loadPegawaiIntoSimulasi(id) {
+  const sel = document.getElementById('sim-pegawai-select');
+  if (sel) {
+    sel.value = id;
+    handleSimPegawaiChange();
+    const simCard = document.getElementById('sim-pegawai-select');
+    if (simCard) {
+      simCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    showToast('info', 'Simulasi Dimuat', 'Data pegawai telah dimuat ke dalam kalkulator simulasi.');
+  }
+}
+
+function handlePakFilter() {
+  if (typeof PEGAWAI_DATA === 'undefined') return;
+
+  const query = (document.getElementById('search-pak')?.value || '').toLowerCase().trim();
+  const kat = document.getElementById('filter-pak-kategori')?.value || 'Semua';
+  const status = document.getElementById('filter-pak-status')?.value || 'Semua';
+
+  pakFilteredData = PEGAWAI_DATA.filter(p => {
+    // Search
+    const matchQuery = !query ||
+      (p.nama && p.nama.toLowerCase().includes(query)) ||
+      (p.nip && p.nip.includes(query)) ||
+      (p.jabatan && p.jabatan.toLowerCase().includes(query));
+
+    // Kategori JFT
+    let matchKat = true;
+    if (kat !== 'Semua') {
+      const pKat = (p.kategori_jft || '').toLowerCase();
+      const pJab = (p.jabatan || '').toLowerCase();
+      const targetKat = kat.toLowerCase();
+      matchKat = pKat.includes(targetKat) || pJab.includes(targetKat);
+    }
+
+    // Status Kelayakan
+    let matchStatus = true;
+    if (status !== 'Semua') {
+      const totalAk = p.ak_total_2025 || 0;
+      const target = p.kebutuhan_naik_pangkat || p.kebutuhan_naik_jenjang || 100;
+      const isMemenuhi = totalAk >= target;
+      if (status === 'Memenuhi' && !isMemenuhi) matchStatus = false;
+      if (status === 'Belum' && isMemenuhi) matchStatus = false;
+    }
+
+    return matchQuery && matchKat && matchStatus;
+  });
+
+  pakCurrentPage = 1;
+  renderPakTable();
+}
+
+function renderPakTable() {
+  const tbody = document.getElementById('tbody-rekap-pak');
+  const infoEl = document.getElementById('info-rekap-pak');
+  const paginEl = document.getElementById('pagination-rekap-pak');
+  if (!tbody) return;
+
+  const total = pakFilteredData.length;
+  if (total === 0) {
+    tbody.innerHTML = `<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text-muted)">Tidak ada data pegawai yang sesuai dengan filter.</td></tr>`;
+    if (infoEl) infoEl.textContent = 'Menampilkan 0 dari 0 data';
+    if (paginEl) paginEl.innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.ceil(total / pakItemsPerPage);
+  if (pakCurrentPage > totalPages) pakCurrentPage = totalPages;
+
+  const start = (pakCurrentPage - 1) * pakItemsPerPage;
+  const end = Math.min(start + pakItemsPerPage, total);
+  const pageData = pakFilteredData.slice(start, end);
+
+  tbody.innerHTML = pageData.map((p, idx) => {
+    const rowNo = start + idx + 1;
+    const totalAk = p.ak_total_2025 || 0;
+    const target = p.kebutuhan_naik_pangkat || p.kebutuhan_naik_jenjang || 100;
+    const isMemenuhi = totalAk >= target;
+
+    return `
+      <tr>
+        <td>${rowNo}</td>
+        <td>
+          <div class="avatar-cell">
+            <div class="table-avatar ${p.avatar_color}">
+              ${p.nip && p.nip !== '-' ? `<img src="foto/${p.nip}.jpg" alt="${p.nama}" onerror="this.remove();" loading="lazy">` : ''}
+              <span>${p.initials}</span>
+            </div>
+            <div>
+              <div class="cell-name">${p.nama}</div>
+              <div class="cell-sub">NIP. ${p.nip}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div style="font-weight:500; font-size:12px;">${p.jabatan}</div>
+          <div class="cell-sub">Golongan ${p.pagol} (${p.jenjang})</div>
+        </td>
+        <td style="font-family:monospace;font-size:12px;">${(p.ak_integrasi_2022 || 0).toFixed(3)}</td>
+        <td style="font-family:monospace;font-size:12px;">${(p.ak_konversi_2023 || 0).toFixed(3)}</td>
+        <td style="font-family:monospace;font-size:12px;">${(p.ak_konversi_2024 || 0).toFixed(3)}</td>
+        <td style="font-family:monospace;font-size:12px;color:var(--primary);font-weight:600;">+${(p.ak_konversi_2025 || 0).toFixed(3)}</td>
+        <td>
+          <span style="font-family:monospace;font-size:13px;font-weight:700;color:var(--text);">${totalAk.toFixed(3)}</span>
+        </td>
+        <td>
+          <span class="badge ${p.predikat_kinerja_2025 === 'Sangat Baik' ? 'badge-aktif' : 'badge-info'}">${p.predikat_kinerja_2025 || 'Baik'}</span>
+        </td>
+        <td style="font-size:12px;color:var(--text-muted);">
+          ${target.toFixed(1)}
+        </td>
+        <td>
+          <span class="badge ${isMemenuhi ? 'badge-aktif' : 'badge-proses'}">
+            ${isMemenuhi ? 'Memenuhi ✓' : 'Akumulasi'}
+          </span>
+        </td>
+        <td>
+          <div style="display:flex;gap:4px;">
+            <button class="btn btn-ghost btn-sm" title="Simulasi Perolehan AK" onclick="loadPegawaiIntoSimulasi(${p.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              Hitung
+            </button>
+            <button class="btn-icon" title="Lihat Profil Pegawai" onclick="viewPegawaiDetail(${p.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  if (infoEl) {
+    infoEl.textContent = `Menampilkan ${start + 1}–${end} dari ${total} data`;
+  }
+
+  // Pagination buttons
+  if (paginEl) {
+    let html = '';
+    html += `<button class="page-btn" ${pakCurrentPage === 1 ? 'disabled' : ''} onclick="goToPakPage(${pakCurrentPage - 1})"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= pakCurrentPage - 1 && i <= pakCurrentPage + 1)) {
+        html += `<button class="page-btn ${i === pakCurrentPage ? 'active' : ''}" onclick="goToPakPage(${i})">${i}</button>`;
+      } else if (i === pakCurrentPage - 2 || i === pakCurrentPage + 2) {
+        html += `<button class="page-btn" disabled>...</button>`;
+      }
+    }
+    html += `<button class="page-btn" ${pakCurrentPage === totalPages ? 'disabled' : ''} onclick="goToPakPage(${pakCurrentPage + 1})"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>`;
+    paginEl.innerHTML = html;
+  }
+}
+
+function goToPakPage(p) {
+  pakCurrentPage = p;
+  renderPakTable();
+}
+
+function exportAkTableCsv() {
+  if (!pakFilteredData || !pakFilteredData.length) {
+    showToast('error', 'Gagal', 'Tidak ada data untuk diekspor.');
+    return;
+  }
+
+  let csv = 'NO,NAMA,NIP,JABATAN,GOLONGAN,JENJANG,AK_INTEGRASI_2022,AK_KONVERSI_2023,AK_KONVERSI_2024,AK_KONVERSI_2025,TOTAL_AK_2025,PREDIKAT_2025,TARGET_KEBUTUHAN,STATUS_KELAYAKAN\n';
+  pakFilteredData.forEach((p, idx) => {
+    const totalAk = p.ak_total_2025 || 0;
+    const target = p.kebutuhan_naik_pangkat || p.kebutuhan_naik_jenjang || 100;
+    const isMemenuhi = totalAk >= target ? 'Memenuhi Syarat' : 'Belum Memenuhi';
+    const row = [
+      idx + 1,
+      `"${(p.nama || '').replace(/"/g, '""')}"`,
+      `"${p.nip || ''}"`,
+      `"${(p.jabatan || '').replace(/"/g, '""')}"`,
+      `"${p.pagol || ''}"`,
+      `"${p.jenjang || ''}"`,
+      (p.ak_integrasi_2022 || 0).toFixed(3),
+      (p.ak_konversi_2023 || 0).toFixed(3),
+      (p.ak_konversi_2024 || 0).toFixed(3),
+      (p.ak_konversi_2025 || 0).toFixed(3),
+      totalAk.toFixed(3),
+      `"${p.predikat_kinerja_2025 || 'Baik'}"`,
+      target.toFixed(1),
+      `"${isMemenuhi}"`
+    ];
+    csv += row.join(',') + '\n';
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'Rekap_Perhitungan_Angka_Kredit_JFT.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('success', 'Berhasil', 'File CSV Rekapitulasi Angka Kredit berhasil diunduh.');
 }
 
 /* ----------------------------------------------------------------

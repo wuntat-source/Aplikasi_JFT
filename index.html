@@ -128,6 +128,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         <span>Dashboard</span>
       </a>
+      <a href="#" class="nav-item" id="nav-perhitungan-ak" onclick="navigate('perhitungan-ak'); return false;" title="Perhitungan AK">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        <span>Perhitungan AK</span>
+      </a>
       <a href="#" class="nav-item" id="nav-daftar-jft" onclick="navigate('daftar-jft'); return false;" title="Daftar JFT">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         <span>Daftar JFT</span>
@@ -405,6 +409,260 @@
           </div>
         </div>
       </div><!-- /#page-dashboard -->
+
+      <!-- ============================================================
+           PAGE: PERHITUNGAN AK
+           ============================================================ -->
+      <div id="page-perhitungan-ak" class="page-content" style="display:none">
+        <div class="page-head">
+          <div class="page-head-left">
+            <div class="breadcrumb">
+              <span>Sistem</span>
+              <span class="breadcrumb-sep">›</span>
+              <span class="breadcrumb-current">Perhitungan AK</span>
+            </div>
+            <h1 class="page-title">Perhitungan &amp; Konversi Angka Kredit (AK)</h1>
+          </div>
+          <div class="page-head-right">
+            <button class="btn btn-primary" onclick="resetSimulasiAk()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Reset Simulasi
+            </button>
+          </div>
+        </div>
+
+        <!-- Banner Regulasi PermenPAN-RB No. 1/2023 -->
+        <div class="regulasi-banner">
+          <div class="regulasi-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="regulasi-text">
+            <strong>Dasar Regulasi: PermenPAN-RB No. 1 Tahun 2023</strong>
+            <p>Angka Kredit diperoleh dari konversi Predikat Kinerja tahunan dikalikan Koefisien Angka Kredit Tahunan per jenjang jabatan. Penetapan Kenaikan Pangkat dan Jenjang mengacu pada Angka Kredit Kumulatif Minimal.</p>
+          </div>
+        </div>
+
+        <!-- KPI Grid Perhitungan AK -->
+        <div class="kpi-grid" style="margin-bottom:14px;">
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-icon kpi-icon-teal">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </div>
+              <span class="badge badge-aktif">100% Terdata</span>
+            </div>
+            <div class="kpi-number" id="pak-kpi-total">63</div>
+            <div class="kpi-label">TOTAL JFT TERDATA</div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:4px;">BBGTK Prov. Jawa Tengah</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-icon kpi-icon-green">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <span class="badge badge-aktif">Memenuhi</span>
+            </div>
+            <div class="kpi-number" id="pak-kpi-memenuhi" style="color:var(--success);">38</div>
+            <div class="kpi-label">SIAP KENAIKAN PANGKAT/JENJANG</div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:4px;">AK Kumulatif telah mencukupi</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-icon kpi-icon-orange">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <span class="badge badge-proses">Proses Akumulasi</span>
+            </div>
+            <div class="kpi-number" id="pak-kpi-kurang" style="color:var(--warning);">25</div>
+            <div class="kpi-label">PERLU TAMBAHAN AK</div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:4px;">Menuju periode konversi 2026</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-icon kpi-icon-purple">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              </div>
+              <span class="badge badge-info">Simulasi Live</span>
+            </div>
+            <div class="kpi-number" id="pak-kpi-avg-ak">284.6</div>
+            <div class="kpi-label">RATA-RATA TOTAL AK</div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:4px;">Posisi Akhir Tahun 2025</div>
+          </div>
+        </div>
+
+        <!-- SIMULATOR CARD -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Kalkulator &amp; Simulator Konversi Angka Kredit</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Simulasi perolehan Angka Kredit Konversi tahunan berdasarkan Jenjang dan Predikat Kinerja (PermenPAN-RB 1/2023).</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="sim-grid">
+              <!-- Left: Form inputs -->
+              <div class="sim-form-col">
+                <div class="modal-field">
+                  <label class="modal-label">Pilih Pegawai (Opsional untuk Auto-Fill Data)</label>
+                  <select class="modal-select" id="sim-pegawai-select" onchange="handleSimPegawaiChange()">
+                    <option value="">-- Simulasi Mandiri (Manual) --</option>
+                  </select>
+                </div>
+
+                <div class="modal-row">
+                  <div class="modal-field">
+                    <label class="modal-label">Jenjang Jabatan Fungsional</label>
+                    <select class="modal-select" id="sim-jenjang" onchange="calcSimulasiAk()">
+                      <option value="Ahli Madya" data-koef="37.5" data-kp="150" data-kj="450">Ahli Madya (Koef: 37.5 / thn)</option>
+                      <option value="Ahli Muda" data-koef="25" data-kp="100" data-kj="200">Ahli Muda (Koef: 25.0 / thn)</option>
+                      <option value="Ahli Pertama" data-koef="12.5" data-kp="50" data-kj="100">Ahli Pertama (Koef: 12.5 / thn)</option>
+                      <option value="Ahli Utama" data-koef="50" data-kp="200" data-kj="0">Ahli Utama (Koef: 50.0 / thn)</option>
+                      <option value="Penyelia" data-koef="25" data-kp="100" data-kj="0">Keterampilan - Penyelia (Koef: 25.0 / thn)</option>
+                      <option value="Mahir" data-koef="12.5" data-kp="50" data-kj="100">Keterampilan - Mahir (Koef: 12.5 / thn)</option>
+                      <option value="Terampil" data-koef="5" data-kp="20" data-kj="60">Keterampilan - Terampil (Koef: 5.0 / thn)</option>
+                    </select>
+                  </div>
+
+                  <div class="modal-field">
+                    <label class="modal-label">Predikat Kinerja Tahunan</label>
+                    <select class="modal-select" id="sim-predikat" onchange="calcSimulasiAk()">
+                      <option value="1.5">Sangat Baik (150% Koefisien)</option>
+                      <option value="1.0" selected>Baik (100% Koefisien)</option>
+                      <option value="0.75">Cukup / Butuh Perbaikan (75% Koefisien)</option>
+                      <option value="0.5">Kurang (50% Koefisien)</option>
+                      <option value="0.25">Sangat Kurang (25% Koefisien)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="modal-row">
+                  <div class="modal-field">
+                    <label class="modal-label">Periode Penilaian (Bulan)</label>
+                    <input type="number" class="modal-input" id="sim-bulan" value="12" min="1" max="12" oninput="calcSimulasiAk()">
+                  </div>
+
+                  <div class="modal-field">
+                    <label class="modal-label">AK Kumulatif Saat Ini</label>
+                    <input type="number" step="0.001" class="modal-input" id="sim-ak-saat-ini" value="0" placeholder="0.000" oninput="calcSimulasiAk()">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Live Result Display -->
+              <div class="sim-result-col">
+                <div class="sim-result-box">
+                  <div class="sim-result-title">Hasil Simulasi Konversi</div>
+                  
+                  <div class="sim-metric-row">
+                    <div class="sim-metric-item">
+                      <div class="sim-metric-lbl">Koefisien Tahunan</div>
+                      <div class="sim-metric-val" id="res-koef">37.500</div>
+                    </div>
+                    <div class="sim-metric-item">
+                      <div class="sim-metric-lbl">Faktor Pengali Predikat</div>
+                      <div class="sim-metric-val" id="res-faktor">100%</div>
+                    </div>
+                  </div>
+
+                  <div class="sim-highlight-box">
+                    <div class="sim-hl-lbl">Perolehan Angka Kredit Konversi:</div>
+                    <div class="sim-hl-val" id="res-perolehan-ak">+37.500</div>
+                    <div class="sim-hl-sub" id="res-rumus-text">Rumus: 100% × 37.50 × (12/12) bulan</div>
+                  </div>
+
+                  <div class="sim-metric-row">
+                    <div class="sim-metric-item">
+                      <div class="sim-metric-lbl">Estimasi Total AK Baru</div>
+                      <div class="sim-metric-val" id="res-total-baru" style="color:var(--primary); font-size:17px; font-weight:700;">37.500</div>
+                    </div>
+                    <div class="sim-metric-item">
+                      <div class="sim-metric-lbl">Target Naik Pangkat / Jenjang</div>
+                      <div class="sim-metric-val" id="res-target-ak" style="font-size:13px;">150.000 / 450.000</div>
+                    </div>
+                  </div>
+
+                  <div class="sim-status-banner" id="res-status-banner">
+                    <span class="badge badge-proses" id="res-status-badge">Perlu +112.500 AK lagi</span>
+                    <span style="font-size:12px;color:var(--text-muted);" id="res-status-desc">Menuju target kenaikan pangkat</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABEL REKAPITULASI PERHITUNGAN AK SELURUH PEGAWAI -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Rekapitulasi Angka Kredit Seluruh Pegawai JFT</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Data riwayat integrasi dan konversi AK tahun 2022–2025 sesuai file rekap resmi.</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-ghost btn-sm" onclick="exportAkTableCsv()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Ekspor Data
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" class="search-input" id="search-pak" placeholder="Cari nama pegawai, NIP, jabatan..." oninput="handlePakFilter()">
+            </div>
+            <select class="select-filter" id="filter-pak-kategori" onchange="handlePakFilter()">
+              <option value="Semua">Semua Jenis JFT</option>
+              <option value="PTP">PTP</option>
+              <option value="Widyaiswara">Widyaiswara</option>
+              <option value="Pranata Komputer">Pranata Komputer</option>
+              <option value="Arsiparis">Arsiparis</option>
+              <option value="Analis SDM">Analis SDM</option>
+              <option value="Analis Keu">Analis Keuangan</option>
+              <option value="Analis Bangkom">Analis Bangkom</option>
+              <option value="Perencana">Perencana</option>
+              <option value="Statistisi">Statistisi</option>
+              <option value="Pranata Humas">Pranata Humas</option>
+              <option value="Pranata SDM">Pranata SDM</option>
+            </select>
+            <select class="select-filter" id="filter-pak-status" onchange="handlePakFilter()">
+              <option value="Semua">Status Kelayakan: Semua</option>
+              <option value="Memenuhi">Memenuhi Syarat (>= Target)</option>
+              <option value="Belum">Belum Memenuhi (< Target)</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table class="jft-table" id="table-rekap-pak">
+              <thead>
+                <tr>
+                  <th>NO</th>
+                  <th>NAMA PEGAWAI / NIP</th>
+                  <th>JABATAN &amp; GOL</th>
+                  <th>AK INTEGRASI 2022</th>
+                  <th>AK KONV 2023</th>
+                  <th>AK KONV 2024</th>
+                  <th>AK KONV 2025</th>
+                  <th>TOTAL AK 2025</th>
+                  <th>PREDIKAT</th>
+                  <th>TARGET</th>
+                  <th>STATUS</th>
+                  <th>AKSI</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-rekap-pak"></tbody>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <div class="table-info" id="info-rekap-pak">Menampilkan 1–10 dari 63 data</div>
+            <div class="pagination" id="pagination-rekap-pak"></div>
+          </div>
+        </div>
+      </div><!-- /#page-perhitungan-ak -->
 
       <!-- ============================================================
            PAGE: DAFTAR JFT

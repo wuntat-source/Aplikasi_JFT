@@ -1933,3 +1933,96 @@ table tbody tr:nth-child(even):hover td { background: #F3F4F6; }
   font-size: 13px; font-weight: 700; color: var(--text);
   border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 16px;
 }
+
+/* ================================================================
+   PERHITUNGAN AK & SIMULATOR
+   ================================================================ */
+.regulasi-banner {
+  background: rgba(26, 95, 122, 0.08);
+  border: 1px solid rgba(26, 95, 122, 0.2);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.regulasi-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.regulasi-icon svg { width: 22px; height: 22px; stroke-width: 1.8; }
+.regulasi-text strong { font-size: 13px; color: var(--text); display: block; margin-bottom: 2px; }
+.regulasi-text p { font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.4; }
+
+.sim-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .sim-grid { grid-template-columns: 1fr; }
+}
+.sim-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sim-result-box {
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sim-result-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+.sim-metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.sim-metric-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+}
+.sim-metric-lbl { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
+.sim-metric-val { font-size: 14px; font-weight: 600; color: var(--text); }
+.sim-highlight-box {
+  background: linear-gradient(135deg, rgba(26, 95, 122, 0.1), rgba(42, 127, 154, 0.05));
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  text-align: center;
+}
+.sim-hl-lbl { font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 2px; }
+.sim-hl-val { font-size: 26px; font-weight: 800; color: var(--primary); line-height: 1.2; }
+.sim-hl-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.sim-status-banner {
+  margin-top: auto;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
