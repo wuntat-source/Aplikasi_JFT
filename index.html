@@ -1322,6 +1322,16 @@
           </div>
         </div>
         <div class="laporan-grid">
+          <div class="laporan-card" style="border:1.5px solid var(--primary);background:linear-gradient(135deg, rgba(26,95,122,0.04), rgba(42,127,154,0.08));" onclick="openKonversiReportModal()">
+            <div class="laporan-card-icon" style="background:#1A5F7A;color:#FFFFFF"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+            <div>
+              <div class="laporan-card-title" style="font-size:15px;color:var(--primary);display:flex;align-items:center;gap:8px;">
+                KONVERSI PREDIKAT KINERJA
+                <span class="badge badge-aktif" style="font-size:10px;">Format Resmi BKN</span>
+              </div>
+              <div class="laporan-card-desc">Laporan resmi Penetapan Konversi Predikat Kinerja ke Angka Kredit Pegawai JFT (persis sesuai format PAK Konversi 2025).</div>
+            </div>
+          </div>
           <div class="laporan-card" onclick="showToast('info','Unduh Laporan','Memproses laporan rekapitulasi JFT...')">
             <div class="laporan-card-icon" style="background:#E0F2FE;color:var(--primary)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
             <div><div class="laporan-card-title">Rekapitulasi JFT</div><div class="laporan-card-desc">Laporan jumlah dan distribusi JFT per unit kerja dan jenis jabatan fungsional.</div></div>
@@ -1570,6 +1580,211 @@
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-edit-profil')">Batal</button>
       <button class="btn btn-primary" onclick="saveEditProfil()">Simpan Perubahan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Laporan Konversi Predikat Kinerja ke Angka Kredit (Persis Format PDF Resmi) -->
+<div id="modal-laporan-konversi" class="modal-overlay official-doc-modal" style="display:none" onclick="closeModalOutside(event,'modal-laporan-konversi')">
+  <div class="modal-panel" style="max-width:920px;">
+    <div class="modal-header">
+      <span class="modal-title" style="display:flex;align-items:center;gap:8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:20px;height:20px;color:var(--primary);"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Laporan Konversi Predikat Kinerja ke Angka Kredit
+      </span>
+      <button class="modal-close" onclick="closeModal('modal-laporan-konversi')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+
+    <!-- Parameter & Filter Controls Bar -->
+    <div class="official-doc-controls">
+      <div style="display:flex;gap:10px;align-items:center;flex:1;min-width:280px;">
+        <label style="font-size:12px;font-weight:600;white-space:nowrap;">Pilih Pegawai:</label>
+        <select class="modal-select" id="doc-pegawai-select" onchange="handleDocPegawaiChange()" style="font-size:12px;padding:6px 10px;">
+          <!-- Populated by JS -->
+        </select>
+      </div>
+
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="toggleDocSettings()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ubah Nomor &amp; TTD
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="printOfficialDoc()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          Cetak Dokumen
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Advanced Settings (Nomor, Tgl, Pejabat) -->
+    <div id="doc-advanced-settings" style="display:none;padding:12px 20px;background:#F8FAFC;border-bottom:1px solid var(--border);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:10px;">
+        <div>
+          <label style="font-size:11px;font-weight:600;">Nomor Dokumen/SK:</label>
+          <input type="text" class="modal-input" id="doc-input-nomor" value="NOMOR :           /B7.3/KP.08.00/2025" oninput="updateDocValues()" style="font-size:11px;padding:4px 8px;">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;">Periode Penilaian:</label>
+          <input type="text" class="modal-input" id="doc-input-periode" value="01-01-2025 s.d. 31-12-2025" oninput="updateDocValues()" style="font-size:11px;padding:4px 8px;">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;">Tempat &amp; Tanggal Penetapan:</label>
+          <div style="display:flex;gap:4px;">
+            <input type="text" class="modal-input" id="doc-input-tempat" value="Karanganyar" oninput="updateDocValues()" style="font-size:11px;padding:4px 8px;width:90px;">
+            <input type="text" class="modal-input" id="doc-input-tgl-penetapan" value="31 Desember 2025" oninput="updateDocValues()" style="font-size:11px;padding:4px 8px;">
+          </div>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;">Pejabat Penilai Kinerja:</label>
+          <input type="text" class="modal-input" id="doc-input-pejabat" value="Darmadi,S.Pd., M.Pd." oninput="updateDocValues()" style="font-size:11px;padding:4px 8px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Official Printable Document Page -->
+    <div class="official-doc-preview-wrap">
+      <div class="official-doc-page" id="printable-konversi-doc">
+        
+        <!-- Header Judul -->
+        <div class="doc-header-title">
+          <div>KONVERSI PREDIKAT KINERJA KE ANGKA KREDIT</div>
+          <div id="print-doc-jabatan-upper">JABATAN FUNGSIONAL PENGEMBANG TEKNOLOGI PEMBELAJARAN</div>
+          <div class="doc-nomor-wrap" id="print-doc-nomor">NOMOR : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+
+        <!-- Meta: Instansi & Periode -->
+        <table class="doc-meta-table">
+          <tr>
+            <td style="width:50%;">
+              <strong>Instansi :</strong><br>
+              <span id="print-doc-instansi">Kementerian Pendidikan Dasar dan Menengah</span>
+            </td>
+            <td style="width:50%; text-align:right;">
+              <strong>Periode :</strong><br>
+              <span id="print-doc-periode">01-01-2025 s.d. 31-12-2025</span>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Section 1: PEJABAT FUNGSIONAL YANG DINILAI -->
+        <div class="doc-section-header">
+          PEJABAT FUNGSIONAL YANG DINILAI
+        </div>
+        <table class="doc-table-identitas">
+          <tr>
+            <td class="col-num">1</td>
+            <td class="col-label">Nama</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-nama">Manikowati M.Pd.</td>
+          </tr>
+          <tr>
+            <td class="col-num">2</td>
+            <td class="col-label">NIP</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-nip">197710282002122002</td>
+          </tr>
+          <tr>
+            <td class="col-num">3</td>
+            <td class="col-label">Nomor Seri Karpeg</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-karpeg">L 202063</td>
+          </tr>
+          <tr>
+            <td class="col-num">4</td>
+            <td class="col-label">Tempat / Tanggal Lahir</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-ttl">Kudus 28-10-1977</td>
+          </tr>
+          <tr>
+            <td class="col-num">5</td>
+            <td class="col-label">Jenis Kelamin</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-jk">Wanita</td>
+          </tr>
+          <tr>
+            <td class="col-num">6</td>
+            <td class="col-label">Pangkat / Golongan Ruang / TMT</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-pangkat-tmt">Pembina  Tingkat I/IV.b /01-12-2024</td>
+          </tr>
+          <tr>
+            <td class="col-num">7</td>
+            <td class="col-label">Jabatan/TMT</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-jabatan-tmt">Pengembang Teknologi Pembelajaran Ahli Madya / 01-07-2025</td>
+          </tr>
+          <tr>
+            <td class="col-num">8</td>
+            <td class="col-label">Unit Kerja</td>
+            <td class="col-sep">:</td>
+            <td class="col-val" id="print-doc-unit-kerja">Balai Besar Guru dan Tenaga Kependidikan Provinsi Jawa Tengah</td>
+          </tr>
+        </table>
+
+        <!-- Section 2: KONVERSI PREDIKAT KINERJA KE ANGKA KREDIT -->
+        <div class="doc-section-header" style="border-top:1px solid #000;">
+          KONVERSI PREDIKAT KINERJA KE ANGKA KREDIT
+        </div>
+        <table class="doc-table-konversi">
+          <thead>
+            <tr>
+              <th colspan="2" style="width:45%;">Hasil Penilaian Kinerja</th>
+              <th rowspan="2" style="width:25%; vertical-align:middle;">Koefisien per tahun</th>
+              <th rowspan="2" style="width:30%; vertical-align:middle;">Angka kredit yang didapat<br>(kolom 2 x kolom 3)</th>
+            </tr>
+            <tr>
+              <th style="width:25%;">PREDIKAT</th>
+              <th style="width:20%;">PROSENTASE</th>
+            </tr>
+            <tr class="num-header">
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:700; padding:12px 8px;" id="print-doc-predikat">SANGAT BAIK</td>
+              <td style="font-weight:700;" id="print-doc-prosentase">150%</td>
+              <td style="font-weight:700;" id="print-doc-koefisien">37,50</td>
+              <td style="font-weight:700; font-size:13.5px;" id="print-doc-ak-didapat">56,250</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Section 3: Tanda Tangan & Tembusan -->
+        <div class="doc-footer-grid">
+          <!-- Left: Tembusan -->
+          <div class="doc-tembusan">
+            <div style="font-weight:600;">Tembusan disampaikan kepada:</div>
+            <ol>
+              <li>Kepala Biro Organisasi dan Sumber Daya Manusia</li>
+              <li>Dirjen Guru dan Tenaga Kependidikan</li>
+              <li>Pejabat Fungsional yang bersangkutan</li>
+            </ol>
+          </div>
+
+          <!-- Right: Signature -->
+          <div class="doc-signature">
+            <div>Ditetapkan di <span id="print-doc-tempat">Karanganyar</span></div>
+            <div>Pada tanggal <span id="print-doc-tgl-penetapan">31 Desember 2025</span></div>
+            <div style="margin-top:12px;">Pejabat Penilai Kinerja,</div>
+            <div class="doc-sig-space"></div>
+            <div class="doc-sig-name" id="print-doc-pejabat-ttd">Darmadi,S.Pd., M.Pd.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer Modal -->
+    <div class="modal-footer" style="padding:10px 20px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-laporan-konversi')">Tutup</button>
+      <button class="btn btn-primary" onclick="printOfficialDoc()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        Cetak / Simpan PDF
+      </button>
     </div>
   </div>
 </div>

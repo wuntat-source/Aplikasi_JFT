@@ -693,6 +693,10 @@ function renderPakTable() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
               Hitung
             </button>
+            <button class="btn btn-ghost btn-sm" title="Cetak Laporan Konversi Predikat Kinerja" onclick="openKonversiReportModal(${p.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+              Cetak
+            </button>
             <button class="btn-icon" title="Lihat Profil Pegawai" onclick="viewPegawaiDetail(${p.id})">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
             </button>
@@ -1577,3 +1581,181 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('mousedown', () => {
   document.body.classList.remove('keyboard-nav');
 });
+
+/* ----------------------------------------------------------------
+   OFFICIAL REPORT: KONVERSI PREDIKAT KINERJA KE ANGKA KREDIT
+   ---------------------------------------------------------------- */
+let currentDocPegawaiId = 20; // Default to Manikowati M.Pd. (as in sample file)
+
+function openKonversiReportModal(pegawaiId) {
+  if (typeof PEGAWAI_DATA === 'undefined' || !PEGAWAI_DATA.length) return;
+
+  populateDocPegawaiDropdown();
+
+  if (pegawaiId) {
+    currentDocPegawaiId = pegawaiId;
+  } else if (!currentDocPegawaiId) {
+    const mani = PEGAWAI_DATA.find(p => (p.nama || '').toLowerCase().includes('manikowati'));
+    currentDocPegawaiId = mani ? mani.id : PEGAWAI_DATA[0].id;
+  }
+
+  const sel = document.getElementById('doc-pegawai-select');
+  if (sel) sel.value = currentDocPegawaiId;
+
+  handleDocPegawaiChange();
+  openModal('modal-laporan-konversi');
+}
+
+function populateDocPegawaiDropdown() {
+  const sel = document.getElementById('doc-pegawai-select');
+  if (!sel || sel.options.length > 0) return;
+
+  PEGAWAI_DATA.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = `${p.no}. ${p.nama} (${p.jabatan})`;
+    sel.appendChild(opt);
+  });
+}
+
+function handleDocPegawaiChange() {
+  const sel = document.getElementById('doc-pegawai-select');
+  if (!sel) return;
+
+  const pId = parseInt(sel.value, 10) || currentDocPegawaiId || 1;
+  currentDocPegawaiId = pId;
+
+  const p = PEGAWAI_DATA.find(item => item.id === pId);
+  if (!p) return;
+
+  renderOfficialKonversiDoc(p);
+}
+
+function renderOfficialKonversiDoc(p) {
+  if (!p) return;
+
+  // 1. Header Jabatan
+  const elJabUpper = document.getElementById('print-doc-jabatan-upper');
+  if (elJabUpper) {
+    const jabStr = (p.jabatan || 'Pengembang Teknologi Pembelajaran').toUpperCase();
+    elJabUpper.textContent = `JABATAN FUNGSIONAL ${jabStr}`;
+  }
+
+  // 2. Identitas 8 Butir
+  const elNama = document.getElementById('print-doc-nama');
+  const elNip = document.getElementById('print-doc-nip');
+  const elKarpeg = document.getElementById('print-doc-karpeg');
+  const elTtl = document.getElementById('print-doc-ttl');
+  const elJk = document.getElementById('print-doc-jk');
+  const elPangkatTmt = document.getElementById('print-doc-pangkat-tmt');
+  const elJabatanTmt = document.getElementById('print-doc-jabatan-tmt');
+  const elUnitKerja = document.getElementById('print-doc-unit-kerja');
+
+  if (elNama) elNama.textContent = p.nama || '-';
+  if (elNip) elNip.textContent = p.nip || '-';
+  if (elKarpeg) {
+    if (p.id === 20) elKarpeg.textContent = 'L 202063';
+    else if (p.nip && p.nip !== '-') elKarpeg.textContent = `L ${p.nip.substring(8, 14)}`;
+    else elKarpeg.textContent = '-';
+  }
+
+  if (elTtl) {
+    const tgl = p.tgl_lahir ? p.tgl_lahir.split('-').reverse().join('-') : '-';
+    elTtl.textContent = `${p.tempat_lahir || '-'} ${tgl}`;
+  }
+
+  if (elJk) {
+    elJk.textContent = (p.jk_code === 'F' || p.jenis_kelamin === 'Perempuan') ? 'Wanita' : 'Pria';
+  }
+
+  if (elPangkatTmt) {
+    const tmtPangkat = p.tmt ? p.tmt.split('-').reverse().join('-') : '-';
+    elPangkatTmt.textContent = `${p.pangkat_golongan || '-'} / ${tmtPangkat}`;
+  }
+
+  if (elJabatanTmt) {
+    const tmtJab = p.tmt ? p.tmt.split('-').reverse().join('-') : '-';
+    elJabatanTmt.textContent = `${p.jabatan || '-'} / ${tmtJab}`;
+  }
+
+  if (elUnitKerja) {
+    elUnitKerja.textContent = 'Balai Besar Guru dan Tenaga Kependidikan Provinsi Jawa Tengah';
+  }
+
+  // 3. Section Konversi Table
+  const jenjang = (p.jenjang || '').toLowerCase();
+  let koef = 37.5;
+  if (jenjang.includes('utama')) koef = 50.0;
+  else if (jenjang.includes('madya')) koef = 37.5;
+  else if (jenjang.includes('muda') || jenjang.includes('penyelia')) koef = 25.0;
+  else if (jenjang.includes('pertama') || jenjang.includes('mahir')) koef = 12.5;
+  else if (jenjang.includes('terampil')) koef = 5.0;
+
+  const pred = (p.predikat_kinerja_2025 || 'Sangat Baik').toUpperCase();
+  let pct = 150;
+  let multiplier = 1.5;
+  let predikatLabel = 'SANGAT BAIK';
+
+  if (pred.includes('SANGAT')) {
+    pct = 150;
+    multiplier = 1.5;
+    predikatLabel = 'SANGAT BAIK';
+  } else if (pred.includes('BAIK')) {
+    pct = 100;
+    multiplier = 1.0;
+    predikatLabel = 'BAIK';
+  } else if (pred.includes('CUKUP') || pred.includes('PERBAIKAN')) {
+    pct = 75;
+    multiplier = 0.75;
+    predikatLabel = 'CUKUP';
+  } else if (pred.includes('KURANG')) {
+    pct = 50;
+    multiplier = 0.5;
+    predikatLabel = 'KURANG';
+  }
+
+  const akDidapat = (p.ak_konversi_2025 && p.ak_konversi_2025 > 0) ? p.ak_konversi_2025 : (koef * multiplier);
+
+  const elPred = document.getElementById('print-doc-predikat');
+  const elPct = document.getElementById('print-doc-prosentase');
+  const elKoef = document.getElementById('print-doc-koefisien');
+  const elAk = document.getElementById('print-doc-ak-didapat');
+
+  if (elPred) elPred.textContent = predikatLabel;
+  if (elPct) elPct.textContent = `${pct}%`;
+  if (elKoef) elKoef.textContent = koef.toFixed(2).replace('.', ',');
+  if (elAk) elAk.textContent = akDidapat.toFixed(3).replace('.', ',');
+
+  updateDocValues();
+}
+
+function updateDocValues() {
+  const inNomor = document.getElementById('doc-input-nomor')?.value || 'NOMOR :           /B7.3/KP.08.00/2025';
+  const inPeriode = document.getElementById('doc-input-periode')?.value || '01-01-2025 s.d. 31-12-2025';
+  const inTempat = document.getElementById('doc-input-tempat')?.value || 'Karanganyar';
+  const inTgl = document.getElementById('doc-input-tgl-penetapan')?.value || '31 Desember 2025';
+  const inPejabat = document.getElementById('doc-input-pejabat')?.value || 'Darmadi,S.Pd., M.Pd.';
+
+  const elNomor = document.getElementById('print-doc-nomor');
+  const elPeriode = document.getElementById('print-doc-periode');
+  const elTempat = document.getElementById('print-doc-tempat');
+  const elTgl = document.getElementById('print-doc-tgl-penetapan');
+  const elPejabat = document.getElementById('print-doc-pejabat-ttd');
+
+  if (elNomor) elNomor.textContent = inNomor;
+  if (elPeriode) elPeriode.textContent = inPeriode;
+  if (elTempat) elTempat.textContent = inTempat;
+  if (elTgl) elTgl.textContent = inTgl;
+  if (elPejabat) elPejabat.textContent = inPejabat;
+}
+
+function toggleDocSettings() {
+  const el = document.getElementById('doc-advanced-settings');
+  if (el) {
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+  }
+}
+
+function printOfficialDoc() {
+  window.print();
+}
