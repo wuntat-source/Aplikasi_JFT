@@ -1167,6 +1167,7 @@ function renderDetailIndividu(id) {
 
   setTxt('dt-nama', p.nama);
   setTxt('dt-nip', p.nip);
+  setTxt('dt-karpeg', p.karpeg || (p.nip && p.nip !== '-' ? (`L ${p.nip.substring(8, 14)}`) : '-'));
   setTxt('dt-nik', p.nik);
   setTxt('dt-ttl', `${p.tempat_lahir}, ${p.tgl_lahir_indo}`);
   setTxt('dt-jk', p.jenis_kelamin);
@@ -1359,6 +1360,7 @@ function openEditProfilModal() {
 
   setVal('edit-nama', p.nama);
   setVal('edit-nip', p.nip);
+  setVal('edit-karpeg', p.karpeg || (p.nip && p.nip !== '-' ? (`L ${p.nip.substring(8, 14)}`) : ''));
   setVal('edit-gol', p.pagol || 'IV/c');
   setVal('edit-jabatan', p.jabatan);
   setVal('edit-satker', p.satker || 'Balai Besar GTK Provinsi Jawa Tengah, Kemendikdasmen');
@@ -1390,6 +1392,7 @@ function saveEditProfil() {
   }
 
   p.nama = newNama;
+  p.karpeg = getVal('edit-karpeg') || p.karpeg || '-';
   p.pagol = getVal('edit-gol') || p.pagol;
 
   const golMap = {
@@ -1702,7 +1705,8 @@ function renderOfficialDoc(p) {
   if (elNama) elNama.textContent = p.nama || '-';
   if (elNip) elNip.textContent = p.nip || '-';
   if (elKarpeg) {
-    if (p.id === 20) elKarpeg.textContent = 'L 202063';
+    if (p.karpeg && p.karpeg !== '-') elKarpeg.textContent = p.karpeg;
+    else if (p.id === 20) elKarpeg.textContent = 'L 202063';
     else if (p.nip && p.nip !== '-') elKarpeg.textContent = `L ${p.nip.substring(8, 14)}`;
     else elKarpeg.textContent = '-';
   }

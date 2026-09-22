@@ -48,7 +48,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 450.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199403"
   },
   {
     "id": 2,
@@ -95,7 +96,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 450.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "-"
   },
   {
     "id": 3,
@@ -142,7 +144,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 450.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199303"
   },
   {
     "id": 4,
@@ -189,7 +192,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 450.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199703"
   },
   {
     "id": 5,
@@ -236,7 +240,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 450.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199802"
   },
   {
     "id": 6,
@@ -283,7 +288,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 300.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199802"
   },
   {
     "id": 7,
@@ -330,7 +336,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 450.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199003"
   },
   {
     "id": 8,
@@ -377,7 +384,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 300.0,
-    "usul_kp": "2026-04-01 00:00:00"
+    "usul_kp": "2026-04-01 00:00:00",
+    "karpeg": "L 200212"
   },
   {
     "id": 9,
@@ -424,7 +432,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 460.0,
     "kebutuhan_naik_pangkat": 300.0,
-    "usul_kp": "01 Oktober 2026"
+    "usul_kp": "01 Oktober 2026",
+    "karpeg": "L 200501"
   },
   {
     "id": 10,
@@ -471,7 +480,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 150.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199702"
   },
   {
     "id": 11,
@@ -518,7 +528,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 200.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200501"
   },
   {
     "id": 12,
@@ -565,7 +576,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200012"
   },
   {
     "id": 13,
@@ -612,7 +624,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200912"
   },
   {
     "id": 14,
@@ -659,7 +672,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 15,
@@ -706,7 +720,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200212"
   },
   {
     "id": 16,
@@ -753,7 +768,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200801"
   },
   {
     "id": 17,
@@ -800,7 +816,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 199802"
   },
   {
     "id": 18,
@@ -847,7 +864,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201504"
   },
   {
     "id": 19,
@@ -894,7 +912,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200903"
   },
   {
     "id": 20,
@@ -941,7 +960,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 300.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 202063"
   },
   {
     "id": 21,
@@ -988,7 +1008,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 300.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200312"
   },
   {
     "id": 22,
@@ -1035,7 +1056,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 150.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200112"
   },
   {
     "id": 23,
@@ -1082,7 +1104,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200312"
   },
   {
     "id": 24,
@@ -1129,7 +1152,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 450.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200212"
   },
   {
     "id": 25,
@@ -1176,7 +1200,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200212"
   },
   {
     "id": 26,
@@ -1223,7 +1248,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200112"
   },
   {
     "id": 27,
@@ -1270,7 +1296,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200501"
   },
   {
     "id": 28,
@@ -1317,7 +1344,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200501"
   },
   {
     "id": 29,
@@ -1364,7 +1392,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200212"
   },
   {
     "id": 30,
@@ -1411,7 +1440,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200112"
   },
   {
     "id": 31,
@@ -1458,7 +1488,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200812"
   },
   {
     "id": 32,
@@ -1505,7 +1536,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200212"
   },
   {
     "id": 33,
@@ -1552,7 +1584,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200501"
   },
   {
     "id": 34,
@@ -1599,7 +1632,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200801"
   },
   {
     "id": 35,
@@ -1646,7 +1680,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200112"
   },
   {
     "id": 36,
@@ -1693,7 +1728,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 200.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200912"
   },
   {
     "id": 37,
@@ -1740,7 +1776,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 38,
@@ -1787,7 +1824,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201504"
   },
   {
     "id": 39,
@@ -1834,7 +1872,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 40,
@@ -1881,7 +1920,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201404"
   },
   {
     "id": 41,
@@ -1928,7 +1968,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200604"
   },
   {
     "id": 42,
@@ -1975,7 +2016,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201504"
   },
   {
     "id": 43,
@@ -2022,7 +2064,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 44,
@@ -2069,7 +2112,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201902"
   },
   {
     "id": 45,
@@ -2116,7 +2160,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201902"
   },
   {
     "id": 46,
@@ -2163,7 +2208,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201902"
   },
   {
     "id": 47,
@@ -2210,7 +2256,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201902"
   },
   {
     "id": 48,
@@ -2257,7 +2304,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200912"
   },
   {
     "id": 49,
@@ -2304,7 +2352,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200801"
   },
   {
     "id": 50,
@@ -2351,7 +2400,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201801"
   },
   {
     "id": 51,
@@ -2398,7 +2448,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201504"
   },
   {
     "id": 52,
@@ -2445,7 +2496,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 40.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 202012"
   },
   {
     "id": 53,
@@ -2492,7 +2544,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 54,
@@ -2539,7 +2592,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200912"
   },
   {
     "id": 55,
@@ -2586,7 +2640,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201001"
   },
   {
     "id": 56,
@@ -2633,7 +2688,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 57,
@@ -2680,7 +2736,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 100.0,
     "kebutuhan_naik_pangkat": 100.0,
-    "usul_kp": "Oktober 2026"
+    "usul_kp": "Oktober 2026",
+    "karpeg": "L 201504"
   },
   {
     "id": 58,
@@ -2727,7 +2784,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 202012"
   },
   {
     "id": 59,
@@ -2774,7 +2832,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 60,
@@ -2821,7 +2880,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 61,
@@ -2868,7 +2928,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 201012"
   },
   {
     "id": 62,
@@ -2915,7 +2976,8 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200604"
   },
   {
     "id": 63,
@@ -2962,6 +3024,7 @@ const PEGAWAI_DATA = [
     "predikat_kinerja_2025": "Sangat Baik",
     "kebutuhan_naik_jenjang": 0.0,
     "kebutuhan_naik_pangkat": 0.0,
-    "usul_kp": "-"
+    "usul_kp": "-",
+    "karpeg": "L 200912"
   }
 ];
