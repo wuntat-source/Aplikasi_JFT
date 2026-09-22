@@ -522,16 +522,36 @@ function calcSimulasiAk() {
   if (elTarget) elTarget.textContent = targetKj > 0 ? `${targetKp.toFixed(1)} (KP) / ${targetKj.toFixed(1)} (KJ)` : `${targetKp.toFixed(1)} (KP)`;
 
   if (elBadge && elDesc) {
-    const primaryTarget = targetKj > 0 ? targetKj : targetKp;
-    if (totalAkBaru >= primaryTarget) {
-      elBadge.className = 'badge badge-aktif';
-      elBadge.textContent = 'Memenuhi Syarat Kenaikan ✓';
-      elDesc.textContent = `Surplus +${(totalAkBaru - primaryTarget).toFixed(3)} AK di atas target (${primaryTarget})`;
+    const memenuhiKp = totalAkBaru >= targetKp;
+    const memenuhiKj = targetKj > 0 && totalAkBaru >= targetKj;
+
+    if (targetKj > 0) {
+      if (memenuhiKj) {
+        elBadge.className = 'badge badge-aktif';
+        elBadge.textContent = 'Memenuhi Syarat Kenaikan Jenjang & Pangkat ✓';
+        elDesc.textContent = `Total AK ${totalAkBaru.toFixed(3)} melampaui target Jenjang (${targetKj.toFixed(1)}) & Pangkat (${targetKp.toFixed(1)})`;
+      } else if (memenuhiKp) {
+        elBadge.className = 'badge badge-info';
+        elBadge.textContent = 'Memenuhi Syarat Kenaikan Pangkat ✓';
+        const kurangKj = (targetKj - totalAkBaru).toFixed(3);
+        elDesc.textContent = `Memenuhi KP (${targetKp.toFixed(1)}), butuh +${kurangKj} AK lagi menuju Kenaikan Jenjang (${targetKj.toFixed(1)})`;
+      } else {
+        const kurangKp = (targetKp - totalAkBaru).toFixed(3);
+        elBadge.className = 'badge badge-proses';
+        elBadge.textContent = `Belum Memenuhi Syarat`;
+        elDesc.textContent = `Butuh +${kurangKp} AK lagi menuju Kenaikan Pangkat (${targetKp.toFixed(1)})`;
+      }
     } else {
-      const def = (primaryTarget - totalAkBaru).toFixed(3);
-      elBadge.className = 'badge badge-proses';
-      elBadge.textContent = `Perlu +${def} AK lagi`;
-      elDesc.textContent = `Menuju target kumulatif ${primaryTarget.toFixed(1)}`;
+      if (memenuhiKp) {
+        elBadge.className = 'badge badge-aktif';
+        elBadge.textContent = 'Memenuhi Syarat Kenaikan Pangkat ✓';
+        elDesc.textContent = `Surplus +${(totalAkBaru - targetKp).toFixed(3)} AK di atas target Kenaikan Pangkat (${targetKp.toFixed(1)})`;
+      } else {
+        const kurangKp = (targetKp - totalAkBaru).toFixed(3);
+        elBadge.className = 'badge badge-proses';
+        elBadge.textContent = `Perlu +${kurangKp} AK lagi`;
+        elDesc.textContent = `Menuju target Kenaikan Pangkat (${targetKp.toFixed(1)})`;
+      }
     }
   }
 }

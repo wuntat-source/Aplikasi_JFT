@@ -493,6 +493,106 @@
           </div>
         </div>
 
+        <!-- TABEL DASAR PERHITUNGAN (SESUAI GAMBAR ACUAN) -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Tabel Acuan Dasar Perhitungan Angka Kredit (PermenPAN-RB No. 1/2023)</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Matriks standar koefisien tahunan, kebutuhan kenaikan pangkat, dan kenaikan jenjang.</div>
+            </div>
+            <span class="badge badge-aktif">Regulasi Resmi</span>
+          </div>
+          <div class="table-wrap">
+            <table class="jft-table" style="font-size:12.5px;">
+              <thead>
+                <tr style="background:var(--bg-app);">
+                  <th style="font-weight:700;">Kategori</th>
+                  <th style="font-weight:700;">Jenjang</th>
+                  <th style="font-weight:700;">Pangkat / Golongan</th>
+                  <th style="text-align:center;font-weight:700;">Koefisien Angka Kredit Tahunan</th>
+                  <th style="text-align:center;font-weight:700;">AK Kumulatif untuk Kenaikan Pangkat</th>
+                  <th style="text-align:center;font-weight:700;">AK Kumulatif Minimal untuk Kenaikan Jenjang*</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Keahlian -->
+                <tr>
+                  <td rowspan="4" style="vertical-align:middle;font-weight:700;background:var(--surface);border-right:1px solid var(--border);">Keahlian</td>
+                  <td style="font-weight:600;color:var(--primary);">Ahli Utama</td>
+                  <td>IV/d - IV/e</td>
+                  <td style="text-align:center;font-weight:700;color:var(--text);">50</td>
+                  <td style="text-align:center;font-weight:600;">200</td>
+                  <td style="text-align:center;color:var(--text-muted);">-</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600;color:var(--primary);">Ahli Madya</td>
+                  <td>IV/a - IV/b - IV/c</td>
+                  <td style="text-align:center;font-weight:700;color:var(--text);">37,5</td>
+                  <td style="text-align:center;font-weight:600;">150</td>
+                  <td style="text-align:center;font-weight:700;color:var(--accent);">450</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600;color:var(--primary);">Ahli Muda</td>
+                  <td>III/c - III/d</td>
+                  <td style="text-align:center;font-weight:700;color:var(--text);">25</td>
+                  <td style="text-align:center;font-weight:600;">100</td>
+                  <td style="text-align:center;font-weight:700;color:var(--accent);">200</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600;color:var(--primary);">Ahli Pertama</td>
+                  <td>III/a - III/b</td>
+                  <td style="text-align:center;font-weight:700;color:var(--text);">12,5</td>
+                  <td style="text-align:center;font-weight:600;">50</td>
+                  <td style="text-align:center;font-weight:700;color:var(--accent);">100</td>
+                </tr>
+
+                <!-- Keterampilan -->
+                <tr style="border-top:2px solid var(--border);">
+                  <td rowspan="3" style="vertical-align:middle;font-weight:700;background:var(--surface);border-right:1px solid var(--border);">Keterampilan</td>
+                  <td style="font-weight:600;color:#059669;">Penyelia</td>
+                  <td>III/c - III/d</td>
+                  <td style="text-align:center;font-weight:700;color:var(--text);">25</td>
+                  <td style="text-align:center;font-weight:600;">100</td>
+                  <td style="text-align:center;color:var(--text-muted);">-</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600;color:#059669;">Mahir</td>
+                  <td>III/a - III/b</td>
+                  <td style="text-align:center;font-weight:700;color:var(--text);">12,5</td>
+                  <td style="text-align:center;font-weight:600;">50</td>
+                  <td style="text-align:center;font-weight:700;color:var(--accent);">100</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:600;color:#059669;">Terampil</td>
+                  <td>II/b - II/c - II/d</td>
+                  <td style="text-align:center;font-weight:700;color:var(--text);">5</td>
+                  <td style="text-align:center;font-weight:600;">20</td>
+                  <td style="text-align:center;font-weight:700;color:var(--accent);">60</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Predikat Kinerja Section -->
+          <div style="padding:14px 18px;background:var(--bg-app);border-top:1px solid var(--border);border-bottom-left-radius:var(--radius-md);border-bottom-right-radius:var(--radius-md);">
+            <div style="font-weight:700;font-size:13px;color:var(--text);margin-bottom:8px;">Pedoman Konversi Predikat Kinerja:</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:10px;">
+              <div style="background:var(--surface);padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-aktif" style="font-size:11px;">Sangat Baik</span>
+                <span style="font-size:12px;color:var(--text);font-weight:600;">150% × Koefisien Tahunan</span>
+              </div>
+              <div style="background:var(--surface);padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-info" style="font-size:11px;">Baik</span>
+                <span style="font-size:12px;color:var(--text);font-weight:600;">100% × Koefisien Tahunan</span>
+              </div>
+              <div style="background:var(--surface);padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-proses" style="font-size:11px;">Cukup</span>
+                <span style="font-size:12px;color:var(--text);font-weight:600;">75% × Koefisien Tahunan</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- SIMULATOR CARD -->
         <div class="card" style="margin-bottom:14px;">
           <div class="card-header">
