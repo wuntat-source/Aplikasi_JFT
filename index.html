@@ -1597,21 +1597,37 @@
 
     <!-- Parameter & Filter Controls Bar -->
     <div class="official-doc-controls">
-      <div style="display:flex;gap:10px;align-items:center;flex:1;min-width:280px;">
-        <label style="font-size:12px;font-weight:600;white-space:nowrap;">Pilih Pegawai:</label>
+      <div style="display:flex;gap:8px;align-items:center;flex:1;min-width:240px;">
+        <label style="font-size:12px;font-weight:600;white-space:nowrap;">Pegawai:</label>
         <select class="modal-select" id="doc-pegawai-select" onchange="handleDocPegawaiChange()" style="font-size:12px;padding:6px 10px;">
           <!-- Populated by JS -->
         </select>
       </div>
 
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-ghost btn-sm" onclick="toggleDocSettings()">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <label style="font-size:12px;font-weight:600;white-space:nowrap;color:var(--primary);display:flex;align-items:center;gap:4px;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Periode:
+        </label>
+        <select class="modal-select" id="doc-periode-preset" onchange="handlePeriodePresetChange()" style="font-size:12px;padding:6px 10px;width:150px;">
+          <option value="01-01-2025 s.d. 31-12-2025" selected>Tahun 2025</option>
+          <option value="01-01-2026 s.d. 31-12-2026">Tahun 2026</option>
+          <option value="01-01-2024 s.d. 31-12-2024">Tahun 2024</option>
+          <option value="01-01-2025 s.d. 30-06-2025">Semester I 2025</option>
+          <option value="01-07-2025 s.d. 31-12-2025">Semester II 2025</option>
+          <option value="custom">-- Kustom / Edit --</option>
+        </select>
+        <input type="text" class="modal-input" id="doc-input-periode" value="01-01-2025 s.d. 31-12-2025" oninput="updateDocValues()" placeholder="01-01-2025 s.d. 31-12-2025" style="font-size:12px;padding:6px 10px;width:190px;" title="Ketik manual untuk mengubah teks periode">
+      </div>
+
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-ghost btn-sm" onclick="toggleDocSettings()" title="Ubah Nomor SK, Tempat & Pejabat Penilai">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-          Ubah Nomor &amp; TTD
+          Pengaturan Lain
         </button>
         <button class="btn btn-primary btn-sm" onclick="printOfficialDoc()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-          Cetak Dokumen
+          Cetak
         </button>
       </div>
     </div>
@@ -1622,10 +1638,6 @@
         <div>
           <label style="font-size:11px;font-weight:600;">Nomor Dokumen/SK:</label>
           <input type="text" class="modal-input" id="doc-input-nomor" value="NOMOR :           /B7.3/KP.08.00/2025" oninput="updateDocValues()" style="font-size:11px;padding:4px 8px;">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;">Periode Penilaian:</label>
-          <input type="text" class="modal-input" id="doc-input-periode" value="01-01-2025 s.d. 31-12-2025" oninput="updateDocValues()" style="font-size:11px;padding:4px 8px;">
         </div>
         <div>
           <label style="font-size:11px;font-weight:600;">Tempat &amp; Tanggal Penetapan:</label>
@@ -1661,7 +1673,7 @@
             </td>
             <td style="width:50%; text-align:right;">
               <strong>Periode :</strong><br>
-              <span id="print-doc-periode">01-01-2025 s.d. 31-12-2025</span>
+              <span id="print-doc-periode" class="editable-doc-field" contenteditable="true" oninput="syncPeriodeFromDoc(this)" title="Klik langsung untuk mengedit teks periode">01-01-2025 s.d. 31-12-2025</span>
             </td>
           </tr>
         </table>

@@ -2205,6 +2205,25 @@ table tbody tr:nth-child(even):hover td { background: #F3F4F6; }
   text-decoration: underline;
 }
 
+/* Editable doc inline fields */
+.editable-doc-field {
+  display: inline-block;
+  min-width: 80px;
+  padding: 0 4px;
+  border-radius: 4px;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+  cursor: text;
+}
+.editable-doc-field:hover {
+  background: rgba(59, 130, 246, 0.08);
+  outline: 1px dashed #3B82F6;
+}
+.editable-doc-field:focus {
+  background: #FFFFFF;
+  outline: 2px solid #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
 /* Print Styling */
 @media print {
   body * {
@@ -2224,5 +2243,12 @@ table tbody tr:nth-child(even):hover td { background: #F3F4F6; }
     padding: 15mm 20mm !important;
     box-shadow: none !important;
     border: none !important;
+  }
+  .editable-doc-field {
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
   }
 }

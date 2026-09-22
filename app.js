@@ -1729,6 +1729,38 @@ function renderOfficialKonversiDoc(p) {
   updateDocValues();
 }
 
+function handlePeriodePresetChange() {
+  const preset = document.getElementById('doc-periode-preset');
+  const input = document.getElementById('doc-input-periode');
+  if (!preset || !input) return;
+
+  if (preset.value !== 'custom') {
+    input.value = preset.value;
+  }
+  updateDocValues();
+}
+
+function syncPeriodeFromDoc(el) {
+  const text = el.innerText || el.textContent;
+  const input = document.getElementById('doc-input-periode');
+  const preset = document.getElementById('doc-periode-preset');
+  
+  if (input) input.value = text.trim();
+  if (preset) {
+    let matched = false;
+    for (let opt of preset.options) {
+      if (opt.value === text.trim()) {
+        preset.value = opt.value;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      preset.value = 'custom';
+    }
+  }
+}
+
 function updateDocValues() {
   const inNomor = document.getElementById('doc-input-nomor')?.value || 'NOMOR :           /B7.3/KP.08.00/2025';
   const inPeriode = document.getElementById('doc-input-periode')?.value || '01-01-2025 s.d. 31-12-2025';
@@ -1743,10 +1775,28 @@ function updateDocValues() {
   const elPejabat = document.getElementById('print-doc-pejabat-ttd');
 
   if (elNomor) elNomor.textContent = inNomor;
-  if (elPeriode) elPeriode.textContent = inPeriode;
+  if (elPeriode && document.activeElement !== elPeriode) {
+    elPeriode.textContent = inPeriode;
+  }
   if (elTempat) elTempat.textContent = inTempat;
   if (elTgl) elTgl.textContent = inTgl;
   if (elPejabat) elPejabat.textContent = inPejabat;
+
+  // Sync preset dropdown when typing directly into input
+  const preset = document.getElementById('doc-periode-preset');
+  if (preset && document.activeElement === document.getElementById('doc-input-periode')) {
+    let matched = false;
+    for (let opt of preset.options) {
+      if (opt.value === inPeriode) {
+        preset.value = opt.value;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      preset.value = 'custom';
+    }
+  }
 }
 
 function toggleDocSettings() {
