@@ -1,0 +1,9 @@
+# Ignore raw source data and confidential files
+*.xlsx
+*.pdf
+antigravity_backup_chat/
+.system_generated/
+*.log
+
+# Keep project logos and UI assets
+!logo-*.png

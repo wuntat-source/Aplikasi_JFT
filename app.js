@@ -1592,7 +1592,7 @@ document.addEventListener('mousedown', () => {
 /* ----------------------------------------------------------------
    OFFICIAL REPORTS: AKUMULASI ANGKA KREDIT & KONVERSI PREDIKAT
    ---------------------------------------------------------------- */
-let currentDocPegawaiId = 20; // Default to Manikowati M.Pd. (as in sample file)
+let currentDocPegawaiId = 20; // Default to Pegawai ID 20 (Astuti Subekti, M.Pd.)
 let currentDocType = 'akumulasi'; // 'akumulasi' or 'konversi'
 
 function openAkumulasiReportModal(pegawaiId) {
@@ -1613,8 +1613,7 @@ function openOfficialDocModal(pegawaiId) {
   if (pegawaiId) {
     currentDocPegawaiId = pegawaiId;
   } else if (!currentDocPegawaiId) {
-    const mani = PEGAWAI_DATA.find(p => (p.nama || '').toLowerCase().includes('manikowati'));
-    currentDocPegawaiId = mani ? mani.id : PEGAWAI_DATA[0].id;
+    currentDocPegawaiId = PEGAWAI_DATA[19] ? PEGAWAI_DATA[19].id : PEGAWAI_DATA[0].id;
   }
 
   const selType = document.getElementById('doc-type-select');
