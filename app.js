@@ -690,12 +690,16 @@ function renderPakTable() {
         <td>
           <div style="display:flex;gap:4px;">
             <button class="btn btn-ghost btn-sm" title="Simulasi Perolehan AK" onclick="loadPegawaiIntoSimulasi(${p.id})">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
               Hitung
             </button>
+            <button class="btn btn-ghost btn-sm" title="Cetak Laporan Akumulasi Angka Kredit" onclick="openAkumulasiReportModal(${p.id})" style="color:#0284c7;font-weight:600;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Akumulasi AK
+            </button>
             <button class="btn btn-ghost btn-sm" title="Cetak Laporan Konversi Predikat Kinerja" onclick="openKonversiReportModal(${p.id})">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-              Cetak
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+              Konversi
             </button>
             <button class="btn-icon" title="Lihat Profil Pegawai" onclick="viewPegawaiDetail(${p.id})">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -1583,11 +1587,22 @@ document.addEventListener('mousedown', () => {
 });
 
 /* ----------------------------------------------------------------
-   OFFICIAL REPORT: KONVERSI PREDIKAT KINERJA KE ANGKA KREDIT
+   OFFICIAL REPORTS: AKUMULASI ANGKA KREDIT & KONVERSI PREDIKAT
    ---------------------------------------------------------------- */
 let currentDocPegawaiId = 20; // Default to Manikowati M.Pd. (as in sample file)
+let currentDocType = 'akumulasi'; // 'akumulasi' or 'konversi'
+
+function openAkumulasiReportModal(pegawaiId) {
+  currentDocType = 'akumulasi';
+  openOfficialDocModal(pegawaiId);
+}
 
 function openKonversiReportModal(pegawaiId) {
+  currentDocType = 'konversi';
+  openOfficialDocModal(pegawaiId);
+}
+
+function openOfficialDocModal(pegawaiId) {
   if (typeof PEGAWAI_DATA === 'undefined' || !PEGAWAI_DATA.length) return;
 
   populateDocPegawaiDropdown();
@@ -1599,11 +1614,44 @@ function openKonversiReportModal(pegawaiId) {
     currentDocPegawaiId = mani ? mani.id : PEGAWAI_DATA[0].id;
   }
 
+  const selType = document.getElementById('doc-type-select');
+  if (selType) selType.value = currentDocType;
+
   const sel = document.getElementById('doc-pegawai-select');
   if (sel) sel.value = currentDocPegawaiId;
 
-  handleDocPegawaiChange();
+  handleDocTypeChange();
   openModal('modal-laporan-konversi');
+}
+
+function handleDocTypeChange() {
+  const selType = document.getElementById('doc-type-select');
+  if (selType) currentDocType = selType.value;
+
+  const titleEl = document.getElementById('modal-doc-title');
+  const mainTitleEl = document.getElementById('print-doc-main-title');
+  const sec1TitleEl = document.getElementById('print-doc-sec1-title');
+  const periodeLabelEl = document.getElementById('print-doc-periode-label');
+  const viewAkumulasi = document.getElementById('doc-view-akumulasi');
+  const viewKonversi = document.getElementById('doc-view-konversi');
+
+  if (currentDocType === 'akumulasi') {
+    if (titleEl) titleEl.textContent = 'Laporan Akumulasi Angka Kredit';
+    if (mainTitleEl) mainTitleEl.textContent = 'AKUMULASI ANGKA KREDIT';
+    if (sec1TitleEl) sec1TitleEl.textContent = 'KETERANGAN PERORANGAN';
+    if (periodeLabelEl) periodeLabelEl.textContent = 'Masa Penilaian:';
+    if (viewAkumulasi) viewAkumulasi.style.display = 'block';
+    if (viewKonversi) viewKonversi.style.display = 'none';
+  } else {
+    if (titleEl) titleEl.textContent = 'Laporan Konversi Predikat Kinerja ke Angka Kredit';
+    if (mainTitleEl) mainTitleEl.textContent = 'KONVERSI PREDIKAT KINERJA KE ANGKA KREDIT';
+    if (sec1TitleEl) sec1TitleEl.textContent = 'PEJABAT FUNGSIONAL YANG DINILAI';
+    if (periodeLabelEl) periodeLabelEl.textContent = 'Periode :';
+    if (viewAkumulasi) viewAkumulasi.style.display = 'none';
+    if (viewKonversi) viewKonversi.style.display = 'block';
+  }
+
+  handleDocPegawaiChange();
 }
 
 function populateDocPegawaiDropdown() {
@@ -1628,10 +1676,10 @@ function handleDocPegawaiChange() {
   const p = PEGAWAI_DATA.find(item => item.id === pId);
   if (!p) return;
 
-  renderOfficialKonversiDoc(p);
+  renderOfficialDoc(p);
 }
 
-function renderOfficialKonversiDoc(p) {
+function renderOfficialDoc(p) {
   if (!p) return;
 
   // 1. Header Jabatan
@@ -1670,7 +1718,7 @@ function renderOfficialKonversiDoc(p) {
 
   if (elPangkatTmt) {
     const tmtPangkat = p.tmt ? p.tmt.split('-').reverse().join('-') : '-';
-    elPangkatTmt.textContent = `${p.pangkat_golongan || '-'} / ${tmtPangkat}`;
+    elPangkatTmt.textContent = `${p.pangkat_golongan || '-'} /${tmtPangkat}`;
   }
 
   if (elJabatanTmt) {
@@ -1682,7 +1730,7 @@ function renderOfficialKonversiDoc(p) {
     elUnitKerja.textContent = 'Balai Besar Guru dan Tenaga Kependidikan Provinsi Jawa Tengah';
   }
 
-  // 3. Section Konversi Table
+  // 3. Section Perhitungan Nilai (PermenPAN-RB No. 1/2023)
   const jenjang = (p.jenjang || '').toLowerCase();
   let koef = 37.5;
   if (jenjang.includes('utama')) koef = 50.0;
@@ -1715,7 +1763,31 @@ function renderOfficialKonversiDoc(p) {
   }
 
   const akDidapat = (p.ak_konversi_2025 && p.ak_konversi_2025 > 0) ? p.ak_konversi_2025 : (koef * multiplier);
+  const akLama = (p.ak_konversi_2024 && p.ak_konversi_2024 > 0) ? p.ak_konversi_2024 : (p.ak_integrasi_2022 || 0);
+  const akTotal = (p.ak_total_2025 && p.ak_total_2025 > 0) ? p.ak_total_2025 : (akLama + akDidapat);
 
+  // Template A: Akumulasi Table fields
+  const elThLama = document.getElementById('print-ak-th-lama');
+  const elValLama = document.getElementById('print-ak-val-lama');
+  const elThBaru = document.getElementById('print-ak-th-baru');
+  const elPeriodikBaru = document.getElementById('print-ak-periodik-baru');
+  const elPredBaru = document.getElementById('print-ak-pred-baru');
+  const elPersenBaru = document.getElementById('print-ak-persen-baru');
+  const elKoefBaru = document.getElementById('print-ak-koef-baru');
+  const elValBaru = document.getElementById('print-ak-val-baru');
+  const elValTotal = document.getElementById('print-ak-val-total');
+
+  if (elThLama) elThLama.textContent = '2024';
+  if (elValLama) elValLama.textContent = akLama.toFixed(3).replace('.', ',');
+  if (elThBaru) elThBaru.textContent = '2025';
+  if (elPeriodikBaru) elPeriodikBaru.textContent = 'JANUARI-DESEMBER';
+  if (elPredBaru) elPredBaru.textContent = predikatLabel;
+  if (elPersenBaru) elPersenBaru.textContent = `${pct}%`;
+  if (elKoefBaru) elKoefBaru.textContent = koef.toFixed(2).replace('.', ',');
+  if (elValBaru) elValBaru.textContent = akDidapat.toFixed(3).replace('.', ',');
+  if (elValTotal) elValTotal.textContent = akTotal.toFixed(3).replace('.', ',');
+
+  // Template B: Konversi Table fields
   const elPred = document.getElementById('print-doc-predikat');
   const elPct = document.getElementById('print-doc-prosentase');
   const elKoef = document.getElementById('print-doc-koefisien');
