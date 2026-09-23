@@ -2527,9 +2527,12 @@ function renderPetaJabatan() {
           <td class="duk-cell-selisih ${selisihColorClass}">
             ${sVal}
           </td>
-          <td style="text-align:center;">
-            <button class="btn-icon" title="Hapus Formasi" onclick="deletePetaJabatanRow(${item.id})" style="width:24px;height:24px;">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#EF4444;width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          <td style="text-align:center;white-space:nowrap;">
+            <button class="btn-icon" title="Edit Formasi" onclick="openEditPetaJabatanModal(${item.id})" style="width:24px;height:24px;color:var(--primary);margin-right:2px;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            </button>
+            <button class="btn-icon" title="Hapus Formasi" onclick="deletePetaJabatanRow(${item.id})" style="width:24px;height:24px;color:#EF4444;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
           </td>
         </tr>
@@ -2631,6 +2634,71 @@ function handleAddPetaJabatanSubmit() {
   showToast('success', 'Berhasil', `Formasi "${nama}" berhasil ditambahkan.`);
 }
 
+function openEditPetaJabatanModal(id) {
+  const data = getPetaJabatanData();
+  const item = data.find(x => x.id === id);
+  if (!item) {
+    showToast('error', 'Gagal', 'Data formasi tidak ditemukan.');
+    return;
+  }
+
+  const inpId = document.getElementById('edit-peta-id');
+  const inpNama = document.getElementById('edit-peta-nama');
+  const inpKet = document.getElementById('edit-peta-keterangan');
+  const inpKelas = document.getElementById('edit-peta-kelas');
+  const inpB = document.getElementById('edit-peta-b');
+  const inpK = document.getElementById('edit-peta-k');
+
+  if (inpId) inpId.value = item.id;
+  if (inpNama) inpNama.value = item.nama_jabatan || '';
+  if (inpKet) inpKet.value = item.keterangan || 'Jabatan Fungsional (JF)';
+  if (inpKelas) inpKelas.value = String(item.kelas_jabatan || 10);
+  if (inpB) inpB.value = parseInt(item.b, 10) || 0;
+  if (inpK) inpK.value = parseInt(item.k, 10) || 0;
+
+  openModal('modal-edit-peta-jabatan');
+}
+
+function handleEditPetaJabatanSubmit() {
+  const inpId = document.getElementById('edit-peta-id');
+  const inpNama = document.getElementById('edit-peta-nama');
+  const inpKet = document.getElementById('edit-peta-keterangan');
+  const inpKelas = document.getElementById('edit-peta-kelas');
+  const inpB = document.getElementById('edit-peta-b');
+  const inpK = document.getElementById('edit-peta-k');
+
+  const id = inpId ? parseInt(inpId.value, 10) : null;
+  const nama = inpNama ? inpNama.value.trim() : '';
+  const keterangan = inpKet ? inpKet.value : 'Jabatan Fungsional (JF)';
+  const kelas = inpKelas ? parseInt(inpKelas.value, 10) : 10;
+  const b = inpB ? Math.max(0, parseInt(inpB.value, 10) || 0) : 0;
+  const k = inpK ? Math.max(0, parseInt(inpK.value, 10) || 0) : 0;
+
+  if (!nama) {
+    showToast('error', 'Gagal', 'Nama jabatan tidak boleh kosong.');
+    return;
+  }
+
+  const data = getPetaJabatanData();
+  const target = data.find(x => x.id === id);
+  if (!target) {
+    showToast('error', 'Gagal', 'Formasi tidak ditemukan.');
+    return;
+  }
+
+  target.nama_jabatan = nama;
+  target.keterangan = keterangan;
+  target.kelas_jabatan = kelas;
+  target.b = b;
+  target.k = k;
+  target.selisih = b - k;
+
+  savePetaJabatanData(data);
+  closeModal('modal-edit-peta-jabatan');
+  renderPetaJabatan();
+  showToast('success', 'Tersimpan', `Formasi "${nama}" berhasil diperbarui.`);
+}
+
 function exportPetaJabatanCsv() {
   const data = getPetaJabatanData();
   if (!data || data.length === 0) {
@@ -2659,5 +2727,6 @@ function exportPetaJabatanCsv() {
   URL.revokeObjectURL(url);
   showToast('success', 'Berhasil Ekspor', 'File CSV Peta Jabatan berhasil diunduh.');
 }
+
 
 
