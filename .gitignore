@@ -7,3 +7,6 @@ antigravity_backup_chat/
 
 # Keep project logos and UI assets
 !logo-*.png
+
+.vercel
+.env*

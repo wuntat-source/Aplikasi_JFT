@@ -164,14 +164,34 @@
     </div>
   </aside>
 
+  <!-- SIDEBAR BACKDROP FOR MOBILE -->
+  <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
   <!-- MAIN WRAPPER -->
   <div class="main-wrap">
 
     <!-- HEADER -->
     <header class="app-header">
-      <div class="header-title">Sistem Informasi JFT</div>
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="btn-mobile-sidebar" onclick="toggleMobileSidebar()" title="Buka Menu" aria-label="Buka Menu Navigasi">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <div class="header-title">Sistem Informasi JFT</div>
+      </div>
+
+      <!-- Spotlight Quick Search Trigger -->
+      <div class="header-search-trigger" onclick="openGlobalSearch()" role="button" tabindex="0" title="Pencarian Cepat (Ctrl+K)">
+        <svg class="header-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <span class="header-search-text">Cari pegawai, modul, atau dokumen...</span>
+        <span class="spotlight-kbd">Ctrl K</span>
+      </div>
+
       <div class="header-right">
-        <button class="icon-btn" id="btn-theme-toggle" title="Ubah Tema" onclick="toggleTheme()">
+        <button class="icon-btn" id="btn-theme-toggle" title="Ubah Tema (Dark/Light)" onclick="toggleTheme()">
           <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:none"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
           <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
         </button>
@@ -184,7 +204,7 @@
         <div class="user-info" onclick="navigate('pengaturan')">
           <div class="user-text">
             <div class="user-name">Admin Pusat</div>
-            <div class="user-org">Kemendikbudristek</div>
+            <div class="user-org">Kemendikdasmen</div>
           </div>
           <div class="user-avatar">
             <div class="avatar-fallback">AP</div>
@@ -1968,6 +1988,48 @@
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-tambah-usulan')">Batal</button>
       <button class="btn btn-primary" onclick="saveModal('modal-tambah-usulan','success','Berhasil','Usulan berhasil dibuat dan menunggu verifikasi.')">Ajukan Usulan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     GLOBAL SPOTLIGHT SEARCH MODAL (Ctrl + K / /)
+     ================================================================ -->
+<div id="modal-global-search" class="spotlight-overlay" style="display:none;" onclick="handleSpotlightBackdropClick(event)">
+  <div class="spotlight-dialog" role="dialog" aria-modal="true" aria-label="Pencarian Global">
+    <div class="spotlight-search-bar">
+      <svg class="spotlight-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <input type="text" id="spotlight-search-input" class="spotlight-input" placeholder="Ketik nama pegawai, NIP, jabatan, atau modul..." autocomplete="off" oninput="handleSpotlightInput(event)" onkeydown="handleSpotlightKeydown(event)">
+      <button type="button" class="spotlight-close-btn" onclick="closeGlobalSearch()" title="Tutup Pencarian">
+        <span class="spotlight-kbd">ESC</span>
+      </button>
+    </div>
+
+    <!-- Quick Filter Tabs inside Spotlight -->
+    <div class="spotlight-filters">
+      <button class="spotlight-filter-btn active" data-filter="all" onclick="setSpotlightFilter('all')">Semua</button>
+      <button class="spotlight-filter-btn" data-filter="pegawai" onclick="setSpotlightFilter('pegawai')">Pegawai (63)</button>
+      <button class="spotlight-filter-btn" data-filter="menu" onclick="setSpotlightFilter('menu')">Menu &amp; Modul</button>
+      <button class="spotlight-filter-btn" data-filter="laporan" onclick="setSpotlightFilter('laporan')">Dokumen BKN</button>
+    </div>
+
+    <!-- Results List -->
+    <div class="spotlight-results" id="spotlight-results-container">
+      <!-- Dynamic Search Results will render here -->
+    </div>
+
+    <!-- Keyboard Navigation Footer -->
+    <div class="spotlight-footer">
+      <div class="spotlight-footer-shortcuts">
+        <span class="spotlight-hint"><span class="spotlight-kbd-sm">↑</span><span class="spotlight-kbd-sm">↓</span> Navigasi</span>
+        <span class="spotlight-hint"><span class="spotlight-kbd-sm">↵</span> Buka</span>
+        <span class="spotlight-hint"><span class="spotlight-kbd-sm">ESC</span> Tutup</span>
+      </div>
+      <div class="spotlight-footer-meta">
+        <span>Sistem Informasi JFT • Kemendikdasmen</span>
+      </div>
     </div>
   </div>
 </div>
