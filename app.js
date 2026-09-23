@@ -2596,12 +2596,14 @@ function deletePetaJabatanRow(id) {
 
 function handleAddPetaJabatanSubmit() {
   const inpNama = document.getElementById('inp-peta-nama');
+  const inpRumpun = document.getElementById('inp-peta-rumpun');
   const inpKet = document.getElementById('inp-peta-keterangan');
   const inpKelas = document.getElementById('inp-peta-kelas');
   const inpB = document.getElementById('inp-peta-b');
   const inpK = document.getElementById('inp-peta-k');
 
   const nama = inpNama ? inpNama.value.trim() : '';
+  const rumpun = inpRumpun ? inpRumpun.value.trim() : '';
   const keterangan = inpKet ? inpKet.value : 'Jabatan Fungsional (JF)';
   const kelas = inpKelas ? parseInt(inpKelas.value, 10) : 10;
   const b = inpB ? Math.max(0, parseInt(inpB.value, 10) || 0) : 0;
@@ -2620,6 +2622,7 @@ function handleAddPetaJabatanSubmit() {
     id: nextId,
     no: nextNo,
     nama_jabatan: nama,
+    rumpun: rumpun,
     keterangan: keterangan,
     kelas_jabatan: kelas,
     b: b,
@@ -2630,6 +2633,7 @@ function handleAddPetaJabatanSubmit() {
   savePetaJabatanData(data);
   closeModal('modal-tambah-peta-jabatan');
   if (inpNama) inpNama.value = '';
+  if (inpRumpun) inpRumpun.value = '';
   renderPetaJabatan();
   showToast('success', 'Berhasil', `Formasi "${nama}" berhasil ditambahkan.`);
 }
@@ -2644,6 +2648,7 @@ function openEditPetaJabatanModal(id) {
 
   const inpId = document.getElementById('edit-peta-id');
   const inpNama = document.getElementById('edit-peta-nama');
+  const inpRumpun = document.getElementById('edit-peta-rumpun');
   const inpKet = document.getElementById('edit-peta-keterangan');
   const inpKelas = document.getElementById('edit-peta-kelas');
   const inpB = document.getElementById('edit-peta-b');
@@ -2651,6 +2656,7 @@ function openEditPetaJabatanModal(id) {
 
   if (inpId) inpId.value = item.id;
   if (inpNama) inpNama.value = item.nama_jabatan || '';
+  if (inpRumpun) inpRumpun.value = (item.rumpun && item.rumpun !== 'Pimpinan' && item.rumpun !== 'Pelaksana') ? item.rumpun : (item.rumpun || '');
   if (inpKet) inpKet.value = item.keterangan || 'Jabatan Fungsional (JF)';
   if (inpKelas) inpKelas.value = String(item.kelas_jabatan || 10);
   if (inpB) inpB.value = parseInt(item.b, 10) || 0;
@@ -2662,6 +2668,7 @@ function openEditPetaJabatanModal(id) {
 function handleEditPetaJabatanSubmit() {
   const inpId = document.getElementById('edit-peta-id');
   const inpNama = document.getElementById('edit-peta-nama');
+  const inpRumpun = document.getElementById('edit-peta-rumpun');
   const inpKet = document.getElementById('edit-peta-keterangan');
   const inpKelas = document.getElementById('edit-peta-kelas');
   const inpB = document.getElementById('edit-peta-b');
@@ -2669,6 +2676,7 @@ function handleEditPetaJabatanSubmit() {
 
   const id = inpId ? parseInt(inpId.value, 10) : null;
   const nama = inpNama ? inpNama.value.trim() : '';
+  const rumpun = inpRumpun ? inpRumpun.value.trim() : '';
   const keterangan = inpKet ? inpKet.value : 'Jabatan Fungsional (JF)';
   const kelas = inpKelas ? parseInt(inpKelas.value, 10) : 10;
   const b = inpB ? Math.max(0, parseInt(inpB.value, 10) || 0) : 0;
@@ -2687,6 +2695,7 @@ function handleEditPetaJabatanSubmit() {
   }
 
   target.nama_jabatan = nama;
+  target.rumpun = rumpun;
   target.keterangan = keterangan;
   target.kelas_jabatan = kelas;
   target.b = b;
