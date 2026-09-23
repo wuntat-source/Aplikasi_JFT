@@ -2244,7 +2244,7 @@ function getPetaJabatanData() {
     const raw = localStorage.getItem(PETA_JABATAN_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed) && parsed.length >= 40) {
         return parsed;
       }
     }
@@ -2252,9 +2252,11 @@ function getPetaJabatanData() {
     console.warn('Failed to read peta jabatan data from localStorage:', err);
   }
 
-  // Default from data.js
-  if (typeof PETA_JABATAN_DATA !== 'undefined' && Array.isArray(PETA_JABATAN_DATA)) {
-    return JSON.parse(JSON.stringify(PETA_JABATAN_DATA));
+  // Fallback to PETA_JABATAN_DATA from data.js
+  if (typeof PETA_JABATAN_DATA !== 'undefined' && Array.isArray(PETA_JABATAN_DATA) && PETA_JABATAN_DATA.length > 0) {
+    const copy = JSON.parse(JSON.stringify(PETA_JABATAN_DATA));
+    savePetaJabatanData(copy);
+    return copy;
   }
   return [];
 }
@@ -2267,31 +2269,9 @@ function savePetaJabatanData(data) {
   }
 }
 
-function switchPetaView(viewType) {
-  const btnTable = document.getElementById('tab-btn-peta-table');
-  const btnSplit = document.getElementById('tab-btn-peta-split');
-  const btnPdf = document.getElementById('tab-btn-peta-pdf');
-  
-  const viewTable = document.getElementById('peta-view-table');
-  const viewSplit = document.getElementById('peta-view-split');
-  const viewPdf = document.getElementById('peta-view-pdf');
-  const filterBox = document.getElementById('peta-filter-container');
-
-  if (btnTable) btnTable.classList.toggle('active', viewType === 'table');
-  if (btnSplit) btnSplit.classList.toggle('active', viewType === 'split');
-  if (btnPdf) btnPdf.classList.toggle('active', viewType === 'pdf');
-
-  if (viewTable) viewTable.style.display = (viewType === 'table') ? 'block' : 'none';
-  if (viewSplit) viewSplit.style.display = (viewType === 'split') ? 'block' : 'none';
-  if (viewPdf) viewPdf.style.display = (viewType === 'pdf') ? 'block' : 'none';
-  if (filterBox) filterBox.style.display = (viewType === 'pdf') ? 'none' : 'flex';
-
-  renderPetaJabatan();
-}
-
 function renderPetaJabatan() {
   const tbodyMain = document.getElementById('tbody-peta-jabatan');
-  const tbodySplit = document.getElementById('tbody-peta-jabatan-split');
+  if (!tbodyMain) return;
 
   const data = getPetaJabatanData();
   const search = (document.getElementById('search-peta-jabatan')?.value || '').trim().toLowerCase();
@@ -2395,100 +2375,63 @@ function renderPetaJabatan() {
   }
 
   // Generate HTML for Authentic Main Table
-  if (tbodyMain) {
-    if (filtered.length === 0) {
-      tbodyMain.innerHTML = `
+  if (filtered.length === 0) {
+    tbodyMain.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center;padding:36px 16px;color:var(--text-muted);">
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Tidak ada formasi jabatan yang sesuai dengan filter</div>
+          <div style="font-size:12px;color:var(--text-light);">Coba ubah kata kunci pencarian atau opsi filter di atas.</div>
+        </td>
+      </tr>
+    `;
+  } else {
+    tbodyMain.innerHTML = filtered.map((item, index) => {
+      const bVal = parseInt(item.b, 10) || 0;
+      const kVal = parseInt(item.k, 10) || 0;
+      const sVal = bVal - kVal;
+
+      // Color coding matching authentic document
+      let selisihColorClass = 'duk-selisih-zero';
+      if (sVal < 0) selisihColorClass = 'duk-selisih-minus';
+      else if (sVal > 0) selisihColorClass = 'duk-selisih-plus';
+
+      return `
         <tr>
-          <td colspan="8" style="text-align:center;padding:36px 16px;color:var(--text-muted);">
-            <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Tidak ada formasi jabatan yang sesuai dengan filter</div>
-            <div style="font-size:12px;color:var(--text-light);">Coba ubah kata kunci pencarian atau opsi filter di atas.</div>
+          <td style="text-align:center;font-weight:600;color:var(--text);">${item.no || (index + 1)}</td>
+          <td>
+            <div style="font-weight:600;color:var(--text);">${escapeHtml(item.nama_jabatan)}</div>
+          </td>
+          <td style="color:var(--text-muted);font-size:11.5px;">
+            ${escapeHtml(item.keterangan)}
+          </td>
+          <td style="text-align:center;font-weight:700;">
+            ${item.kelas_jabatan || '-'}
+          </td>
+          <td style="text-align:center;">
+            <div class="duk-stepper">
+              <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'b', -1)" title="Kurangi">-</button>
+              <input type="number" class="duk-input-num" value="${bVal}" min="0" onchange="changePetaValue(${item.id}, 'b', this.value)">
+              <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'b', 1)" title="Tambah">+</button>
+            </div>
+          </td>
+          <td style="text-align:center;">
+            <div class="duk-stepper">
+              <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'k', -1)" title="Kurangi">-</button>
+              <input type="number" class="duk-input-num" value="${kVal}" min="0" onchange="changePetaValue(${item.id}, 'k', this.value)">
+              <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'k', 1)" title="Tambah">+</button>
+            </div>
+          </td>
+          <td class="duk-cell-selisih ${selisihColorClass}">
+            ${sVal}
+          </td>
+          <td style="text-align:center;">
+            <button class="btn-icon" title="Hapus Formasi" onclick="deletePetaJabatanRow(${item.id})" style="width:24px;height:24px;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#EF4444;width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
           </td>
         </tr>
       `;
-    } else {
-      tbodyMain.innerHTML = filtered.map((item, index) => {
-        const bVal = parseInt(item.b, 10) || 0;
-        const kVal = parseInt(item.k, 10) || 0;
-        const sVal = bVal - kVal;
-
-        // Color coding matching authentic document
-        let selisihColorClass = 'duk-selisih-zero';
-        if (sVal < 0) selisihColorClass = 'duk-selisih-minus';
-        else if (sVal > 0) selisihColorClass = 'duk-selisih-plus';
-
-        return `
-          <tr>
-            <td style="text-align:center;font-weight:600;color:var(--text);">${item.no || (index + 1)}</td>
-            <td>
-              <div style="font-weight:600;color:var(--text);">${escapeHtml(item.nama_jabatan)}</div>
-            </td>
-            <td style="color:var(--text-muted);font-size:11.5px;">
-              ${escapeHtml(item.keterangan)}
-            </td>
-            <td style="text-align:center;font-weight:700;">
-              ${item.kelas_jabatan || '-'}
-            </td>
-            <td style="text-align:center;">
-              <div class="duk-stepper">
-                <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'b', -1)" title="Kurangi">-</button>
-                <input type="number" class="duk-input-num" value="${bVal}" min="0" onchange="changePetaValue(${item.id}, 'b', this.value)">
-                <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'b', 1)" title="Tambah">+</button>
-              </div>
-            </td>
-            <td style="text-align:center;">
-              <div class="duk-stepper">
-                <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'k', -1)" title="Kurangi">-</button>
-                <input type="number" class="duk-input-num" value="${kVal}" min="0" onchange="changePetaValue(${item.id}, 'k', this.value)">
-                <button type="button" class="duk-step-btn" onclick="stepPetaValue(${item.id}, 'k', 1)" title="Tambah">+</button>
-              </div>
-            </td>
-            <td class="duk-cell-selisih ${selisihColorClass}">
-              ${sVal}
-            </td>
-            <td style="text-align:center;">
-              <button class="btn-icon" title="Hapus Formasi" onclick="deletePetaJabatanRow(${item.id})" style="width:24px;height:24px;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#EF4444;width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-  }
-
-  // Generate HTML for Split View Table
-  if (tbodySplit) {
-    if (filtered.length === 0) {
-      tbodySplit.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:16px;">Tidak ada data</td></tr>`;
-    } else {
-      tbodySplit.innerHTML = filtered.map((item, index) => {
-        const bVal = parseInt(item.b, 10) || 0;
-        const kVal = parseInt(item.k, 10) || 0;
-        const sVal = bVal - kVal;
-
-        let selisihColorClass = 'duk-selisih-zero';
-        if (sVal < 0) selisihColorClass = 'duk-selisih-minus';
-        else if (sVal > 0) selisihColorClass = 'duk-selisih-plus';
-
-        return `
-          <tr>
-            <td style="text-align:center;font-weight:600;">${item.no || (index + 1)}</td>
-            <td style="font-weight:600;font-size:11.5px;">${escapeHtml(item.nama_jabatan)}</td>
-            <td style="font-size:10.5px;color:var(--text-muted);">${escapeHtml(item.keterangan)}</td>
-            <td style="text-align:center;font-size:11px;">${item.kelas_jabatan || '-'}</td>
-            <td style="text-align:center;">
-              <input type="number" class="duk-input-num" value="${bVal}" min="0" onchange="changePetaValue(${item.id}, 'b', this.value)" style="width:28px;height:20px;font-size:11px;">
-            </td>
-            <td style="text-align:center;">
-              <input type="number" class="duk-input-num" value="${kVal}" min="0" onchange="changePetaValue(${item.id}, 'k', this.value)" style="width:28px;height:20px;font-size:11px;">
-            </td>
-            <td class="duk-cell-selisih ${selisihColorClass}" style="font-size:11px;padding:2px 4px !important;">
-              ${sVal}
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
+    }).join('');
   }
 }
 
