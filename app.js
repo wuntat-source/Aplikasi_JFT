@@ -2247,63 +2247,96 @@ function executeSpotlightItem(item) {
 /* ================================================================
    PETA JABATAN INTERACTIVE ENGINE (B, K, +/-)
    ================================================================ */
-const PETA_JABATAN_STORAGE_KEY = 'peta_jabatan_official_duk_v2';
+/* ================================================================
+   PETA JABATAN INTERACTIVE ENGINE (B, K, +/-)
+   Dikelompokkan Berdasarkan Rumpun Jabatan & Jenjang
+   ================================================================ */
+const PETA_JABATAN_STORAGE_KEY = 'peta_jabatan_grouped_duk_v3';
 
 const DEFAULT_PETA_JABATAN_DATA = [
-  { "id": 1, "no": 1, "nama_jabatan": "Kepala", "keterangan": "JPT Pratama", "kelas_jabatan": 15, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 2, "no": 2, "nama_jabatan": "Kepala Bagian Umum", "keterangan": "Administrator", "kelas_jabatan": 12, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 3, "no": 3, "nama_jabatan": "Analis Pengelolaan Keuangan APBN Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 10, "b": 1, "k": 3, "selisih": -2 },
-  { "id": 4, "no": 4, "nama_jabatan": "Analis SDM Aparatur Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 10, "b": 0, "k": 2, "selisih": -2 },
-  { "id": 5, "no": 5, "nama_jabatan": "Perencana Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 10, "b": 0, "k": 2, "selisih": -2 },
-  { "id": 6, "no": 6, "nama_jabatan": "Pranata Keuangan APBN Penyelia", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 9, "b": 0, "k": 3, "selisih": -3 },
-  { "id": 7, "no": 7, "nama_jabatan": "Arsiparis Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 9, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 8, "no": 8, "nama_jabatan": "Pustakawan Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 9, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 9, "no": 9, "nama_jabatan": "Pranata Komputer Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 9, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 10, "no": 10, "nama_jabatan": "Perencana Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 2, "k": 3, "selisih": -1 },
-  { "id": 11, "no": 11, "nama_jabatan": "Pranata Komputer Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 3, "selisih": -2 },
-  { "id": 12, "no": 12, "nama_jabatan": "Pustakawan Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 0, "k": 2, "selisih": -2 },
-  { "id": 13, "no": 13, "nama_jabatan": "Analis SDM Aparatur Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 2, "selisih": -1 },
-  { "id": 14, "no": 14, "nama_jabatan": "Arsiparis Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 2, "selisih": -1 },
-  { "id": 15, "no": 15, "nama_jabatan": "Pranata Hubungan Masyarakat Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 16, "no": 16, "nama_jabatan": "Pranata Komputer Penyelia", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 17, "no": 17, "nama_jabatan": "Arsiparis Penyelia", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 0, "k": 2, "selisih": -2 },
-  { "id": 18, "no": 18, "nama_jabatan": "Pranata SDM Aparatur Penyelia", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 19, "no": 19, "nama_jabatan": "Analis Pengelolaan Keuangan APBN Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 20, "no": 20, "nama_jabatan": "Pranata SDM Aparatur Mahir", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 7, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 21, "no": 21, "nama_jabatan": "Arsiparis Mahir", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 7, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 22, "no": 22, "nama_jabatan": "Pranata Komputer Mahir", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 7, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 23, "no": 23, "nama_jabatan": "Penata Laksana Barang Terampil", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 7, "b": 0, "k": 2, "selisih": -2 },
-  { "id": 24, "no": 24, "nama_jabatan": "Penata Layanan Operasional #20", "keterangan": "Pelaksana", "kelas_jabatan": 7, "b": 15, "k": 15, "selisih": 0 },
-  { "id": 25, "no": 25, "nama_jabatan": "Penata Kelola Sistem dan Teknologi Informasi", "keterangan": "Pelaksana", "kelas_jabatan": 7, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 26, "no": 26, "nama_jabatan": "Penelaah Teknis Kebijakan", "keterangan": "Pelaksana", "kelas_jabatan": 7, "b": 18, "k": 25, "selisih": -7 },
-  { "id": 27, "no": 27, "nama_jabatan": "Pranata Hubungan Masyarakat Terampil", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 6, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 28, "no": 28, "nama_jabatan": "Asisten Perpustakaan Terampil", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 6, "b": 0, "k": 2, "selisih": -2 },
-  { "id": 29, "no": 29, "nama_jabatan": "Pranata Komputer Terampil", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 6, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 30, "no": 30, "nama_jabatan": "Pranata SDM Aparatur Terampil", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 6, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 31, "no": 31, "nama_jabatan": "Arsiparis Terampil", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 6, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 32, "no": 32, "nama_jabatan": "Pengelola Layanan Operasional", "keterangan": "Pelaksana", "kelas_jabatan": 6, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 33, "no": 33, "nama_jabatan": "Pengolah Data dan Informasi", "keterangan": "Pelaksana", "kelas_jabatan": 6, "b": 17, "k": 22, "selisih": -5 },
-  { "id": 34, "no": 34, "nama_jabatan": "Pengadministrasi Perkantoran", "keterangan": "Pelaksana", "kelas_jabatan": 5, "b": 4, "k": 8, "selisih": -4 },
-  { "id": 35, "no": 35, "nama_jabatan": "Operator Layanan Operasional #20", "keterangan": "Pelaksana", "kelas_jabatan": 5, "b": 8, "k": 8, "selisih": 0 },
-  { "id": 36, "no": 36, "nama_jabatan": "Operator Layanan Operasional", "keterangan": "Pelaksana", "kelas_jabatan": 5, "b": 1, "k": 4, "selisih": -3 },
-  { "id": 37, "no": 37, "nama_jabatan": "Operator Laboratorium", "keterangan": "Pelaksana", "kelas_jabatan": 5, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 38, "no": 38, "nama_jabatan": "Pengembang Teknologi Pembelajaran Ahli Madya", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 12, "b": 6, "k": 12, "selisih": -6 },
-  { "id": 39, "no": 39, "nama_jabatan": "Widyaiswara Ahli Madya", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 12, "b": 9, "k": 12, "selisih": -3 },
-  { "id": 40, "no": 40, "nama_jabatan": "Widyaiswara Ahli Madya #5", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 12, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 41, "no": 41, "nama_jabatan": "Arsiparis Ahli Madya", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 11, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 42, "no": 42, "nama_jabatan": "Pengembang Teknologi Pembelajaran Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 10, "b": 15, "k": 15, "selisih": 0 },
-  { "id": 43, "no": 43, "nama_jabatan": "Widyaiswara Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 10, "b": 4, "k": 9, "selisih": -5 },
-  { "id": 44, "no": 44, "nama_jabatan": "Widyaiswara Ahli Muda #5", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 10, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 45, "no": 45, "nama_jabatan": "Statistisi Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 10, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 46, "no": 46, "nama_jabatan": "Pranata Laboratorium Pendidikan Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 9, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 47, "no": 47, "nama_jabatan": "Statistisi Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 2, "selisih": -1 },
-  { "id": 48, "no": 48, "nama_jabatan": "Widyaiswara Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 5, "k": 16, "selisih": -11 },
-  { "id": 49, "no": 49, "nama_jabatan": "Pranata Laboratorium Pendidikan Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 50, "no": 50, "nama_jabatan": "Pengembang Teknologi Pembelajaran Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 6, "k": 20, "selisih": -14 },
-  { "id": 51, "no": 51, "nama_jabatan": "Pranata Laboratorium Pendidikan Penyelia", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 52, "no": 52, "nama_jabatan": "Analis Pengembangan Kompetensi Ahli Pertama #27", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
-  { "id": 53, "no": 53, "nama_jabatan": "Pranata Laboratorium Pendidikan Mahir", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 7, "b": 0, "k": 1, "selisih": -1 },
-  { "id": 54, "no": 54, "nama_jabatan": "Pranata Laboratorium Pendidikan Terampil", "keterangan": "Jabatan Fungsional (JF)", "kelas_jabatan": 6, "b": 1, "k": 2, "selisih": -1 }
+  // 1 & 2: Pimpinan Struktural
+  { "id": 1, "no": 1, "nama_jabatan": "Kepala", "keterangan": "JPT Pratama", "rumpun": "Pimpinan", "kelas_jabatan": 15, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 2, "no": 2, "nama_jabatan": "Kepala Bagian Umum", "keterangan": "Administrator", "rumpun": "Pimpinan", "kelas_jabatan": 12, "b": 1, "k": 1, "selisih": 0 },
+
+  // Widyaiswara (Pertama -> Muda -> Madya)
+  { "id": 3, "no": 3, "nama_jabatan": "Widyaiswara Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Widyaiswara", "kelas_jabatan": 8, "b": 5, "k": 16, "selisih": -11 },
+  { "id": 4, "no": 4, "nama_jabatan": "Widyaiswara Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Widyaiswara", "kelas_jabatan": 10, "b": 4, "k": 9, "selisih": -5 },
+  { "id": 5, "no": 5, "nama_jabatan": "Widyaiswara Ahli Muda #5", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Widyaiswara", "kelas_jabatan": 10, "b": 0, "k": 1, "selisih": -1 },
+  { "id": 6, "no": 6, "nama_jabatan": "Widyaiswara Ahli Madya", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Widyaiswara", "kelas_jabatan": 12, "b": 9, "k": 12, "selisih": -3 },
+  { "id": 7, "no": 7, "nama_jabatan": "Widyaiswara Ahli Madya #5", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Widyaiswara", "kelas_jabatan": 12, "b": 0, "k": 1, "selisih": -1 },
+
+  // Pengembang Teknologi Pembelajaran / PTP (Pertama -> Muda -> Madya)
+  { "id": 8, "no": 8, "nama_jabatan": "Pengembang Teknologi Pembelajaran Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pengembang Teknologi Pembelajaran", "kelas_jabatan": 8, "b": 6, "k": 20, "selisih": -14 },
+  { "id": 9, "no": 9, "nama_jabatan": "Pengembang Teknologi Pembelajaran Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pengembang Teknologi Pembelajaran", "kelas_jabatan": 10, "b": 15, "k": 15, "selisih": 0 },
+  { "id": 10, "no": 10, "nama_jabatan": "Pengembang Teknologi Pembelajaran Ahli Madya", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pengembang Teknologi Pembelajaran", "kelas_jabatan": 12, "b": 6, "k": 12, "selisih": -6 },
+
+  // Arsiparis (Terampil -> Mahir -> Penyelia -> Pertama -> Muda -> Madya)
+  { "id": 11, "no": 11, "nama_jabatan": "Arsiparis Terampil", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Arsiparis", "kelas_jabatan": 6, "b": 0, "k": 1, "selisih": -1 },
+  { "id": 12, "no": 12, "nama_jabatan": "Arsiparis Mahir", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Arsiparis", "kelas_jabatan": 7, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 13, "no": 13, "nama_jabatan": "Arsiparis Penyelia", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Arsiparis", "kelas_jabatan": 8, "b": 0, "k": 2, "selisih": -2 },
+  { "id": 14, "no": 14, "nama_jabatan": "Arsiparis Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Arsiparis", "kelas_jabatan": 8, "b": 1, "k": 2, "selisih": -1 },
+  { "id": 15, "no": 15, "nama_jabatan": "Arsiparis Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Arsiparis", "kelas_jabatan": 9, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 16, "no": 16, "nama_jabatan": "Arsiparis Ahli Madya", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Arsiparis", "kelas_jabatan": 11, "b": 0, "k": 1, "selisih": -1 },
+
+  // Pranata Komputer (Terampil -> Mahir -> Penyelia -> Pertama -> Muda)
+  { "id": 17, "no": 17, "nama_jabatan": "Pranata Komputer Terampil", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Komputer", "kelas_jabatan": 6, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 18, "no": 18, "nama_jabatan": "Pranata Komputer Mahir", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Komputer", "kelas_jabatan": 7, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 19, "no": 19, "nama_jabatan": "Pranata Komputer Penyelia", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Komputer", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 20, "no": 20, "nama_jabatan": "Pranata Komputer Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Komputer", "kelas_jabatan": 8, "b": 1, "k": 3, "selisih": -2 },
+  { "id": 21, "no": 21, "nama_jabatan": "Pranata Komputer Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Komputer", "kelas_jabatan": 9, "b": 0, "k": 1, "selisih": -1 },
+
+  // SDM Aparatur (Terampil -> Mahir -> Penyelia -> Pertama -> Muda)
+  { "id": 22, "no": 22, "nama_jabatan": "Pranata SDM Aparatur Terampil", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "SDM Aparatur", "kelas_jabatan": 6, "b": 0, "k": 1, "selisih": -1 },
+  { "id": 23, "no": 23, "nama_jabatan": "Pranata SDM Aparatur Mahir", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "SDM Aparatur", "kelas_jabatan": 7, "b": 0, "k": 1, "selisih": -1 },
+  { "id": 24, "no": 24, "nama_jabatan": "Pranata SDM Aparatur Penyelia", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "SDM Aparatur", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 25, "no": 25, "nama_jabatan": "Analis SDM Aparatur Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "SDM Aparatur", "kelas_jabatan": 8, "b": 1, "k": 2, "selisih": -1 },
+  { "id": 26, "no": 26, "nama_jabatan": "Analis SDM Aparatur Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "SDM Aparatur", "kelas_jabatan": 10, "b": 0, "k": 2, "selisih": -2 },
+
+  // Pengelolaan Keuangan & Anggaran APBN (Penyelia -> Pertama -> Muda)
+  { "id": 27, "no": 27, "nama_jabatan": "Pranata Keuangan APBN Penyelia", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pengelolaan Keuangan APBN", "kelas_jabatan": 9, "b": 0, "k": 3, "selisih": -3 },
+  { "id": 28, "no": 28, "nama_jabatan": "Analis Pengelolaan Keuangan APBN Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pengelolaan Keuangan APBN", "kelas_jabatan": 8, "b": 0, "k": 1, "selisih": -1 },
+  { "id": 29, "no": 29, "nama_jabatan": "Analis Pengelolaan Keuangan APBN Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pengelolaan Keuangan APBN", "kelas_jabatan": 10, "b": 1, "k": 3, "selisih": -2 },
+
+  // Perencana (Pertama -> Muda)
+  { "id": 30, "no": 30, "nama_jabatan": "Perencana Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Perencana", "kelas_jabatan": 8, "b": 2, "k": 3, "selisih": -1 },
+  { "id": 31, "no": 31, "nama_jabatan": "Perencana Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Perencana", "kelas_jabatan": 10, "b": 0, "k": 2, "selisih": -2 },
+
+  // Pustakawan & Perpustakaan (Terampil -> Pertama -> Muda)
+  { "id": 32, "no": 32, "nama_jabatan": "Asisten Perpustakaan Terampil", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pustakawan", "kelas_jabatan": 6, "b": 0, "k": 2, "selisih": -2 },
+  { "id": 33, "no": 33, "nama_jabatan": "Pustakawan Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pustakawan", "kelas_jabatan": 8, "b": 0, "k": 2, "selisih": -2 },
+  { "id": 34, "no": 34, "nama_jabatan": "Pustakawan Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pustakawan", "kelas_jabatan": 9, "b": 0, "k": 1, "selisih": -1 },
+
+  // Pranata Hubungan Masyarakat (Terampil -> Pertama)
+  { "id": 35, "no": 35, "nama_jabatan": "Pranata Hubungan Masyarakat Terampil", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Hubungan Masyarakat", "kelas_jabatan": 6, "b": 0, "k": 1, "selisih": -1 },
+  { "id": 36, "no": 36, "nama_jabatan": "Pranata Hubungan Masyarakat Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Hubungan Masyarakat", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
+
+  // Pranata Laboratorium Pendidikan / PLP (Terampil -> Mahir -> Penyelia -> Pertama -> Muda)
+  { "id": 37, "no": 37, "nama_jabatan": "Pranata Laboratorium Pendidikan Terampil", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Laboratorium Pendidikan", "kelas_jabatan": 6, "b": 1, "k": 2, "selisih": -1 },
+  { "id": 38, "no": 38, "nama_jabatan": "Pranata Laboratorium Pendidikan Mahir", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Laboratorium Pendidikan", "kelas_jabatan": 7, "b": 0, "k": 1, "selisih": -1 },
+  { "id": 39, "no": 39, "nama_jabatan": "Pranata Laboratorium Pendidikan Penyelia", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Laboratorium Pendidikan", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 40, "no": 40, "nama_jabatan": "Pranata Laboratorium Pendidikan Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Laboratorium Pendidikan", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 41, "no": 41, "nama_jabatan": "Pranata Laboratorium Pendidikan Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Pranata Laboratorium Pendidikan", "kelas_jabatan": 9, "b": 1, "k": 1, "selisih": 0 },
+
+  // Statistisi (Pertama -> Muda)
+  { "id": 42, "no": 42, "nama_jabatan": "Statistisi Ahli Pertama", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Statistisi", "kelas_jabatan": 8, "b": 1, "k": 2, "selisih": -1 },
+  { "id": 43, "no": 43, "nama_jabatan": "Statistisi Ahli Muda", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Statistisi", "kelas_jabatan": 10, "b": 0, "k": 1, "selisih": -1 },
+
+  // Analis Pengembangan Kompetensi (Pertama)
+  { "id": 44, "no": 44, "nama_jabatan": "Analis Pengembangan Kompetensi Ahli Pertama #27", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Analis Pengembangan Kompetensi", "kelas_jabatan": 8, "b": 1, "k": 1, "selisih": 0 },
+
+  // Penata Laksana Barang (Terampil)
+  { "id": 45, "no": 45, "nama_jabatan": "Penata Laksana Barang Terampil", "keterangan": "Jabatan Fungsional (JF)", "rumpun": "Penata Laksana Barang", "kelas_jabatan": 7, "b": 0, "k": 2, "selisih": -2 },
+
+  // Pelaksana
+  { "id": 46, "no": 46, "nama_jabatan": "Penata Layanan Operasional #20", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 7, "b": 15, "k": 15, "selisih": 0 },
+  { "id": 47, "no": 47, "nama_jabatan": "Penata Kelola Sistem dan Teknologi Informasi", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 7, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 48, "no": 48, "nama_jabatan": "Penelaah Teknis Kebijakan", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 7, "b": 18, "k": 25, "selisih": -7 },
+  { "id": 49, "no": 49, "nama_jabatan": "Pengelola Layanan Operasional", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 6, "b": 1, "k": 1, "selisih": 0 },
+  { "id": 50, "no": 50, "nama_jabatan": "Pengolah Data dan Informasi", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 6, "b": 17, "k": 22, "selisih": -5 },
+  { "id": 51, "no": 51, "nama_jabatan": "Pengadministrasi Perkantoran", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 5, "b": 4, "k": 8, "selisih": -4 },
+  { "id": 52, "no": 52, "nama_jabatan": "Operator Layanan Operasional #20", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 5, "b": 8, "k": 8, "selisih": 0 },
+  { "id": 53, "no": 53, "nama_jabatan": "Operator Layanan Operasional", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 5, "b": 1, "k": 4, "selisih": -3 },
+  { "id": 54, "no": 54, "nama_jabatan": "Operator Laboratorium", "keterangan": "Pelaksana", "rumpun": "Pelaksana", "kelas_jabatan": 5, "b": 1, "k": 1, "selisih": 0 }
 ];
 
 function getPetaJabatanData() {
@@ -2412,12 +2445,13 @@ function renderPetaJabatan() {
     if (search) {
       const matchName = (item.nama_jabatan || '').toLowerCase().includes(search);
       const matchKet = (item.keterangan || '').toLowerCase().includes(search);
-      if (!matchName && !matchKet) return false;
+      const matchRumpun = (item.rumpun || '').toLowerCase().includes(search);
+      if (!matchName && !matchKet && !matchRumpun) return false;
     }
 
     // Filter Keterangan
     if (filterKet !== 'Semua') {
-      if (item.keterangan !== filterKet) return false;
+      if (item.keterangan !== filterKet && item.rumpun !== filterKet) return false;
     }
 
     // Filter Status
@@ -2459,11 +2493,16 @@ function renderPetaJabatan() {
       if (sVal < 0) selisihColorClass = 'duk-selisih-minus';
       else if (sVal > 0) selisihColorClass = 'duk-selisih-plus';
 
+      const isJf = item.keterangan === 'Jabatan Fungsional (JF)';
+
       return `
         <tr>
           <td style="text-align:center;font-weight:600;color:var(--text);">${item.no || (index + 1)}</td>
           <td>
-            <div style="font-weight:600;color:var(--text);">${escapeHtml(item.nama_jabatan)}</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span style="font-weight:600;color:var(--text);">${escapeHtml(item.nama_jabatan)}</span>
+              ${isJf && item.rumpun ? `<span class="badge" style="font-size:10.5px;padding:1px 7px;background:rgba(2,132,199,0.08);color:var(--info);border:1px solid rgba(2,132,199,0.2);border-radius:4px;font-weight:500;">${escapeHtml(item.rumpun)}</span>` : ''}
+            </div>
           </td>
           <td style="color:var(--text-muted);font-size:11.5px;">
             ${escapeHtml(item.keterangan)}

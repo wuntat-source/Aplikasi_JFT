@@ -938,11 +938,28 @@
               <input type="text" class="search-input" id="search-peta-jabatan" placeholder="Cari nama jabatan atau kelompok..." oninput="handlePetaFilter()">
             </div>
             <select class="select-filter" id="filter-peta-keterangan" onchange="handlePetaFilter()">
-              <option value="Semua">Semua Kelompok</option>
-              <option value="Jabatan Fungsional (JF)">Jabatan Fungsional (JF)</option>
-              <option value="Pelaksana">Pelaksana</option>
-              <option value="JPT Pratama">JPT Pratama</option>
-              <option value="Administrator">Administrator</option>
+              <option value="Semua">Semua Rumpun / Kelompok</option>
+              <optgroup label="Kelompok Utama">
+                <option value="Jabatan Fungsional (JF)">Semua Jabatan Fungsional (JF)</option>
+                <option value="Pelaksana">Pelaksana</option>
+                <option value="JPT Pratama">JPT Pratama</option>
+                <option value="Administrator">Administrator</option>
+              </optgroup>
+              <optgroup label="Rumpun Jabatan Fungsional">
+                <option value="Widyaiswara">Widyaiswara</option>
+                <option value="Pengembang Teknologi Pembelajaran">PTP (Pengembang Tek. Pembelajaran)</option>
+                <option value="Arsiparis">Arsiparis</option>
+                <option value="Pranata Komputer">Pranata Komputer</option>
+                <option value="SDM Aparatur">SDM Aparatur (Analis &amp; Pranata)</option>
+                <option value="Pengelolaan Keuangan APBN">Pengelolaan Keuangan APBN</option>
+                <option value="Perencana">Perencana</option>
+                <option value="Pustakawan">Pustakawan &amp; Perpustakaan</option>
+                <option value="Pranata Hubungan Masyarakat">Pranata Hubungan Masyarakat</option>
+                <option value="Pranata Laboratorium Pendidikan">Pranata Lab Pendidikan (PLP)</option>
+                <option value="Statistisi">Statistisi</option>
+                <option value="Analis Pengembangan Kompetensi">Analis Pengembangan Kompetensi</option>
+                <option value="Penata Laksana Barang">Penata Laksana Barang</option>
+              </optgroup>
             </select>
             <select class="select-filter" id="filter-peta-status" onchange="handlePetaFilter()">
               <option value="Semua">Semua Status Formasi</option>
@@ -2305,7 +2322,7 @@
   </div>
 </div>
 
-<script src="data.js?v=20260923_3"></script>
-<script src="app.js?v=20260923_3"></script>
+<script src="data.js?v=20260923_4"></script>
+<script src="app.js?v=20260923_4"></script>
 </body>
 </html>
