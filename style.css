@@ -2882,3 +2882,184 @@ table tbody tr {
   }
 }
 
+/* ================================================================
+   PETA JABATAN INTERACTIVE STYLES
+   ================================================================ */
+.peta-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  background: var(--surface);
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+}
+
+.peta-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  transition: var(--transition);
+}
+
+.peta-tab-btn:hover {
+  color: var(--text);
+}
+
+.peta-tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.peta-tab-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Stepper Input */
+.num-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.num-stepper:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.stepper-btn {
+  width: 26px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-app);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  transition: var(--transition);
+}
+
+.stepper-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.stepper-btn:active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.stepper-input {
+  width: 44px;
+  height: 28px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  -moz-appearance: textfield;
+}
+
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Selisih Badges */
+.badge-deficit {
+  background: #FEE2E2;
+  color: #DC2626;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #FECACA;
+}
+
+[data-theme="dark"] .badge-deficit {
+  background: rgba(239, 68, 68, 0.2);
+  color: #F87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.badge-balanced {
+  background: #DCFCE7;
+  color: #16A34A;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #BBF7D0;
+}
+
+[data-theme="dark"] .badge-balanced {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ADE80;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.badge-surplus {
+  background: #E0E7FF;
+  color: #4F46E5;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #C7D2FE;
+}
+
+[data-theme="dark"] .badge-surplus {
+  background: rgba(99, 102, 241, 0.2);
+  color: #818CF8;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.progress-mini-bar {
+  width: 70px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progress-mini-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+

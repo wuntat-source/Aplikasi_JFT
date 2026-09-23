@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof PEGAWAI_DATA !== 'undefined' && PEGAWAI_DATA.length > 0) {
     renderDashboard();
     renderDaftarJft();
+    renderPetaJabatan();
     renderDaftarIndividu();
     renderDetailIndividu(selectedPegawaiId);
   }
@@ -177,6 +178,8 @@ function navigate(page) {
     renderPerhitunganAk();
   } else if (page === 'daftar-jft') {
     renderDaftarJft();
+  } else if (page === 'peta-jabatan') {
+    renderPetaJabatan();
   } else if (page === 'daftar-individu') {
     renderDaftarIndividu();
   } else if (page === 'detail-individu') {
@@ -2230,4 +2233,376 @@ function executeSpotlightItem(item) {
     }
   }
 }
+
+/* ================================================================
+   PETA JABATAN INTERACTIVE ENGINE (B, K, +/-)
+   ================================================================ */
+const PETA_JABATAN_STORAGE_KEY = 'peta_jabatan_custom_data_v1';
+
+function getPetaJabatanData() {
+  try {
+    const raw = localStorage.getItem(PETA_JABATAN_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to read peta jabatan data from localStorage:', err);
+  }
+
+  // Default from data.js
+  if (typeof PETA_JABATAN_DATA !== 'undefined' && Array.isArray(PETA_JABATAN_DATA)) {
+    return JSON.parse(JSON.stringify(PETA_JABATAN_DATA));
+  }
+  return [];
+}
+
+function savePetaJabatanData(data) {
+  try {
+    localStorage.setItem(PETA_JABATAN_STORAGE_KEY, JSON.stringify(data));
+  } catch (err) {
+    console.error('Failed to save peta jabatan data:', err);
+  }
+}
+
+function switchPetaView(viewType) {
+  const btnTable = document.getElementById('tab-btn-peta-table');
+  const btnPdf = document.getElementById('tab-btn-peta-pdf');
+  const viewTable = document.getElementById('peta-view-table');
+  const viewPdf = document.getElementById('peta-view-pdf');
+
+  if (viewType === 'table') {
+    if (btnTable) btnTable.classList.add('active');
+    if (btnPdf) btnPdf.classList.remove('active');
+    if (viewTable) viewTable.style.display = 'block';
+    if (viewPdf) viewPdf.style.display = 'none';
+  } else {
+    if (btnTable) btnTable.classList.remove('active');
+    if (btnPdf) btnPdf.classList.add('active');
+    if (viewTable) viewTable.style.display = 'none';
+    if (viewPdf) viewPdf.style.display = 'block';
+  }
+}
+
+function renderPetaJabatan() {
+  const tbody = document.getElementById('tbody-peta-jabatan');
+  if (!tbody) return;
+
+  const data = getPetaJabatanData();
+  const search = (document.getElementById('search-peta-jabatan')?.value || '').trim().toLowerCase();
+  const filterKet = document.getElementById('filter-peta-keterangan')?.value || 'Semua';
+  const filterStat = document.getElementById('filter-peta-status')?.value || 'Semua';
+  const filterKelas = document.getElementById('filter-peta-kelas')?.value || 'Semua';
+
+  let totalB = 0;
+  let totalK = 0;
+  let totalSelisih = 0;
+  let countPas = 0;
+  let countKurang = 0;
+  let countLebih = 0;
+
+  // Calculate overall totals from complete data
+  data.forEach(item => {
+    const bVal = parseInt(item.b, 10) || 0;
+    const kVal = parseInt(item.k, 10) || 0;
+    const sVal = bVal - kVal;
+    totalB += bVal;
+    totalK += kVal;
+    totalSelisih += sVal;
+
+    if (sVal === 0) countPas++;
+    else if (sVal < 0) countKurang++;
+    else countLebih++;
+  });
+
+  // Update KPI Cards
+  const kpiB = document.getElementById('kpi-peta-total-b');
+  const kpiK = document.getElementById('kpi-peta-total-k');
+  const kpiSelisih = document.getElementById('kpi-peta-total-selisih');
+  const kpiBadgeSelisih = document.getElementById('kpi-peta-badge-selisih');
+  const kpiRasio = document.getElementById('kpi-peta-rasio');
+  const kpiPct = document.getElementById('kpi-peta-pct');
+
+  const footB = document.getElementById('foot-total-b');
+  const footK = document.getElementById('foot-total-k');
+  const footSelisih = document.getElementById('foot-total-selisih');
+  const footInfo = document.getElementById('foot-total-info');
+
+  if (kpiB) kpiB.textContent = totalB;
+  if (kpiK) kpiK.textContent = totalK;
+  if (kpiSelisih) {
+    kpiSelisih.textContent = totalSelisih > 0 ? `+${totalSelisih}` : totalSelisih;
+    kpiSelisih.style.color = totalSelisih < 0 ? '#DC2626' : (totalSelisih === 0 ? '#16A34A' : '#4F46E5');
+  }
+  if (kpiBadgeSelisih) {
+    kpiBadgeSelisih.textContent = totalSelisih > 0 ? `+${totalSelisih}` : totalSelisih;
+    kpiBadgeSelisih.className = `badge ${totalSelisih < 0 ? 'badge-deficit' : (totalSelisih === 0 ? 'badge-balanced' : 'badge-surplus')}`;
+  }
+  if (kpiRasio) {
+    kpiRasio.textContent = `${countPas} Pas / ${countKurang} Kurang${countLebih > 0 ? ` / ${countLebih} Lebih` : ''}`;
+  }
+  if (kpiPct) {
+    const pct = totalK > 0 ? ((totalB / totalK) * 100).toFixed(1) : 0;
+    kpiPct.textContent = `${pct}% Terpenuhi`;
+  }
+
+  if (footB) footB.textContent = totalB;
+  if (footK) footK.textContent = totalK;
+  if (footSelisih) {
+    const badgeClass = totalSelisih < 0 ? 'badge-deficit' : (totalSelisih === 0 ? 'badge-balanced' : 'badge-surplus');
+    const badgeText = totalSelisih > 0 ? `+${totalSelisih}` : totalSelisih;
+    footSelisih.innerHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
+  }
+  if (footInfo) {
+    footInfo.textContent = `${data.length} Formasi Terdaftar`;
+  }
+
+  // Filter items for table view
+  const filtered = data.filter(item => {
+    const bVal = parseInt(item.b, 10) || 0;
+    const kVal = parseInt(item.k, 10) || 0;
+    const sVal = bVal - kVal;
+
+    // Search query
+    if (search) {
+      const matchName = (item.nama_jabatan || '').toLowerCase().includes(search);
+      const matchKet = (item.keterangan || '').toLowerCase().includes(search);
+      if (!matchName && !matchKet) return false;
+    }
+
+    // Filter Keterangan
+    if (filterKet !== 'Semua') {
+      if (item.keterangan !== filterKet) return false;
+    }
+
+    // Filter Status
+    if (filterStat === 'Kurang' && sVal >= 0) return false;
+    if (filterStat === 'Pas' && sVal !== 0) return false;
+    if (filterStat === 'Lebih' && sVal <= 0) return false;
+
+    // Filter Kelas
+    if (filterKelas !== 'Semua') {
+      if (String(item.kelas_jabatan) !== filterKelas) return false;
+    }
+
+    return true;
+  });
+
+  const infoEl = document.getElementById('info-peta-jabatan');
+  if (infoEl) {
+    infoEl.textContent = `Menampilkan ${filtered.length} dari ${data.length} formasi jabatan`;
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align:center;padding:36px 16px;color:var(--text-muted);">
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Tidak ada formasi jabatan yang sesuai dengan filter</div>
+          <div style="font-size:12px;color:var(--text-light);">Coba ubah kata kunci pencarian atau opsi filter di atas.</div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((item, index) => {
+    const bVal = parseInt(item.b, 10) || 0;
+    const kVal = parseInt(item.k, 10) || 0;
+    const sVal = bVal - kVal;
+    const pct = kVal > 0 ? Math.min(100, Math.round((bVal / kVal) * 100)) : 100;
+
+    let badgeKeterangan = 'badge-pk';
+    if (item.keterangan === 'JPT Pratama') badgeKeterangan = 'badge-audit';
+    else if (item.keterangan === 'Administrator') badgeKeterangan = 'badge-ptp';
+    else if (item.keterangan === 'Pelaksana') badgeKeterangan = 'badge-pustak';
+    else if (item.keterangan.includes('JF')) badgeKeterangan = 'badge-wi';
+
+    let badgeSelisihClass = 'badge-balanced';
+    let selisihLabel = '0 (Pas)';
+    let progressColor = '#10B981';
+
+    if (sVal < 0) {
+      badgeSelisihClass = 'badge-deficit';
+      selisihLabel = `${sVal} (Kurang)`;
+      progressColor = pct < 50 ? '#EF4444' : '#F59E0B';
+    } else if (sVal > 0) {
+      badgeSelisihClass = 'badge-surplus';
+      selisihLabel = `+${sVal} (Lebih)`;
+      progressColor = '#6366F1';
+    }
+
+    return `
+      <tr>
+        <td style="text-align:center;font-weight:600;color:var(--text-muted);">${item.no || (index + 1)}</td>
+        <td>
+          <div style="font-weight:600;color:var(--text);">${escapeHtml(item.nama_jabatan)}</div>
+        </td>
+        <td>
+          <span class="badge ${badgeKeterangan}">${escapeHtml(item.keterangan)}</span>
+        </td>
+        <td style="text-align:center;">
+          <span class="badge badge-asn" style="font-weight:700;">${item.kelas_jabatan || '-'}</span>
+        </td>
+        <td style="text-align:center;">
+          <div class="num-stepper">
+            <button type="button" class="stepper-btn" onclick="stepPetaValue(${item.id}, 'b', -1)" title="Kurangi Bezetting">-</button>
+            <input type="number" class="stepper-input" value="${bVal}" min="0" onchange="changePetaValue(${item.id}, 'b', this.value)">
+            <button type="button" class="stepper-btn" onclick="stepPetaValue(${item.id}, 'b', 1)" title="Tambah Bezetting">+</button>
+          </div>
+        </td>
+        <td style="text-align:center;">
+          <div class="num-stepper">
+            <button type="button" class="stepper-btn" onclick="stepPetaValue(${item.id}, 'k', -1)" title="Kurangi Kebutuhan">-</button>
+            <input type="number" class="stepper-input" value="${kVal}" min="0" onchange="changePetaValue(${item.id}, 'k', this.value)">
+            <button type="button" class="stepper-btn" onclick="stepPetaValue(${item.id}, 'k', 1)" title="Tambah Kebutuhan">+</button>
+          </div>
+        </td>
+        <td style="text-align:center;">
+          <span class="badge ${badgeSelisihClass}">${selisihLabel}</span>
+        </td>
+        <td>
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--text-muted);">
+            <span>${bVal}/${kVal}</span>
+            <span>${pct}%</span>
+          </div>
+          <div class="progress-mini-bar">
+            <div class="progress-mini-fill" style="width:${pct}%;background:${progressColor};"></div>
+          </div>
+        </td>
+        <td style="text-align:center;">
+          <button class="btn-icon" title="Hapus Formasi Jabatan" onclick="deletePetaJabatanRow(${item.id})">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#EF4444;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function stepPetaValue(id, field, delta) {
+  const data = getPetaJabatanData();
+  const target = data.find(x => x.id === id);
+  if (!target) return;
+
+  let current = parseInt(target[field], 10) || 0;
+  let next = current + delta;
+  if (next < 0) next = 0;
+
+  target[field] = next;
+  target.selisih = (parseInt(target.b, 10) || 0) - (parseInt(target.k, 10) || 0);
+
+  savePetaJabatanData(data);
+  renderPetaJabatan();
+}
+
+function changePetaValue(id, field, val) {
+  const data = getPetaJabatanData();
+  const target = data.find(x => x.id === id);
+  if (!target) return;
+
+  let next = parseInt(val, 10);
+  if (isNaN(next) || next < 0) next = 0;
+
+  target[field] = next;
+  target.selisih = (parseInt(target.b, 10) || 0) - (parseInt(target.k, 10) || 0);
+
+  savePetaJabatanData(data);
+  renderPetaJabatan();
+}
+
+function handlePetaFilter() {
+  renderPetaJabatan();
+}
+
+function resetPetaJabatanDefault() {
+  if (typeof PETA_JABATAN_DATA !== 'undefined' && Array.isArray(PETA_JABATAN_DATA)) {
+    const copy = JSON.parse(JSON.stringify(PETA_JABATAN_DATA));
+    savePetaJabatanData(copy);
+    renderPetaJabatan();
+    showToast('success', 'Reset Berhasil', 'Data peta jabatan telah dikembalikan ke standar DUK BBGTK Jateng.');
+  }
+}
+
+function deletePetaJabatanRow(id) {
+  let data = getPetaJabatanData();
+  const item = data.find(x => x.id === id);
+  const name = item ? item.nama_jabatan : 'Jabatan';
+
+  data = data.filter(x => x.id !== id);
+  savePetaJabatanData(data);
+  renderPetaJabatan();
+  showToast('info', 'Dihapus', `Formasi "${name}" telah dihapus.`);
+}
+
+function handleAddPetaJabatanSubmit() {
+  const inpNama = document.getElementById('inp-peta-nama');
+  const inpKet = document.getElementById('inp-peta-keterangan');
+  const inpKelas = document.getElementById('inp-peta-kelas');
+  const inpB = document.getElementById('inp-peta-b');
+  const inpK = document.getElementById('inp-peta-k');
+
+  const nama = inpNama ? inpNama.value.trim() : '';
+  const keterangan = inpKet ? inpKet.value : 'Jabatan Fungsional (JF)';
+  const kelas = inpKelas ? parseInt(inpKelas.value, 10) : 10;
+  const b = inpB ? Math.max(0, parseInt(inpB.value, 10) || 0) : 0;
+  const k = inpK ? Math.max(1, parseInt(inpK.value, 10) || 1) : 1;
+
+  if (!nama) {
+    showToast('error', 'Gagal', 'Nama jabatan wajib diisi.');
+    return;
+  }
+
+  const data = getPetaJabatanData();
+  const nextId = data.length > 0 ? Math.max(...data.map(x => x.id || 0)) + 1 : 1;
+  const nextNo = data.length + 1;
+
+  data.push({
+    id: nextId,
+    no: nextNo,
+    nama_jabatan: nama,
+    keterangan: keterangan,
+    kelas_jabatan: kelas,
+    b: b,
+    k: k,
+    selisih: b - k
+  });
+
+  savePetaJabatanData(data);
+  closeModal('modal-tambah-peta-jabatan');
+  if (inpNama) inpNama.value = '';
+  renderPetaJabatan();
+  showToast('success', 'Berhasil', `Formasi "${nama}" berhasil ditambahkan.`);
+}
+
+function exportPetaJabatanCsv() {
+  const data = getPetaJabatanData();
+  if (!data || data.length === 0) {
+    showToast('error', 'Gagal', 'Tidak ada data peta jabatan untuk diekspor.');
+    return;
+  }
+
+  let csv = 'NO,NAMA JABATAN,KETERANGAN,KELAS JABATAN,BEZETTING (B),KEBUTUHAN (K),SELISIH (+/-)\n';
+  data.forEach(item => {
+    const b = parseInt(item.b, 10) || 0;
+    const k = parseInt(item.k, 10) || 0;
+    const s = b - k;
+    const cleanName = `"${(item.nama_jabatan || '').replace(/"/g, '""')}"`;
+    const cleanKet = `"${(item.keterangan || '').replace(/"/g, '""')}"`;
+    csv += `${item.no || item.id},${cleanName},${cleanKet},${item.kelas_jabatan || ''},${b},${k},${s}\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'PETA_JABATAN_BBGTK_JATENG.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('success', 'Berhasil Ekspor', 'File CSV Peta Jabatan berhasil diunduh.');
+}
+
 
