@@ -2525,17 +2525,9 @@ function renderUsulanPage() {
     }
 
     const docButtons = u.pegawai_id ? `
-      <button class="btn btn-ghost btn-sm" title="Lihat Dokumen Penetapan Angka Kredit (PAK) Resmi BKN" onclick="openPakReportModal(${u.pegawai_id})" style="color:#059669;font-weight:600;padding:4px 7px;font-size:11.5px;">
+      <button class="btn btn-ghost btn-sm" title="Lihat &amp; Cetak Dokumen Penetapan Angka Kredit Resmi BKN (PAK, Akumulasi AK, dan Konversi SKP)" onclick="openOfficialDocModal(${u.pegawai_id})" style="color:var(--primary);font-weight:600;padding:4px 8px;font-size:11.5px;border:1px solid rgba(26,95,122,0.25);">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        PAK
-      </button>
-      <button class="btn btn-ghost btn-sm" title="Lihat Laporan Akumulasi Angka Kredit Resmi BKN" onclick="openAkumulasiReportModal(${u.pegawai_id})" style="color:#0284c7;font-weight:600;padding:4px 7px;font-size:11.5px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        Akumulasi AK
-      </button>
-      <button class="btn btn-ghost btn-sm" title="Lihat Laporan Konversi Predikat Kinerja ke Angka Kredit" onclick="openKonversiReportModal(${u.pegawai_id})" style="color:var(--primary);font-weight:600;padding:4px 7px;font-size:11.5px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        Konversi SKP
+        Dokumen PAK
       </button>
     ` : '';
 
