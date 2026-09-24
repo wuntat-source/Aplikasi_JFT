@@ -128,10 +128,6 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         <span>Dashboard</span>
       </a>
-      <a href="#" class="nav-item" id="nav-daftar-jft" onclick="navigate('daftar-jft'); return false;" title="Daftar JFT">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span>Daftar JFT</span>
-      </a>
       <a href="#" class="nav-item" id="nav-perhitungan-ak" onclick="navigate('perhitungan-ak'); return false;" title="Perhitungan AK">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
         <span>Perhitungan AK</span>
@@ -811,67 +807,6 @@
           </div>
         </div>
       </div><!-- /#page-perhitungan-ak -->
-
-      <!-- ============================================================
-           PAGE: DAFTAR JFT
-           ============================================================ -->
-      <div id="page-daftar-jft" class="page-content" style="display:none">
-        <div class="page-head">
-          <div class="page-head-left">
-            <div class="breadcrumb"><span>Sistem</span><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">Daftar JFT</span></div>
-            <h1 class="page-title">Daftar JFT</h1>
-          </div>
-          <div class="page-head-right">
-            <button class="btn btn-primary" onclick="openModal('modal-tambah-jft')">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-              Tambah JFT
-            </button>
-          </div>
-        </div>
-
-        <div class="filter-bar">
-          <div class="search-wrap">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" class="search-input" id="search-daftar-jft" placeholder="Cari nama jabatan, jenjang, rumpun, kode..." oninput="handleDaftarJftFilter()">
-          </div>
-          <select class="select-filter" id="filter-jft-jenjang" onchange="handleDaftarJftFilter()">
-            <option value="Semua">Semua Jenjang</option>
-            <option value="Ahli Madya">Ahli Madya</option>
-            <option value="Ahli Muda">Ahli Muda</option>
-            <option value="Ahli Pertama">Ahli Pertama</option>
-            <option value="Penyelia">Penyelia</option>
-            <option value="Mahir">Mahir</option>
-            <option value="Terampil">Terampil</option>
-          </select>
-          <select class="select-filter" id="filter-jft-status" onchange="handleDaftarJftFilter()">
-            <option value="Semua">Status: Semua</option>
-            <option value="Aktif">Aktif</option>
-          </select>
-        </div>
-
-        <div class="card">
-          <div class="table-wrap">
-            <table class="jft-table">
-              <thead>
-                <tr>
-                  <th>KODE</th>
-                  <th>JENIS JABATAN</th>
-                  <th>JENJANG</th>
-                  <th>JUMLAH ASN</th>
-                  <th>FORMASI</th>
-                  <th>STATUS</th>
-                  <th>AKSI</th>
-                </tr>
-              </thead>
-              <tbody id="tbody-daftar-jft"></tbody>
-            </table>
-          </div>
-          <div class="table-footer">
-            <div class="table-info" id="info-daftar-jft">Menampilkan Data Jabatan Fungsional</div>
-            <div class="pagination" id="pagination-daftar-jft"></div>
-          </div>
-        </div>
-      </div><!-- /#page-daftar-jft -->
 
       <!-- ============================================================
            PAGE: PETA JABATAN (INTERACTIVE & EDITABLE TABLE)
@@ -2410,7 +2345,7 @@
   </div>
 </div>
 
-<script src="data.js?v=20260924_2"></script>
-<script src="app.js?v=20260924_2"></script>
+<script src="data.js?v=20260924_3"></script>
+<script src="app.js?v=20260924_3"></script>
 </body>
 </html>

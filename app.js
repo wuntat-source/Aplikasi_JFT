@@ -137,7 +137,6 @@ function navigate(page) {
   const navMap = {
     'dashboard':       'nav-dashboard',
     'perhitungan-ak':  'nav-perhitungan-ak',
-    'daftar-jft':      'nav-daftar-jft',
     'peta-jabatan':    'nav-peta-jabatan',
     'daftar-individu': 'nav-daftar-individu',
     'detail-individu': 'nav-daftar-individu',
@@ -149,7 +148,6 @@ function navigate(page) {
   const bnavMap = {
     'dashboard':       'bnav-dashboard',
     'perhitungan-ak':  'bnav-dashboard',
-    'daftar-jft':      'bnav-dashboard',
     'peta-jabatan':    'bnav-dashboard',
     'daftar-individu': 'bnav-daftar-individu',
     'detail-individu': 'bnav-daftar-individu',
