@@ -2445,6 +2445,7 @@ function renderUsulanPage() {
     } else if (u.status === 'Dalam Proses' || u.status === 'Diverifikasi') {
       actionButtons = `
         <button class="btn btn-success btn-sm" style="background:#059669;color:#fff;border:none;" onclick="setujuiUsulan(${u.id})">Setujui / Terbitkan SK</button>
+        <button class="btn btn-ghost btn-sm" style="color:#D97706;" onclick="batalkanVerifikasiUsulan(${u.id})" title="Batalkan status verifikasi dan kembalikan ke status Menunggu Verifikasi">Batal Verifikasi</button>
         <button class="btn btn-ghost btn-sm" onclick="revisiUsulan(${u.id})">Revisi</button>
       `;
     } else if (u.status === 'Perlu Revisi') {
@@ -2454,6 +2455,7 @@ function renderUsulanPage() {
     } else {
       actionButtons = `
         <button class="btn btn-ghost btn-sm" onclick="showToast('info', 'SK Terbit', 'Usulan telah berstatus SK Terbit / Disetujui.')">Lihat SK</button>
+        <button class="btn btn-ghost btn-sm" style="color:#DC2626;" onclick="batalkanPersetujuanUsulan(${u.id})" title="Batalkan status persetujuan SK">Batal Setuju</button>
       `;
     }
 
@@ -2536,6 +2538,18 @@ function verifikasiUsulan(id) {
   showToast('success', 'Verifikasi Berhasil', `Usulan untuk ${item.nama} telah diverifikasi dan masuk tahap penetapan.`);
 }
 
+function batalkanVerifikasiUsulan(id) {
+  const list = getUsulanData();
+  const item = list.find(u => u.id === id);
+  if (!item) return;
+
+  item.status = 'Menunggu Verifikasi';
+  item.catatan = 'Verifikasi dibatalkan. Usulan dikembalikan ke antrean Menunggu Verifikasi.';
+  saveUsulanData(list);
+  renderUsulanPage();
+  showToast('info', 'Verifikasi Dibatalkan', `Status usulan untuk ${item.nama} telah dikembalikan ke Menunggu Verifikasi.`);
+}
+
 function setujuiUsulan(id) {
   const list = getUsulanData();
   const item = list.find(u => u.id === id);
@@ -2546,6 +2560,18 @@ function setujuiUsulan(id) {
   saveUsulanData(list);
   renderUsulanPage();
   showToast('success', 'Usulan Disetujui', `SK Resmi untuk ${item.nama} telah disetujui & diterbitkan.`);
+}
+
+function batalkanPersetujuanUsulan(id) {
+  const list = getUsulanData();
+  const item = list.find(u => u.id === id);
+  if (!item) return;
+
+  item.status = 'Dalam Proses';
+  item.catatan = 'Persetujuan SK dibatalkan dan status dikembalikan ke tahap Dalam Proses Penetapan.';
+  saveUsulanData(list);
+  renderUsulanPage();
+  showToast('warning', 'Persetujuan Dibatalkan', `Status persetujuan SK untuk ${item.nama} dibatalkan dan dikembalikan ke tahap Dalam Proses.`);
 }
 
 function revisiUsulan(id) {
