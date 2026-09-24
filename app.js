@@ -1872,8 +1872,6 @@ function openKonversiReportModal(pegawaiId) {
 function openOfficialDocModal(pegawaiId, docType) {
   if (typeof PEGAWAI_DATA === 'undefined' || !PEGAWAI_DATA.length) return;
 
-  populateDocPegawaiDropdown();
-
   if (docType) {
     currentDocType = docType;
   }
@@ -1886,9 +1884,6 @@ function openOfficialDocModal(pegawaiId, docType) {
 
   const selType = document.getElementById('doc-type-select');
   if (selType) selType.value = currentDocType;
-
-  const sel = document.getElementById('doc-pegawai-select');
-  if (sel) sel.value = currentDocPegawaiId;
 
   handleDocTypeChange();
   openModal('modal-laporan-konversi');
@@ -1935,26 +1930,9 @@ function handleDocTypeChange() {
   handleDocPegawaiChange();
 }
 
-function populateDocPegawaiDropdown() {
-  const sel = document.getElementById('doc-pegawai-select');
-  if (!sel || sel.options.length > 0) return;
-
-  PEGAWAI_DATA.forEach(p => {
-    const opt = document.createElement('option');
-    opt.value = p.id;
-    opt.textContent = `${p.no}. ${p.nama} (${p.jabatan})`;
-    sel.appendChild(opt);
-  });
-}
-
 function handleDocPegawaiChange() {
-  const sel = document.getElementById('doc-pegawai-select');
-  if (!sel) return;
-
-  const pId = parseInt(sel.value, 10) || currentDocPegawaiId || 1;
-  currentDocPegawaiId = pId;
-
-  const p = PEGAWAI_DATA.find(item => item.id === pId);
+  const pId = currentDocPegawaiId || 1;
+  const p = PEGAWAI_DATA.find(item => item.id === pId) || PEGAWAI_DATA[0];
   if (!p) return;
 
   renderOfficialDoc(p);
@@ -1962,6 +1940,12 @@ function handleDocPegawaiChange() {
 
 function renderOfficialDoc(p) {
   if (!p) return;
+
+  // 0. Header Modal Pegawai Badge Display
+  const elDocNama = document.getElementById('doc-pegawai-nama');
+  const elDocMeta = document.getElementById('doc-pegawai-meta');
+  if (elDocNama) elDocNama.textContent = p.nama || '-';
+  if (elDocMeta) elDocMeta.textContent = `• NIP. ${p.nip || '-'} (${p.jabatan || '-'})`;
 
   // 1. Header Jabatan
   const elJabUpper = document.getElementById('print-doc-jabatan-upper');

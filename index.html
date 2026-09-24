@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260924_10">
+  <link rel="stylesheet" href="style.css?v=20260924_11">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -1804,11 +1804,12 @@
         </select>
       </div>
 
-      <div style="display:flex;gap:6px;align-items:center;flex:1;min-width:200px;">
-        <label style="font-size:12px;font-weight:600;white-space:nowrap;">Pegawai:</label>
-        <select class="modal-select" id="doc-pegawai-select" onchange="handleDocPegawaiChange()" style="font-size:12px;padding:6px 8px;width:100%;">
-          <!-- Populated by JS -->
-        </select>
+      <div style="display:flex;gap:6px;align-items:center;flex:1;min-width:240px;">
+        <label style="font-size:12px;font-weight:600;white-space:nowrap;color:var(--text-muted);">Pegawai:</label>
+        <div id="doc-pegawai-display" style="display:flex;align-items:center;gap:6px;background:var(--bg-app);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 10px;font-size:12px;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          <strong id="doc-pegawai-nama" style="color:var(--primary);font-weight:700;">-</strong>
+          <span id="doc-pegawai-meta" style="font-size:11px;font-weight:500;color:var(--text-muted);font-family:monospace;">-</span>
+        </div>
       </div>
 
       <div style="display:flex;gap:6px;align-items:center;">
@@ -2446,7 +2447,7 @@
   </div>
 </div>
 
-<script src="data.js?v=20260924_10"></script>
-<script src="app.js?v=20260924_10"></script>
+<script src="data.js?v=20260924_11"></script>
+<script src="app.js?v=20260924_11"></script>
 </body>
 </html>
