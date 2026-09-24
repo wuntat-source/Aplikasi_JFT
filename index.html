@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260924_2">
+  <link rel="stylesheet" href="style.css?v=20260924_4">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -732,6 +732,13 @@
                     <span class="badge badge-proses" id="res-status-badge">Perlu +112.500 AK lagi</span>
                     <span style="font-size:12px;color:var(--text-muted);" id="res-status-desc">Menuju target kenaikan pangkat</span>
                   </div>
+
+                  <div style="margin-top:12px;display:flex;gap:8px;">
+                    <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="ajukanUsulanDariSimulasiCurrent()">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                      Ajukan ke Usulan &amp; Pengajuan
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1429,25 +1436,42 @@
         <div class="workflow-cards">
           <div class="workflow-card">
             <div class="wf-icon wf-yellow"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-            <div><div class="wf-num">12</div><div class="wf-lbl">Menunggu Verifikasi</div></div>
+            <div><div class="wf-num" id="wf-num-menunggu">0</div><div class="wf-lbl">Menunggu Verifikasi</div></div>
           </div>
           <div class="workflow-card">
             <div class="wf-icon wf-blue"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
-            <div><div class="wf-num">7</div><div class="wf-lbl">Dalam Proses Penetapan</div></div>
+            <div><div class="wf-num" id="wf-num-proses">0</div><div class="wf-lbl">Dalam Proses Penetapan</div></div>
+          </div>
+          <div class="workflow-card">
+            <div class="wf-icon wf-green" style="background:#DCFCE7;color:#15803D;"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div><div class="wf-num" id="wf-num-disetujui">0</div><div class="wf-lbl">Disetujui / SK Terbit</div></div>
           </div>
           <div class="workflow-card">
             <div class="wf-icon wf-red"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-            <div><div class="wf-num">4</div><div class="wf-lbl">Ditolak / Perlu Revisi</div></div>
+            <div><div class="wf-num" id="wf-num-revisi">0</div><div class="wf-lbl">Perlu Revisi</div></div>
           </div>
         </div>
 
         <div class="filter-bar">
           <div class="search-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" class="search-input" placeholder="Cari nama atau jenis usulan...">
+            <input type="text" class="search-input" id="search-usulan" placeholder="Cari nama pegawai, NIP, atau jenis usulan..." oninput="handleUsulanFilter()">
           </div>
-          <select class="select-filter"><option>Status: Semua</option><option>Draft</option><option>Diajukan</option><option>Menunggu Verifikasi</option><option>Diverifikasi</option><option>Disetujui</option><option>Ditolak</option></select>
-          <select class="select-filter"><option>Jenis: Semua</option><option>Pengangkatan JFT</option><option>Kenaikan Jenjang</option><option>Penetapan AK</option></select>
+          <select class="select-filter" id="filter-usulan-status" onchange="handleUsulanFilter()">
+            <option value="Semua">Semua Status</option>
+            <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+            <option value="Dalam Proses">Dalam Proses</option>
+            <option value="Disetujui">Disetujui / SK Terbit</option>
+            <option value="Perlu Revisi">Perlu Revisi</option>
+            <option value="Draft">Draft</option>
+          </select>
+          <select class="select-filter" id="filter-usulan-jenis" onchange="handleUsulanFilter()">
+            <option value="Semua">Semua Jenis Usulan</option>
+            <option value="Penetapan Angka Kredit">Penetapan Angka Kredit (PAK)</option>
+            <option value="Kenaikan Pangkat">Kenaikan Pangkat (KP)</option>
+            <option value="Kenaikan Jenjang">Kenaikan Jenjang (KJ)</option>
+            <option value="Pengangkatan JFT">Pengangkatan JFT</option>
+          </select>
         </div>
 
         <div class="card">
@@ -1456,64 +1480,20 @@
               <thead>
                 <tr>
                   <th>NO</th>
-                  <th>NAMA (NIP)</th>
+                  <th>NAMA &amp; NIP PEGAWAI</th>
                   <th>JENIS USULAN</th>
-                  <th>TANGGAL</th>
+                  <th>RINCIAN &amp; AK TERAKHIR</th>
+                  <th>TANGGAL PENGAJUAN</th>
                   <th>STATUS</th>
                   <th>AKSI</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td><div class="cell-name">Drs. Hendra Wijaya, M.Pd.</div><div class="cell-sub">196801011991011001</div></td>
-                  <td>Penetapan Angka Kredit 2025</td>
-                  <td>28 Jul 2026</td>
-                  <td><span class="badge badge-proses">Menunggu Verifikasi</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-primary btn-sm" onclick="showToast('success','Berhasil','Usulan sedang diverifikasi.')">Verifikasi</button><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(1)">Lihat</button></div></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td><div class="cell-name">Dewi Lestari, S.Pd., M.Pd.</div><div class="cell-sub">197104041995042004</div></td>
-                  <td>Kenaikan Jenjang</td>
-                  <td>25 Jul 2026</td>
-                  <td><span class="badge badge-info">Dalam Proses</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-success btn-sm" onclick="showToast('success','Berhasil','Usulan telah disetujui.')">Setujui</button><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(4)">Lihat</button></div></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td><div class="cell-name">Budi Hartono, S.Kom.</div><div class="cell-sub">197507071999071007</div></td>
-                  <td>Penetapan Angka Kredit</td>
-                  <td>20 Jul 2026</td>
-                  <td><span class="badge badge-nonaktif">Perlu Revisi</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(27)">Lihat</button></div></td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td><div class="cell-name">Anisa Rahmawati, S.Pd., M.Pd.</div><div class="cell-sub">197306061997062006</div></td>
-                  <td>Kenaikan Pangkat</td>
-                  <td>18 Jul 2026</td>
-                  <td><span class="badge badge-aktif">Disetujui ✓</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-ghost btn-sm" onclick="viewPegawaiDetail(6)">Lihat</button></div></td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td><div class="cell-name">Astuti Subekti, M.Pd.</div><div class="cell-sub">198708202014102020</div></td>
-                  <td>Kenaikan Jenjang Madya</td>
-                  <td>15 Jul 2026</td>
-                  <td><span class="badge badge-draft">Draft</span></td>
-                  <td><div style="display:flex;gap:6px;"><button class="btn btn-primary btn-sm" onclick="showToast('info','Diajukan','Usulan berhasil diajukan.')">Ajukan</button></div></td>
-                </tr>
-              </tbody>
+              <tbody id="tbody-usulan"></tbody>
             </table>
           </div>
           <div class="table-footer">
-            <div class="table-info">Menampilkan 5 dari 23 usulan</div>
-            <div class="pagination">
-              <button class="page-btn active">1</button>
-              <button class="page-btn">2</button>
-              <button class="page-btn">3</button>
-            </div>
+            <div class="table-info" id="info-usulan">Menampilkan Usulan &amp; Pengajuan</div>
+            <div class="pagination" id="pagination-usulan"></div>
           </div>
         </div>
       </div>
@@ -2163,17 +2143,33 @@
 <div id="modal-tambah-usulan" class="modal-overlay" style="display:none" onclick="closeModalOutside(event,'modal-tambah-usulan')">
   <div class="modal-panel">
     <div class="modal-header">
-      <span class="modal-title">Buat Usulan Baru</span>
+      <span class="modal-title">Buat Usulan Baru (Berdasarkan AK Pegawai)</span>
       <button class="modal-close" onclick="closeModal('modal-tambah-usulan')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <div class="modal-body">
-      <div class="modal-field"><label class="modal-label">Jenis Usulan</label><select class="modal-select"><option>Pilih Jenis Usulan</option><option>Pengangkatan JFT</option><option>Kenaikan Jenjang</option><option>Penetapan Angka Kredit</option></select></div>
-      <div class="modal-field"><label class="modal-label">NIP Pegawai</label><input class="modal-input" placeholder="Masukkan NIP pegawai yang diusulkan"></div>
-      <div class="modal-field"><label class="modal-label">Keterangan</label><textarea class="modal-input" style="height:80px;padding-top:8px;" placeholder="Keterangan tambahan (opsional)"></textarea></div>
+      <div class="modal-field">
+        <label class="modal-label">Pilih Pegawai <span style="color:#EF4444;">*</span></label>
+        <select class="modal-select" id="inp-usulan-pegawai" onchange="handleUsulanPegawaiSelectChange()">
+          <option value="">-- Pilih Pegawai --</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Jenis Usulan <span style="color:#EF4444;">*</span></label>
+        <select class="modal-select" id="inp-usulan-jenis">
+          <option value="Penetapan Angka Kredit">Penetapan Angka Kredit (PAK Konversi 2025)</option>
+          <option value="Kenaikan Pangkat">Kenaikan Pangkat (KP)</option>
+          <option value="Kenaikan Jenjang">Kenaikan Jenjang Jabatan (KJ)</option>
+          <option value="Pengangkatan JFT">Pengangkatan Pertama / Perpindahan JFT</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Catatan / Rincian Angka Kredit</label>
+        <textarea class="modal-input" id="inp-usulan-keterangan" style="height:70px;padding-top:8px;" placeholder="Misal: Akumulasi AK 527.78 telah memenuhi target kenaikan pangkat / jenjang."></textarea>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-tambah-usulan')">Batal</button>
-      <button class="btn btn-primary" onclick="saveModal('modal-tambah-usulan','success','Berhasil','Usulan berhasil dibuat dan menunggu verifikasi.')">Ajukan Usulan</button>
+      <button class="btn btn-primary" onclick="handleSimpanUsulan()">Ajukan Usulan</button>
     </div>
   </div>
 </div>
@@ -2345,7 +2341,7 @@
   </div>
 </div>
 
-<script src="data.js?v=20260924_3"></script>
-<script src="app.js?v=20260924_3"></script>
+<script src="data.js?v=20260924_4"></script>
+<script src="app.js?v=20260924_4"></script>
 </body>
 </html>

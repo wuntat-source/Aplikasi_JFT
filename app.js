@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPetaJabatan();
     renderDaftarIndividu();
     renderDetailIndividu(selectedPegawaiId);
+    renderUsulanPage();
+    updateSidebarUsulanBadge();
   }
 });
 
@@ -187,6 +189,8 @@ function navigate(page) {
     renderDaftarIndividu();
   } else if (page === 'detail-individu') {
     renderDetailIndividu(selectedPegawaiId);
+  } else if (page === 'usulan') {
+    renderUsulanPage();
   }
 }
 
@@ -2201,6 +2205,460 @@ navigate = function(page) {
   closeMobileSidebar();
   origNavigate(page);
 };
+
+/* ================================================================
+   USULAN & PENGAJUAN SYSTEM (TERINTEGRASI DARI ANGKA KREDIT)
+   ================================================================ */
+const USULAN_STORAGE_KEY = 'si_jft_usulan_pengajuan_v1';
+let usulanCurrentPage = 1;
+const usulanPerPage = 10;
+
+function generateDefaultUsulanData() {
+  if (typeof PEGAWAI_DATA === 'undefined' || !Array.isArray(PEGAWAI_DATA)) return [];
+
+  const list = [];
+  let currentId = 1;
+
+  // 1. Pegawai yang memiliki Usul KP eksplisit di data resmi
+  PEGAWAI_DATA.forEach(p => {
+    if (p.usul_kp && p.usul_kp !== '-' && p.usul_kp.trim() !== '') {
+      list.push({
+        id: currentId++,
+        pegawai_id: p.id,
+        nama: p.nama,
+        nip: p.nip,
+        jabatan: p.jabatan,
+        pagol: p.pagol,
+        jenis_usulan: 'Kenaikan Pangkat',
+        rincian: `Kenaikan Pangkat (Periode ${p.usul_kp.replace('00:00:00', '').trim()}) • AK: ${p.ak_total_2025 ? p.ak_total_2025.toFixed(2) : '-'}`,
+        ak_terakhir: p.ak_total_2025 || 0,
+        target_ak: p.kebutuhan_naik_pangkat || 0,
+        tanggal: '2026-08-15',
+        tanggal_indo: '15 Agustus 2026',
+        status: 'Menunggu Verifikasi',
+        catatan: 'Dokumen SKP tahunan dan akumulasi PAK konversi telah lengkap.'
+      });
+    }
+  });
+
+  // 2. Pegawai yang AK Totalnya melampaui kebutuhan Kenaikan Jenjang (KJ)
+  PEGAWAI_DATA.forEach(p => {
+    if (p.ak_total_2025 >= p.kebutuhan_naik_jenjang && p.kebutuhan_naik_jenjang > 0 && list.length < 16) {
+      let targetJenjang = 'Ahli Madya';
+      if ((p.jenjang || '').includes('Pertama')) targetJenjang = 'Ahli Muda';
+      else if ((p.jenjang || '').includes('Muda')) targetJenjang = 'Ahli Madya';
+      else if ((p.jenjang || '').includes('Madya')) targetJenjang = 'Ahli Utama';
+
+      list.push({
+        id: currentId++,
+        pegawai_id: p.id,
+        nama: p.nama,
+        nip: p.nip,
+        jabatan: p.jabatan,
+        pagol: p.pagol,
+        jenis_usulan: 'Kenaikan Jenjang',
+        rincian: `Kenaikan Jenjang ke ${targetJenjang} • AK Total: ${p.ak_total_2025.toFixed(2)} / Butuh: ${p.kebutuhan_naik_jenjang.toFixed(1)}`,
+        ak_terakhir: p.ak_total_2025,
+        target_ak: p.kebutuhan_naik_jenjang,
+        tanggal: '2026-08-10',
+        tanggal_indo: '10 Agustus 2026',
+        status: 'Dalam Proses',
+        catatan: 'Telah memenuhi syarat perolehan Angka Kredit dan formasi pada Peta Jabatan tersedia.'
+      });
+    }
+  });
+
+  // 3. Pegawai dengan Penetapan PAK Konversi 2025
+  const samplePak = PEGAWAI_DATA.slice(0, 8);
+  samplePak.forEach((p, idx) => {
+    const statuses = ['Disetujui', 'Menunggu Verifikasi', 'Dalam Proses', 'Perlu Revisi'];
+    const st = statuses[idx % statuses.length];
+    list.push({
+      id: currentId++,
+      pegawai_id: p.id,
+      nama: p.nama,
+      nip: p.nip,
+      jabatan: p.jabatan,
+      pagol: p.pagol,
+      jenis_usulan: 'Penetapan Angka Kredit',
+      rincian: `Penetapan PAK Konversi 2025 (+${(p.ak_konversi_2025 || 0).toFixed(2)} AK • Predikat: ${p.predikat_kinerja_2025 || 'Baik'})`,
+      ak_terakhir: p.ak_total_2025 || 0,
+      target_ak: p.kebutuhan_naik_pangkat || 0,
+      tanggal: `2026-07-${15 + (idx % 12)}`,
+      tanggal_indo: `${15 + (idx % 12)} Juli 2026`,
+      status: st,
+      catatan: st === 'Perlu Revisi' ? 'Harap perbarui dokumen pendukung laporan kinerja SKP.' : 'Penetapan angka kredit konversi telah diverifikasi Tim Penilai.'
+    });
+  });
+
+  return list;
+}
+
+function getUsulanData() {
+  try {
+    const raw = localStorage.getItem(USULAN_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {
+    console.warn('Failed to parse usulan data from localStorage:', e);
+  }
+  const defaultList = generateDefaultUsulanData();
+  saveUsulanData(defaultList);
+  return defaultList;
+}
+
+function saveUsulanData(data) {
+  try {
+    localStorage.setItem(USULAN_STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Failed to save usulan data:', e);
+  }
+  updateSidebarUsulanBadge();
+}
+
+function updateSidebarUsulanBadge() {
+  const data = getUsulanData();
+  const pendingCount = data.filter(u => u.status === 'Menunggu Verifikasi' || u.status === 'Diajukan').length;
+  document.querySelectorAll('.nav-badge').forEach(badge => {
+    badge.textContent = pendingCount;
+  });
+}
+
+function getUsulanStatusBadgeHtml(status) {
+  const s = (status || '').toLowerCase().trim();
+  if (s.includes('menunggu') || s === 'diajukan') {
+    return `<span class="badge badge-proses"><span style="width:6px;height:6px;border-radius:50%;background:#D97706;display:inline-block;margin-right:4px;"></span>Menunggu Verifikasi</span>`;
+  } else if (s.includes('proses') || s.includes('diverifikasi')) {
+    return `<span class="badge badge-info"><span style="width:6px;height:6px;border-radius:50%;background:#0284C7;display:inline-block;margin-right:4px;"></span>Dalam Proses</span>`;
+  } else if (s.includes('disetujui') || s.includes('sk terbit') || s.includes('selesai')) {
+    return `<span class="badge badge-aktif"><span style="width:6px;height:6px;border-radius:50%;background:#059669;display:inline-block;margin-right:4px;"></span>Disetujui ✓</span>`;
+  } else if (s.includes('revisi') || s.includes('ditolak')) {
+    return `<span class="badge badge-nonaktif"><span style="width:6px;height:6px;border-radius:50%;background:#DC2626;display:inline-block;margin-right:4px;"></span>Perlu Revisi</span>`;
+  }
+  return `<span class="badge badge-draft">${escapeHtml(status)}</span>`;
+}
+
+function handleUsulanFilter() {
+  usulanCurrentPage = 1;
+  renderUsulanPage();
+}
+
+function renderUsulanPage() {
+  const tbody = document.getElementById('tbody-usulan');
+  if (!tbody) return;
+
+  populateUsulanPegawaiDropdown();
+  const data = getUsulanData();
+
+  // 1. Update Workflow Metric Cards
+  const countMenunggu = data.filter(u => u.status === 'Menunggu Verifikasi' || u.status === 'Diajukan').length;
+  const countProses = data.filter(u => u.status === 'Dalam Proses' || u.status === 'Diverifikasi').length;
+  const countDisetujui = data.filter(u => u.status === 'Disetujui' || u.status === 'Disetujui ✓' || u.status === 'SK Terbit').length;
+  const countRevisi = data.filter(u => u.status === 'Perlu Revisi' || u.status === 'Ditolak').length;
+
+  const elMenunggu = document.getElementById('wf-num-menunggu');
+  const elProses = document.getElementById('wf-num-proses');
+  const elDisetujui = document.getElementById('wf-num-disetujui');
+  const elRevisi = document.getElementById('wf-num-revisi');
+
+  if (elMenunggu) elMenunggu.textContent = countMenunggu;
+  if (elProses) elProses.textContent = countProses;
+  if (elDisetujui) elDisetujui.textContent = countDisetujui;
+  if (elRevisi) elRevisi.textContent = countRevisi;
+
+  // 2. Filter data
+  const searchInput = document.getElementById('search-usulan');
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+  const filterStatus = document.getElementById('filter-usulan-status');
+  const statusVal = filterStatus ? filterStatus.value : 'Semua';
+
+  const filterJenis = document.getElementById('filter-usulan-jenis');
+  const jenisVal = filterJenis ? filterJenis.value : 'Semua';
+
+  const filtered = data.filter(u => {
+    const matchQuery = !query ||
+      (u.nama && u.nama.toLowerCase().includes(query)) ||
+      (u.nip && u.nip.includes(query)) ||
+      (u.jenis_usulan && u.jenis_usulan.toLowerCase().includes(query)) ||
+      (u.rincian && u.rincian.toLowerCase().includes(query));
+
+    let matchStatus = (statusVal === 'Semua');
+    if (!matchStatus) {
+      if (statusVal === 'Menunggu Verifikasi') matchStatus = (u.status === 'Menunggu Verifikasi' || u.status === 'Diajukan');
+      else if (statusVal === 'Dalam Proses') matchStatus = (u.status === 'Dalam Proses' || u.status === 'Diverifikasi');
+      else if (statusVal === 'Disetujui') matchStatus = (u.status === 'Disetujui' || u.status === 'Disetujui ✓' || u.status === 'SK Terbit');
+      else if (statusVal === 'Perlu Revisi') matchStatus = (u.status === 'Perlu Revisi' || u.status === 'Ditolak');
+      else matchStatus = (u.status === statusVal);
+    }
+
+    let matchJenis = (jenisVal === 'Semua');
+    if (!matchJenis) {
+      matchJenis = (u.jenis_usulan && u.jenis_usulan.toLowerCase().includes(jenisVal.toLowerCase()));
+    }
+
+    return matchQuery && matchStatus && matchJenis;
+  });
+
+  // 3. Pagination
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / usulanPerPage));
+
+  if (usulanCurrentPage > totalPages) {
+    usulanCurrentPage = totalPages;
+  }
+
+  const startIdx = (usulanCurrentPage - 1) * usulanPerPage;
+  const endIdx = Math.min(startIdx + usulanPerPage, total);
+  const pageItems = filtered.slice(startIdx, endIdx);
+
+  const infoEl = document.getElementById('info-usulan');
+  if (infoEl) {
+    if (total === 0) {
+      infoEl.textContent = 'Tidak ada usulan yang sesuai filter.';
+    } else {
+      infoEl.textContent = `Menampilkan ${startIdx + 1} - ${endIdx} dari ${total} Usulan & Pengajuan`;
+    }
+  }
+
+  if (pageItems.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center;padding:36px;color:var(--text-muted)">
+          <div style="font-weight:500;color:var(--text)">Tidak ada data usulan yang cocok dengan filter.</div>
+        </td>
+      </tr>
+    `;
+    renderUsulanPagination(totalPages);
+    return;
+  }
+
+  tbody.innerHTML = pageItems.map((u, idx) => {
+    let actionButtons = '';
+    if (u.status === 'Menunggu Verifikasi' || u.status === 'Diajukan') {
+      actionButtons = `
+        <button class="btn btn-primary btn-sm" onclick="verifikasiUsulan(${u.id})">Verifikasi</button>
+        <button class="btn btn-ghost btn-sm" onclick="revisiUsulan(${u.id})">Minta Revisi</button>
+      `;
+    } else if (u.status === 'Dalam Proses' || u.status === 'Diverifikasi') {
+      actionButtons = `
+        <button class="btn btn-success btn-sm" style="background:#059669;color:#fff;border:none;" onclick="setujuiUsulan(${u.id})">Setujui / Terbitkan SK</button>
+        <button class="btn btn-ghost btn-sm" onclick="revisiUsulan(${u.id})">Revisi</button>
+      `;
+    } else if (u.status === 'Perlu Revisi') {
+      actionButtons = `
+        <button class="btn btn-secondary btn-sm" onclick="verifikasiUsulan(${u.id})">Ajukan Ulang</button>
+      `;
+    } else {
+      actionButtons = `
+        <button class="btn btn-ghost btn-sm" onclick="showToast('info', 'SK Terbit', 'Usulan telah berstatus SK Terbit / Disetujui.')">Lihat SK</button>
+      `;
+    }
+
+    const pegawaiLink = u.pegawai_id ? `viewPegawaiDetail(${u.pegawai_id})` : `filterByJftAndNavigate('${escapeHtml(u.jabatan || '')}')`;
+
+    return `
+      <tr>
+        <td>${startIdx + idx + 1}</td>
+        <td>
+          <div class="cell-name"><a href="#" style="color:var(--primary);text-decoration:none;font-weight:600;" onclick="${pegawaiLink}; return false;">${escapeHtml(u.nama)}</a></div>
+          <div class="cell-sub" style="font-family:monospace;font-size:11px;color:var(--text-muted);">NIP. ${escapeHtml(u.nip || '-')} • Gol. ${escapeHtml(u.pagol || '-')}</div>
+        </td>
+        <td>
+          <strong style="color:var(--text);font-size:13px;">${escapeHtml(u.jenis_usulan)}</strong>
+          <div style="font-size:11px;color:var(--text-muted);">${escapeHtml(u.jabatan || '')}</div>
+        </td>
+        <td>
+          <div style="font-size:12.5px;color:var(--text);">${escapeHtml(u.rincian)}</div>
+          ${u.catatan ? `<div style="font-size:11px;color:var(--text-muted);margin-top:2px;"><em>${escapeHtml(u.catatan)}</em></div>` : ''}
+        </td>
+        <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${escapeHtml(u.tanggal_indo || u.tanggal)}</td>
+        <td>${getUsulanStatusBadgeHtml(u.status)}</td>
+        <td>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:nowrap;">
+            ${actionButtons}
+            <button class="btn btn-ghost btn-sm" title="Lihat Profil & Angka Kredit Pegawai" onclick="${pegawaiLink}; return false;">Lihat AK →</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  renderUsulanPagination(totalPages);
+}
+
+function renderUsulanPagination(totalPages) {
+  const container = document.getElementById('pagination-usulan');
+  if (!container) return;
+
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let html = `
+    <button class="page-btn" ${usulanCurrentPage === 1 ? 'disabled' : ''} onclick="changeUsulanPage(${usulanCurrentPage - 1})">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+      <button class="page-btn ${i === usulanCurrentPage ? 'active' : ''}" onclick="changeUsulanPage(${i})">${i}</button>
+    `;
+  }
+
+  html += `
+    <button class="page-btn" ${usulanCurrentPage === totalPages ? 'disabled' : ''} onclick="changeUsulanPage(${usulanCurrentPage + 1})">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  `;
+
+  container.innerHTML = html;
+}
+
+function changeUsulanPage(p) {
+  usulanCurrentPage = p;
+  renderUsulanPage();
+}
+
+function verifikasiUsulan(id) {
+  const list = getUsulanData();
+  const item = list.find(u => u.id === id);
+  if (!item) return;
+
+  item.status = 'Dalam Proses';
+  item.catatan = 'Usulan telah diverifikasi oleh Tim Penilai Angka Kredit dan diteruskan untuk proses SK.';
+  saveUsulanData(list);
+  renderUsulanPage();
+  showToast('success', 'Verifikasi Berhasil', `Usulan untuk ${item.nama} telah diverifikasi dan masuk tahap penetapan.`);
+}
+
+function setujuiUsulan(id) {
+  const list = getUsulanData();
+  const item = list.find(u => u.id === id);
+  if (!item) return;
+
+  item.status = 'Disetujui ✓';
+  item.catatan = 'SK Penetapan Angka Kredit / Kenaikan telah diterbitkan dan tercatat resmi.';
+  saveUsulanData(list);
+  renderUsulanPage();
+  showToast('success', 'Usulan Disetujui', `SK Resmi untuk ${item.nama} telah disetujui & diterbitkan.`);
+}
+
+function revisiUsulan(id) {
+  const list = getUsulanData();
+  const item = list.find(u => u.id === id);
+  if (!item) return;
+
+  item.status = 'Perlu Revisi';
+  item.catatan = 'Harap melengkapi dokumen bukti fisik SKP dan konversi AK tahun berjalan.';
+  saveUsulanData(list);
+  renderUsulanPage();
+  showToast('warning', 'Permintaan Revisi', `Catatan perbaikan telah dikirimkan untuk usulan ${item.nama}.`);
+}
+
+function populateUsulanPegawaiDropdown() {
+  const sel = document.getElementById('inp-usulan-pegawai');
+  if (!sel || sel.options.length > 1) return;
+  if (typeof PEGAWAI_DATA === 'undefined') return;
+
+  PEGAWAI_DATA.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = `${p.nama} (NIP: ${p.nip} - ${p.jabatan})`;
+    sel.appendChild(opt);
+  });
+}
+
+function handleUsulanPegawaiSelectChange() {
+  const sel = document.getElementById('inp-usulan-pegawai');
+  const txtRincian = document.getElementById('inp-usulan-keterangan');
+  const selJenis = document.getElementById('inp-usulan-jenis');
+  if (!sel || !sel.value || typeof PEGAWAI_DATA === 'undefined') return;
+
+  const pId = parseInt(sel.value, 10);
+  const p = PEGAWAI_DATA.find(item => item.id === pId);
+  if (!p) return;
+
+  if (p.ak_total_2025 >= (p.kebutuhan_naik_jenjang || 9999)) {
+    if (selJenis) selJenis.value = 'Kenaikan Jenjang';
+    if (txtRincian) txtRincian.value = `Akumulasi AK Total (${p.ak_total_2025.toFixed(2)}) melampaui target Kenaikan Jenjang (${p.kebutuhan_naik_jenjang.toFixed(1)}).`;
+  } else if (p.ak_total_2025 >= (p.kebutuhan_naik_pangkat || 9999)) {
+    if (selJenis) selJenis.value = 'Kenaikan Pangkat';
+    if (txtRincian) txtRincian.value = `Akumulasi AK Total (${p.ak_total_2025.toFixed(2)}) memenuhi target Kenaikan Pangkat (${p.kebutuhan_naik_pangkat.toFixed(1)}).`;
+  } else {
+    if (selJenis) selJenis.value = 'Penetapan Angka Kredit';
+    if (txtRincian) txtRincian.value = `Pengajuan Penetapan PAK Konversi 2025 dengan Predikat Kinerja ${p.predikat_kinerja_2025 || 'Baik'}.`;
+  }
+}
+
+function handleSimpanUsulan() {
+  const selPeg = document.getElementById('inp-usulan-pegawai');
+  const selJenis = document.getElementById('inp-usulan-jenis');
+  const txtKet = document.getElementById('inp-usulan-keterangan');
+
+  if (!selPeg || !selPeg.value) {
+    showToast('error', 'Validasi Gagal', 'Silakan pilih pegawai yang akan diajukan usulannya.');
+    return;
+  }
+
+  const pId = parseInt(selPeg.value, 10);
+  const p = PEGAWAI_DATA.find(item => item.id === pId);
+  if (!p) return;
+
+  const list = getUsulanData();
+  const today = new Date();
+  const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const tglIndo = `${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
+
+  const newUsulan = {
+    id: Date.now(),
+    pegawai_id: p.id,
+    nama: p.nama,
+    nip: p.nip,
+    jabatan: p.jabatan,
+    pagol: p.pagol,
+    jenis_usulan: selJenis ? selJenis.value : 'Penetapan Angka Kredit',
+    rincian: txtKet && txtKet.value.trim() ? txtKet.value.trim() : `Pengajuan ${selJenis ? selJenis.value : 'Usulan'} (AK Total: ${(p.ak_total_2025 || 0).toFixed(2)})`,
+    ak_terakhir: p.ak_total_2025 || 0,
+    target_ak: p.kebutuhan_naik_pangkat || 0,
+    tanggal: today.toISOString().split('T')[0],
+    tanggal_indo: tglIndo,
+    status: 'Menunggu Verifikasi',
+    catatan: 'Usulan baru berhasil diajukan melalui sistem.'
+  };
+
+  list.unshift(newUsulan);
+  saveUsulanData(list);
+  closeModal('modal-tambah-usulan');
+  renderUsulanPage();
+  showToast('success', 'Usulan Berhasil Dibuat', `Usulan ${newUsulan.jenis_usulan} untuk ${p.nama} berhasil masuk ke antrean verifikasi.`);
+}
+
+function ajukanUsulanDariSimulasiCurrent() {
+  const selPeg = document.getElementById('sim-pegawai-select');
+  const pId = selPeg ? parseInt(selPeg.value, 10) : 0;
+  
+  if (!pId || typeof PEGAWAI_DATA === 'undefined') {
+    showToast('info', 'Pilih Pegawai', 'Silakan pilih pegawai pada dropdown kalkulator simulasi terlebih dahulu sebelum mengajukan.');
+    if (selPeg) selPeg.focus();
+    return;
+  }
+
+  const p = PEGAWAI_DATA.find(item => item.id === pId);
+  if (!p) return;
+
+  // Open modal and prefill
+  openModal('modal-tambah-usulan');
+  const inpPeg = document.getElementById('inp-usulan-pegawai');
+  if (inpPeg) {
+    inpPeg.value = p.id;
+    handleUsulanPegawaiSelectChange();
+  }
+}
 
 /* ================================================================
    GLOBAL SPOTLIGHT SEARCH SYSTEM (Ctrl + K)
