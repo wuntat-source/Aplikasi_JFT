@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260924_8">
+  <link rel="stylesheet" href="style.css?v=20260924_9">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -1797,8 +1797,9 @@
     <div class="official-doc-controls">
       <div style="display:flex;gap:6px;align-items:center;">
         <label style="font-size:12px;font-weight:600;white-space:nowrap;color:var(--primary);">Format:</label>
-        <select class="modal-select" id="doc-type-select" onchange="handleDocTypeChange()" style="font-size:12px;padding:6px 10px;font-weight:600;color:var(--primary);width:215px;">
-          <option value="akumulasi" selected>AKUMULASI ANGKA KREDIT</option>
+        <select class="modal-select" id="doc-type-select" onchange="handleDocTypeChange()" style="font-size:12px;padding:6px 10px;font-weight:600;color:var(--primary);width:245px;">
+          <option value="pak" selected>PENETAPAN ANGKA KREDIT (PAK)</option>
+          <option value="akumulasi">AKUMULASI ANGKA KREDIT</option>
           <option value="konversi">KONVERSI PREDIKAT KINERJA</option>
         </select>
       </div>
@@ -1967,8 +1968,112 @@
           </tr>
         </table>
 
+        <!-- Section II - Template C: PENETAPAN ANGKA KREDIT (PAK Sesuai Dokumen Resmi BKN) -->
+        <div id="doc-view-pak">
+          <table class="doc-table-pak">
+            <thead>
+              <tr>
+                <th rowspan="2" class="col-box-roman" style="width:28px;vertical-align:middle;text-align:center;font-weight:700;">II</th>
+                <th rowspan="2" style="text-align:left;font-weight:700;padding-left:8px;">PENETAPAN ANGKA KREDIT</th>
+                <th style="text-align:center;width:95px;font-weight:700;">LAMA</th>
+                <th style="text-align:center;width:95px;font-weight:700;">BARU</th>
+                <th style="text-align:center;width:95px;font-weight:700;">JUMLAH</th>
+                <th style="text-align:center;width:95px;font-weight:700;">KETERANGAN</th>
+              </tr>
+              <tr class="num-header">
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align:center;font-weight:600;">1</td>
+                <td>AK Dasar yang diberikan</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;">0,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td style="text-align:center;font-weight:600;">2</td>
+                <td>AK JF lama</td>
+                <td style="text-align:center;font-weight:600;" id="print-pak-lama">241,901</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;font-weight:600;" id="print-pak-lama-jml">241,901</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td style="text-align:center;font-weight:600;">3</td>
+                <td>AK Penyesuaian/Penyetaraan</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;">0,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td style="text-align:center;font-weight:600;">4</td>
+                <td>AK Konversi</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;font-weight:600;" id="print-pak-konversi-baru">56,250</td>
+                <td style="text-align:center;font-weight:600;" id="print-pak-konversi-jml">56,250</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td style="text-align:center;font-weight:600;">5</td>
+                <td>AK yang diperoleh dari peningkatan pendidikan</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;">-</td>
+                <td style="text-align:center;">0,000</td>
+                <td></td>
+              </tr>
+              <tr style="font-weight:700;background:rgba(0,0,0,0.02);">
+                <td colspan="2" style="text-align:center;padding:7px 8px;">JUMLAH ANGKA KREDIT KUMULATIF</td>
+                <td style="text-align:center;" id="print-pak-total-lama">241,901</td>
+                <td style="text-align:center;" id="print-pak-total-baru">56,250</td>
+                <td style="text-align:center;font-size:13px;color:var(--primary);" id="print-pak-total-kumulatif">298,151</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Evaluasi Minimal & Kelayakan Kenaikan Pangkat / Jenjang -->
+          <table class="doc-table-pak-eval" style="margin-top:-1px;">
+            <thead>
+              <tr style="background:#F1F5F9;">
+                <th style="text-align:left;width:55%;padding-left:8px;font-weight:700;">Keterangan</th>
+                <th style="text-align:center;width:22.5%;font-weight:700;">Pangkat</th>
+                <th style="text-align:center;width:22.5%;font-weight:700;">Jenjang Jabatan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Angka Kredit Minimal yang harus dipenuhi untuk kenaikan pangkat / jenjang</td>
+                <td style="text-align:center;font-weight:600;" id="print-pak-min-kp">300,000</td>
+                <td style="text-align:center;font-weight:600;" id="print-pak-min-kj">450,000</td>
+              </tr>
+              <tr>
+                <td>Kelebihan/Kekurangan Angka Kredit yang harus dicapai untuk kenaikan pangkat</td>
+                <td style="text-align:center;font-weight:700;" id="print-pak-selisih-kp">-1,849</td>
+                <td style="text-align:center;color:var(--text-muted);">-</td>
+              </tr>
+              <tr>
+                <td>Kelebihan/Kekurangan Angka Kredit yang harus dicapai untuk kenaikan jenjang</td>
+                <td style="text-align:center;color:var(--text-muted);">-</td>
+                <td style="text-align:center;font-weight:700;" id="print-pak-selisih-kj">-151,849</td>
+              </tr>
+              <tr style="background:#F8FAFC;">
+                <td colspan="3" style="text-align:center;font-style:italic;font-weight:700;padding:8px;" id="print-pak-status-kelayakan">
+                  'BELUM DAPAT DIPERTIMBANGKAN UNTUK KENAIKAN PANGKAT/JENJANG JABATAN SETINGKAT LEBIH TINGGI
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <!-- Section II - Template A: HASIL PENILAIAN ANGKA KREDIT (AKUMULASI) -->
-        <div id="doc-view-akumulasi">
+        <div id="doc-view-akumulasi" style="display:none;">
           <table class="doc-table-akumulasi">
             <thead>
               <tr>
@@ -2341,7 +2446,7 @@
   </div>
 </div>
 
-<script src="data.js?v=20260924_8"></script>
-<script src="app.js?v=20260924_8"></script>
+<script src="data.js?v=20260924_9"></script>
+<script src="app.js?v=20260924_9"></script>
 </body>
 </html>

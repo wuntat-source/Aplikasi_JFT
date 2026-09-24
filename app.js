@@ -1848,10 +1848,16 @@ document.addEventListener('mousedown', () => {
 });
 
 /* ----------------------------------------------------------------
-   OFFICIAL REPORTS: AKUMULASI ANGKA KREDIT & KONVERSI PREDIKAT
+   OFFICIAL REPORTS: PENETAPAN ANGKA KREDIT (PAK), AKUMULASI AK & KONVERSI
+   (Sesuai Dokumen Resmi BKN / 29.PAK Konversi 2025- Manikowati.xlsx - PAK.pdf)
    ---------------------------------------------------------------- */
 let currentDocPegawaiId = 20; // Default to Pegawai ID 20 (Astuti Subekti, M.Pd.)
-let currentDocType = 'akumulasi'; // 'akumulasi' or 'konversi'
+let currentDocType = 'pak'; // 'pak', 'akumulasi', or 'konversi'
+
+function openPakReportModal(pegawaiId) {
+  currentDocType = 'pak';
+  openOfficialDocModal(pegawaiId);
+}
 
 function openAkumulasiReportModal(pegawaiId) {
   currentDocType = 'akumulasi';
@@ -1863,10 +1869,14 @@ function openKonversiReportModal(pegawaiId) {
   openOfficialDocModal(pegawaiId);
 }
 
-function openOfficialDocModal(pegawaiId) {
+function openOfficialDocModal(pegawaiId, docType) {
   if (typeof PEGAWAI_DATA === 'undefined' || !PEGAWAI_DATA.length) return;
 
   populateDocPegawaiDropdown();
+
+  if (docType) {
+    currentDocType = docType;
+  }
 
   if (pegawaiId) {
     currentDocPegawaiId = pegawaiId;
@@ -1892,14 +1902,24 @@ function handleDocTypeChange() {
   const mainTitleEl = document.getElementById('print-doc-main-title');
   const sec1TitleEl = document.getElementById('print-doc-sec1-title');
   const periodeLabelEl = document.getElementById('print-doc-periode-label');
+  const viewPak = document.getElementById('doc-view-pak');
   const viewAkumulasi = document.getElementById('doc-view-akumulasi');
   const viewKonversi = document.getElementById('doc-view-konversi');
 
-  if (currentDocType === 'akumulasi') {
+  if (currentDocType === 'pak') {
+    if (titleEl) titleEl.textContent = 'Penetapan Angka Kredit (PAK)';
+    if (mainTitleEl) mainTitleEl.textContent = 'PENETAPAN ANGKA KREDIT';
+    if (sec1TitleEl) sec1TitleEl.textContent = 'KETERANGAN PERORANGAN';
+    if (periodeLabelEl) periodeLabelEl.textContent = 'Masa Penilaian:';
+    if (viewPak) viewPak.style.display = 'block';
+    if (viewAkumulasi) viewAkumulasi.style.display = 'none';
+    if (viewKonversi) viewKonversi.style.display = 'none';
+  } else if (currentDocType === 'akumulasi') {
     if (titleEl) titleEl.textContent = 'Laporan Akumulasi Angka Kredit';
     if (mainTitleEl) mainTitleEl.textContent = 'AKUMULASI ANGKA KREDIT';
     if (sec1TitleEl) sec1TitleEl.textContent = 'KETERANGAN PERORANGAN';
     if (periodeLabelEl) periodeLabelEl.textContent = 'Masa Penilaian:';
+    if (viewPak) viewPak.style.display = 'none';
     if (viewAkumulasi) viewAkumulasi.style.display = 'block';
     if (viewKonversi) viewKonversi.style.display = 'none';
   } else {
@@ -1907,6 +1927,7 @@ function handleDocTypeChange() {
     if (mainTitleEl) mainTitleEl.textContent = 'KONVERSI PREDIKAT KINERJA KE ANGKA KREDIT';
     if (sec1TitleEl) sec1TitleEl.textContent = 'PEJABAT FUNGSIONAL YANG DINILAI';
     if (periodeLabelEl) periodeLabelEl.textContent = 'Periode :';
+    if (viewPak) viewPak.style.display = 'none';
     if (viewAkumulasi) viewAkumulasi.style.display = 'none';
     if (viewKonversi) viewKonversi.style.display = 'block';
   }
@@ -2058,6 +2079,54 @@ function renderOfficialDoc(p) {
   if (elPct) elPct.textContent = `${pct}%`;
   if (elKoef) elKoef.textContent = koef.toFixed(2).replace('.', ',');
   if (elAk) elAk.textContent = akDidapat.toFixed(3).replace('.', ',');
+
+  // Template C: PAK (Penetapan Angka Kredit Resmi BKN)
+  const elPakLama = document.getElementById('print-pak-lama');
+  const elPakLamaJml = document.getElementById('print-pak-lama-jml');
+  const elPakKonversiBaru = document.getElementById('print-pak-konversi-baru');
+  const elPakKonversiJml = document.getElementById('print-pak-konversi-jml');
+  const elPakTotalLama = document.getElementById('print-pak-total-lama');
+  const elPakTotalBaru = document.getElementById('print-pak-total-baru');
+  const elPakTotalKumulatif = document.getElementById('print-pak-total-kumulatif');
+  const elPakMinKp = document.getElementById('print-pak-min-kp');
+  const elPakMinKj = document.getElementById('print-pak-min-kj');
+  const elPakSelisihKp = document.getElementById('print-pak-selisih-kp');
+  const elPakSelisihKj = document.getElementById('print-pak-selisih-kj');
+  const elPakStatusKelayakan = document.getElementById('print-pak-status-kelayakan');
+
+  const minKpVal = p.kebutuhan_naik_pangkat || (p.pagol && p.pagol.startsWith('IV') ? 150 : 50);
+  const minKjVal = p.kebutuhan_naik_jenjang || 450;
+  const selisihKpVal = akTotal - minKpVal;
+  const selisihKjVal = akTotal - minKjVal;
+
+  if (elPakLama) elPakLama.textContent = akLama.toFixed(3).replace('.', ',');
+  if (elPakLamaJml) elPakLamaJml.textContent = akLama.toFixed(3).replace('.', ',');
+  if (elPakKonversiBaru) elPakKonversiBaru.textContent = akDidapat.toFixed(3).replace('.', ',');
+  if (elPakKonversiJml) elPakKonversiJml.textContent = akDidapat.toFixed(3).replace('.', ',');
+  if (elPakTotalLama) elPakTotalLama.textContent = akLama.toFixed(3).replace('.', ',');
+  if (elPakTotalBaru) elPakTotalBaru.textContent = akDidapat.toFixed(3).replace('.', ',');
+  if (elPakTotalKumulatif) elPakTotalKumulatif.textContent = akTotal.toFixed(3).replace('.', ',');
+  if (elPakMinKp) elPakMinKp.textContent = minKpVal.toFixed(3).replace('.', ',');
+  if (elPakMinKj) elPakMinKj.textContent = minKjVal.toFixed(3).replace('.', ',');
+  if (elPakSelisihKp) {
+    const formattedKp = (selisihKpVal > 0 ? '+' : '') + selisihKpVal.toFixed(3).replace('.', ',');
+    elPakSelisihKp.textContent = formattedKp;
+    elPakSelisihKp.style.color = selisihKpVal >= 0 ? '#059669' : '#DC2626';
+  }
+  if (elPakSelisihKj) {
+    const formattedKj = (selisihKjVal > 0 ? '+' : '') + selisihKjVal.toFixed(3).replace('.', ',');
+    elPakSelisihKj.textContent = formattedKj;
+    elPakSelisihKj.style.color = selisihKjVal >= 0 ? '#059669' : '#DC2626';
+  }
+  if (elPakStatusKelayakan) {
+    if (selisihKpVal >= 0 || selisihKjVal >= 0) {
+      elPakStatusKelayakan.textContent = "'DAPAT DIPERTIMBANGKAN UNTUK KENAIKAN PANGKAT/JENJANG JABATAN SETINGKAT LEBIH TINGGI";
+      elPakStatusKelayakan.style.color = '#059669';
+    } else {
+      elPakStatusKelayakan.textContent = "'BELUM DAPAT DIPERTIMBANGKAN UNTUK KENAIKAN PANGKAT/JENJANG JABATAN SETINGKAT LEBIH TINGGI";
+      elPakStatusKelayakan.style.color = '#DC2626';
+    }
+  }
 
   updateDocValues();
 }
@@ -2456,6 +2525,10 @@ function renderUsulanPage() {
     }
 
     const docButtons = u.pegawai_id ? `
+      <button class="btn btn-ghost btn-sm" title="Lihat Dokumen Penetapan Angka Kredit (PAK) Resmi BKN" onclick="openPakReportModal(${u.pegawai_id})" style="color:#059669;font-weight:600;padding:4px 7px;font-size:11.5px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        PAK
+      </button>
       <button class="btn btn-ghost btn-sm" title="Lihat Laporan Akumulasi Angka Kredit Resmi BKN" onclick="openAkumulasiReportModal(${u.pegawai_id})" style="color:#0284c7;font-weight:600;padding:4px 7px;font-size:11.5px;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         Akumulasi AK
