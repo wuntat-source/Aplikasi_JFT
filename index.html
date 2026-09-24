@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260924_1">
+  <link rel="stylesheet" href="style.css?v=20260924_2">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -395,41 +395,65 @@
           </div>
         </div>
 
-        <!-- Ringkasan JFT -->
-        <div class="card">
-          <div class="card-header">
+        <!-- Daftar JFT & Formasi Terintegrasi di Dashboard -->
+        <div class="card" id="dashboard-jft-section">
+          <div class="card-header" style="flex-wrap:wrap;gap:12px;">
             <div>
-              <div class="card-title">Ringkasan Jenis Jabatan Fungsional Tertentu</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Data sebaran pegawai berdasarkan kategori jabatan fungsional.</div>
+              <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+                <span>Daftar &amp; Sebaran Jabatan Fungsional Tertentu (JFT)</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
+                Pemetaan rincian jenjang jabatan fungsional, formasi ideal, dan jumlah ASN aktif di BBGTK Provinsi Jawa Tengah.
+              </div>
             </div>
-            <div class="search-wrap" style="max-width:220px;">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <input type="text" class="search-input" placeholder="Cari di BBGTK Prov. Jawa Tengah">
+            <div class="page-head-right" style="margin-left:auto;">
+              <button class="btn btn-primary btn-sm" onclick="openModal('modal-tambah-jft')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Tambah JFT
+              </button>
             </div>
           </div>
+
+          <div class="filter-bar" style="margin-top:0;padding-top:14px;border-top:1px solid var(--border);">
+            <div class="search-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" class="search-input" id="search-dashboard-jft" placeholder="Cari nama jabatan, jenjang, rumpun, kode..." oninput="handleDashboardJftFilter()">
+            </div>
+            <select class="select-filter" id="filter-dashboard-jft-jenjang" onchange="handleDashboardJftFilter()">
+              <option value="Semua">Semua Jenjang</option>
+              <option value="Ahli Madya">Ahli Madya</option>
+              <option value="Ahli Muda">Ahli Muda</option>
+              <option value="Ahli Pertama">Ahli Pertama</option>
+              <option value="Penyelia">Penyelia</option>
+              <option value="Mahir">Mahir</option>
+              <option value="Terampil">Terampil</option>
+            </select>
+            <select class="select-filter" id="filter-dashboard-jft-status" onchange="handleDashboardJftFilter()">
+              <option value="Semua">Status: Semua</option>
+              <option value="Aktif">Aktif</option>
+            </select>
+          </div>
+
           <div class="table-wrap">
             <table class="jft-table">
               <thead>
                 <tr>
+                  <th>KODE</th>
                   <th>JENIS JABATAN</th>
-                  <th>JUMLAH PEGAWAI</th>
-                  <th>KENAIKAN JENJANG</th>
+                  <th>JENJANG</th>
+                  <th>JUMLAH ASN</th>
+                  <th>FORMASI</th>
                   <th>STATUS</th>
                   <th>AKSI</th>
                 </tr>
               </thead>
-              <tbody id="tbody-dashboard-jft-summary"></tbody>
+              <tbody id="tbody-dashboard-jft"></tbody>
             </table>
           </div>
+
           <div class="table-footer">
-            <div class="table-info">Menampilkan 3 dari 12 Jenis Jabatan</div>
-            <div class="pagination">
-              <button class="page-btn" disabled><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
-              <button class="page-btn active">1</button>
-              <button class="page-btn">2</button>
-              <button class="page-btn">3</button>
-              <button class="page-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
-            </div>
+            <div class="table-info" id="info-dashboard-jft">Menampilkan Data Jabatan Fungsional</div>
+            <div class="pagination" id="pagination-dashboard-jft"></div>
           </div>
         </div>
       </div><!-- /#page-dashboard -->
@@ -2386,7 +2410,7 @@
   </div>
 </div>
 
-<script src="data.js?v=20260924_1"></script>
-<script src="app.js?v=20260924_1"></script>
+<script src="data.js?v=20260924_2"></script>
+<script src="app.js?v=20260924_2"></script>
 </body>
 </html>

@@ -174,10 +174,15 @@ function navigate(page) {
   if (page === 'dashboard') {
     renderDashboard();
     setTimeout(initDashboardChart, 100);
+  } else if (page === 'daftar-jft') {
+    navigate('dashboard');
+    setTimeout(() => {
+      const el = document.getElementById('dashboard-jft-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+    return;
   } else if (page === 'perhitungan-ak') {
     renderPerhitunganAk();
-  } else if (page === 'daftar-jft') {
-    renderDaftarJft();
   } else if (page === 'peta-jabatan') {
     renderPetaJabatan();
   } else if (page === 'daftar-individu') {
@@ -226,40 +231,137 @@ function renderDashboard() {
     `).join('');
   }
 
-  // Ringkasan JFT summary table
-  const tbodySummary = document.getElementById('tbody-dashboard-jft-summary');
-  if (tbodySummary) {
-    const catMap = {};
-    PEGAWAI_DATA.forEach(p => {
-      const cat = p.kategori_jft;
-      catMap[cat] = (catMap[cat] || 0) + 1;
-    });
+  // Render full integrated Daftar JFT table on Dashboard
+  renderDashboardJft();
+}
 
-    const categories = [
-      { name: 'Pengembang Teknologi Pembelajaran (PTP)', count: catMap['PTP'] || 0, key: 'Pengembang Teknologi Pembelajaran' },
-      { name: 'Widyaiswara (WI)', count: catMap['Widyaiswara'] || 0, key: 'Widyaiswara' },
-      { name: 'Pranata Komputer (Prakom)', count: catMap['Pranata Komputer'] || 0, key: 'Pranata Komputer' },
-      { name: 'Arsiparis', count: catMap['Arsiparis'] || 0, key: 'Arsiparis' },
-      { name: 'Analis (SDM / Keuangan / Bangkom)', count: (catMap['Analis'] || 0), key: 'Analis' },
-    ];
+let dashboardJftCurrentPage = 1;
+const dashboardJftPerPage = 10;
 
-    tbodySummary.innerHTML = categories.map(cat => `
+function handleDashboardJftFilter() {
+  dashboardJftCurrentPage = 1;
+  renderDashboardJft();
+}
+
+function renderDashboardJft() {
+  const tbody = document.getElementById('tbody-dashboard-jft');
+  if (!tbody) return;
+
+  const searchInput = document.getElementById('search-dashboard-jft');
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+  const filterJenjang = document.getElementById('filter-dashboard-jft-jenjang');
+  const jenjangVal = filterJenjang ? filterJenjang.value : 'Semua';
+
+  const filterStatus = document.getElementById('filter-dashboard-jft-status');
+  const statusVal = filterStatus ? filterStatus.value : 'Semua';
+
+  const filtered = JFT_MASTER_LIST.filter(j => {
+    const matchQuery = !query ||
+      j.name.toLowerCase().includes(query) ||
+      j.code.toLowerCase().includes(query) ||
+      (j.rumpun && j.rumpun.toLowerCase().includes(query)) ||
+      j.jenjang.toLowerCase().includes(query);
+
+    const matchJenjang = (jenjangVal === 'Semua') || 
+      j.jenjang.toLowerCase() === jenjangVal.toLowerCase() ||
+      j.jenjang.toLowerCase().includes(jenjangVal.toLowerCase());
+
+    const matchStatus = (statusVal === 'Semua') ||
+      j.status.toLowerCase() === statusVal.toLowerCase();
+
+    return matchQuery && matchJenjang && matchStatus;
+  });
+
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / dashboardJftPerPage));
+
+  if (dashboardJftCurrentPage > totalPages) {
+    dashboardJftCurrentPage = totalPages;
+  }
+
+  const startIdx = (dashboardJftCurrentPage - 1) * dashboardJftPerPage;
+  const endIdx = Math.min(startIdx + dashboardJftPerPage, total);
+  const pageItems = filtered.slice(startIdx, endIdx);
+
+  // Update table info text
+  const infoEl = document.getElementById('info-dashboard-jft');
+  if (infoEl) {
+    if (total === 0) {
+      infoEl.textContent = 'Tidak ada jabatan fungsional yang cocok dengan filter.';
+    } else {
+      infoEl.textContent = `Menampilkan ${startIdx + 1} - ${endIdx} dari ${total} Jabatan Fungsional Tertentu`;
+    }
+  }
+
+  if (pageItems.length === 0) {
+    tbody.innerHTML = `
       <tr>
-        <td><strong>${cat.name}</strong></td>
-        <td>${cat.count} Pegawai</td>
-        <td>BBGTK Prov. Jawa Tengah</td>
-        <td><span class="badge badge-aktif">AKTIF</span></td>
-        <td>
-          <button class="btn-icon" title="Lihat Daftar Pegawai" onclick="filterByJftAndNavigate('${cat.key}')">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-            </svg>
-          </button>
+        <td colspan="7" style="text-align:center;padding:36px;color:var(--text-muted)">
+          <div style="font-weight:500;color:var(--text)">Tidak ada jenis jabatan yang cocok dengan pencarian/filter.</div>
         </td>
       </tr>
-    `).join('');
+    `;
+    renderDashboardJftPagination(totalPages);
+    return;
   }
+
+  tbody.innerHTML = pageItems.map(j => {
+    const asnCount = getJftAsnCount(j);
+    return `
+      <tr>
+        <td><code style="font-size:11px;font-weight:600;color:var(--text-muted);background:var(--bg-secondary);padding:3px 6px;border-radius:4px;">${escapeHtml(j.code)}</code></td>
+        <td>
+          <strong style="color:var(--text);font-size:13.5px;">${escapeHtml(j.name)}</strong>
+          ${j.rumpun ? `<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Rumpun: ${escapeHtml(j.rumpun)}</div>` : ''}
+        </td>
+        <td>${getJenjangBadgeHtml(j.jenjang)}</td>
+        <td><strong style="font-size:13px;color:var(--text)">${asnCount}</strong> <span style="font-size:11px;color:var(--text-muted)">Orang</span></td>
+        <td><span style="font-weight:600;color:var(--primary)">${j.formasi}</span> <span style="font-size:11px;color:var(--text-muted)">Formasi</span></td>
+        <td><span class="badge badge-aktif">${escapeHtml(j.status)}</span></td>
+        <td>
+          <a href="#" class="link-action" onclick="filterByJftAndNavigate('${escapeHtml(j.name)}'); return false">Lihat Pegawai →</a>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  renderDashboardJftPagination(totalPages);
+}
+
+function renderDashboardJftPagination(totalPages) {
+  const container = document.getElementById('pagination-dashboard-jft');
+  if (!container) return;
+
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let html = `
+    <button class="page-btn" ${dashboardJftCurrentPage === 1 ? 'disabled' : ''} onclick="changeDashboardJftPage(${dashboardJftCurrentPage - 1})">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+      <button class="page-btn ${i === dashboardJftCurrentPage ? 'active' : ''}" onclick="changeDashboardJftPage(${i})">${i}</button>
+    `;
+  }
+
+  html += `
+    <button class="page-btn" ${dashboardJftCurrentPage === totalPages ? 'disabled' : ''} onclick="changeDashboardJftPage(${dashboardJftCurrentPage + 1})">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  `;
+
+  container.innerHTML = html;
+}
+
+function changeDashboardJftPage(p) {
+  dashboardJftCurrentPage = p;
+  renderDashboardJft();
 }
 
 function initDashboardChart() {
