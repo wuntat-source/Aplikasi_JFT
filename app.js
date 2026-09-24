@@ -787,23 +787,114 @@ function exportAkTableCsv() {
 }
 
 /* ----------------------------------------------------------------
-   DAFTAR JFT PAGE
+   DAFTAR JFT PAGE (JENJANG TERPERINCI)
    ---------------------------------------------------------------- */
+let daftarJftCurrentPage = 1;
+const daftarJftPerPage = 10;
+
 const JFT_MASTER_LIST = [
-  { code: 'JFT-001', name: 'Pengembang Teknologi Pembelajaran', jenjang: 'Madya, Muda, Pertama', count: 29, formasi: 35, status: 'Aktif' },
-  { code: 'JFT-002', name: 'Widyaiswara', jenjang: 'Madya, Muda, Pertama', count: 19, formasi: 25, status: 'Aktif' },
-  { code: 'JFT-003', name: 'Pranata Komputer', jenjang: 'Pertama, Penyelia, Mahir, Terampil', count: 4, formasi: 8, status: 'Aktif' },
-  { code: 'JFT-004', name: 'Arsiparis', jenjang: 'Muda, Pertama, Mahir', count: 3, formasi: 5, status: 'Aktif' },
-  { code: 'JFT-005', name: 'Analis Sumber Daya Manusia Aparatur', jenjang: 'Ahli Pertama', count: 1, formasi: 2, status: 'Aktif' },
-  { code: 'JFT-006', name: 'Analis Pengelolaan Keuangan APBN', jenjang: 'Ahli Muda', count: 1, formasi: 2, status: 'Aktif' },
-  { code: 'JFT-007', name: 'Analis Pengembangan Kompetensi ASN', jenjang: 'Ahli Pertama', count: 1, formasi: 2, status: 'Aktif' },
-  { code: 'JFT-008', name: 'Perencana', jenjang: 'Ahli Pertama', count: 2, formasi: 3, status: 'Aktif' },
-  { code: 'JFT-009', name: 'Statistisi', jenjang: 'Ahli Pertama', count: 1, formasi: 2, status: 'Aktif' },
-  { code: 'JFT-010', name: 'Pranata Hubungan Masyarakat', jenjang: 'Ahli Pertama', count: 1, formasi: 2, status: 'Aktif' },
-  { code: 'JFT-011', name: 'Pranata Sumber Daya Manusia Aparatur', jenjang: 'Penyelia', count: 1, formasi: 2, status: 'Aktif' },
+  // Pengembang Teknologi Pembelajaran (PTP)
+  { code: 'JFT-PTP-01', name: 'Pengembang Teknologi Pembelajaran Ahli Pertama', rumpun: 'Pengembang Teknologi Pembelajaran', jenjang: 'Ahli Pertama', count: 8, formasi: 20, status: 'Aktif' },
+  { code: 'JFT-PTP-02', name: 'Pengembang Teknologi Pembelajaran Ahli Muda', rumpun: 'Pengembang Teknologi Pembelajaran', jenjang: 'Ahli Muda', count: 14, formasi: 15, status: 'Aktif' },
+  { code: 'JFT-PTP-03', name: 'Pengembang Teknologi Pembelajaran Ahli Madya', rumpun: 'Pengembang Teknologi Pembelajaran', jenjang: 'Ahli Madya', count: 7, formasi: 12, status: 'Aktif' },
+
+  // Widyaiswara
+  { code: 'JFT-WI-01', name: 'Widyaiswara Ahli Pertama', rumpun: 'Widyaiswara', jenjang: 'Ahli Pertama', count: 5, formasi: 16, status: 'Aktif' },
+  { code: 'JFT-WI-02', name: 'Widyaiswara Ahli Muda', rumpun: 'Widyaiswara', jenjang: 'Ahli Muda', count: 4, formasi: 10, status: 'Aktif' },
+  { code: 'JFT-WI-03', name: 'Widyaiswara Ahli Madya', rumpun: 'Widyaiswara', jenjang: 'Ahli Madya', count: 10, formasi: 13, status: 'Aktif' },
+
+  // Pranata Komputer
+  { code: 'JFT-PK-01', name: 'Pranata Komputer Terampil', rumpun: 'Pranata Komputer', jenjang: 'Terampil', count: 1, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-PK-02', name: 'Pranata Komputer Mahir', rumpun: 'Pranata Komputer', jenjang: 'Mahir', count: 1, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-PK-03', name: 'Pranata Komputer Penyelia', rumpun: 'Pranata Komputer', jenjang: 'Penyelia', count: 1, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-PK-04', name: 'Pranata Komputer Ahli Pertama', rumpun: 'Pranata Komputer', jenjang: 'Ahli Pertama', count: 1, formasi: 3, status: 'Aktif' },
+  { code: 'JFT-PK-05', name: 'Pranata Komputer Ahli Muda', rumpun: 'Pranata Komputer', jenjang: 'Ahli Muda', count: 0, formasi: 1, status: 'Aktif' },
+
+  // Arsiparis
+  { code: 'JFT-ARS-01', name: 'Arsiparis Terampil', rumpun: 'Arsiparis', jenjang: 'Terampil', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-ARS-02', name: 'Arsiparis Mahir', rumpun: 'Arsiparis', jenjang: 'Mahir', count: 1, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-ARS-03', name: 'Arsiparis Penyelia', rumpun: 'Arsiparis', jenjang: 'Penyelia', count: 0, formasi: 2, status: 'Aktif' },
+  { code: 'JFT-ARS-04', name: 'Arsiparis Ahli Pertama', rumpun: 'Arsiparis', jenjang: 'Ahli Pertama', count: 1, formasi: 2, status: 'Aktif' },
+  { code: 'JFT-ARS-05', name: 'Arsiparis Ahli Muda', rumpun: 'Arsiparis', jenjang: 'Ahli Muda', count: 1, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-ARS-06', name: 'Arsiparis Ahli Madya', rumpun: 'Arsiparis', jenjang: 'Ahli Madya', count: 0, formasi: 1, status: 'Aktif' },
+
+  // SDM Aparatur
+  { code: 'JFT-SDM-01', name: 'Pranata Sumber Daya Manusia Aparatur Terampil', rumpun: 'SDM Aparatur', jenjang: 'Terampil', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-SDM-02', name: 'Pranata Sumber Daya Manusia Aparatur Mahir', rumpun: 'SDM Aparatur', jenjang: 'Mahir', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-SDM-03', name: 'Pranata Sumber Daya Manusia Aparatur Penyelia', rumpun: 'SDM Aparatur', jenjang: 'Penyelia', count: 1, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-SDM-04', name: 'Analis Sumber Daya Manusia Aparatur Ahli Pertama', rumpun: 'SDM Aparatur', jenjang: 'Ahli Pertama', count: 1, formasi: 2, status: 'Aktif' },
+  { code: 'JFT-SDM-05', name: 'Analis Sumber Daya Manusia Aparatur Ahli Muda', rumpun: 'SDM Aparatur', jenjang: 'Ahli Muda', count: 0, formasi: 2, status: 'Aktif' },
+
+  // Pengelolaan Keuangan APBN
+  { code: 'JFT-KUG-01', name: 'Pranata Keuangan APBN Penyelia', rumpun: 'Pengelolaan Keuangan APBN', jenjang: 'Penyelia', count: 0, formasi: 3, status: 'Aktif' },
+  { code: 'JFT-KUG-02', name: 'Analis Pengelolaan Keuangan APBN Ahli Pertama', rumpun: 'Pengelolaan Keuangan APBN', jenjang: 'Ahli Pertama', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-KUG-03', name: 'Analis Pengelolaan Keuangan APBN Ahli Muda', rumpun: 'Pengelolaan Keuangan APBN', jenjang: 'Ahli Muda', count: 1, formasi: 3, status: 'Aktif' },
+
+  // Perencana
+  { code: 'JFT-REN-01', name: 'Perencana Ahli Pertama', rumpun: 'Perencana', jenjang: 'Ahli Pertama', count: 2, formasi: 3, status: 'Aktif' },
+  { code: 'JFT-REN-02', name: 'Perencana Ahli Muda', rumpun: 'Perencana', jenjang: 'Ahli Muda', count: 0, formasi: 2, status: 'Aktif' },
+
+  // Pranata Laboratorium Pendidikan (PLP)
+  { code: 'JFT-PLP-01', name: 'Pranata Laboratorium Pendidikan Terampil', rumpun: 'Pranata Laboratorium Pendidikan', jenjang: 'Terampil', count: 0, formasi: 2, status: 'Aktif' },
+  { code: 'JFT-PLP-02', name: 'Pranata Laboratorium Pendidikan Mahir', rumpun: 'Pranata Laboratorium Pendidikan', jenjang: 'Mahir', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-PLP-03', name: 'Pranata Laboratorium Pendidikan Penyelia', rumpun: 'Pranata Laboratorium Pendidikan', jenjang: 'Penyelia', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-PLP-04', name: 'Pranata Laboratorium Pendidikan Ahli Pertama', rumpun: 'Pranata Laboratorium Pendidikan', jenjang: 'Ahli Pertama', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-PLP-05', name: 'Pranata Laboratorium Pendidikan Ahli Muda', rumpun: 'Pranata Laboratorium Pendidikan', jenjang: 'Ahli Muda', count: 0, formasi: 1, status: 'Aktif' },
+
+  // Pustakawan
+  { code: 'JFT-PUS-01', name: 'Asisten Perpustakaan Terampil', rumpun: 'Pustakawan', jenjang: 'Terampil', count: 0, formasi: 2, status: 'Aktif' },
+  { code: 'JFT-PUS-02', name: 'Pustakawan Ahli Pertama', rumpun: 'Pustakawan', jenjang: 'Ahli Pertama', count: 0, formasi: 2, status: 'Aktif' },
+  { code: 'JFT-PUS-03', name: 'Pustakawan Ahli Muda', rumpun: 'Pustakawan', jenjang: 'Ahli Muda', count: 0, formasi: 1, status: 'Aktif' },
+
+  // Pranata Hubungan Masyarakat
+  { code: 'JFT-HUM-01', name: 'Pranata Hubungan Masyarakat Terampil', rumpun: 'Pranata Hubungan Masyarakat', jenjang: 'Terampil', count: 0, formasi: 1, status: 'Aktif' },
+  { code: 'JFT-HUM-02', name: 'Pranata Hubungan Masyarakat Ahli Pertama', rumpun: 'Pranata Hubungan Masyarakat', jenjang: 'Ahli Pertama', count: 1, formasi: 1, status: 'Aktif' },
+
+  // Statistisi
+  { code: 'JFT-STA-01', name: 'Statistisi Ahli Pertama', rumpun: 'Statistisi', jenjang: 'Ahli Pertama', count: 1, formasi: 2, status: 'Aktif' },
+  { code: 'JFT-STA-02', name: 'Statistisi Ahli Muda', rumpun: 'Statistisi', jenjang: 'Ahli Muda', count: 0, formasi: 1, status: 'Aktif' },
+
+  // Analis Pengembangan Kompetensi ASN
+  { code: 'JFT-APK-01', name: 'Analis Pengembangan Kompetensi ASN Ahli Pertama', rumpun: 'Analis Pengembangan Kompetensi ASN', jenjang: 'Ahli Pertama', count: 1, formasi: 1, status: 'Aktif' },
+
+  // Penata Laksana Barang
+  { code: 'JFT-PLB-01', name: 'Penata Laksana Barang Terampil', rumpun: 'Penata Laksana Barang', jenjang: 'Terampil', count: 0, formasi: 2, status: 'Aktif' }
 ];
 
+function getJenjangBadgeHtml(jenjang) {
+  const j = (jenjang || '').toLowerCase().trim();
+  if (j.includes('madya')) {
+    return `<span class="badge" style="background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE;font-weight:600;font-size:11px;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#4F46E5;"></span>Ahli Madya</span>`;
+  } else if (j.includes('muda')) {
+    return `<span class="badge" style="background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;font-weight:600;font-size:11px;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#0284C7;"></span>Ahli Muda</span>`;
+  } else if (j.includes('pertama')) {
+    return `<span class="badge" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;font-weight:600;font-size:11px;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#059669;"></span>Ahli Pertama</span>`;
+  } else if (j.includes('penyelia')) {
+    return `<span class="badge" style="background:#FEF3C7;color:#B45309;border:1px solid #FDE68A;font-weight:600;font-size:11px;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#D97706;"></span>Penyelia</span>`;
+  } else if (j.includes('mahir')) {
+    return `<span class="badge" style="background:#FDF2F8;color:#BE185D;border:1px solid #FBCFE8;font-weight:600;font-size:11px;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#DB2777;"></span>Mahir</span>`;
+  } else if (j.includes('terampil')) {
+    return `<span class="badge" style="background:#F3F4F6;color:#374151;border:1px solid #E5E7EB;font-weight:600;font-size:11px;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#6B7280;"></span>Terampil</span>`;
+  }
+  return `<span class="badge badge-info">${escapeHtml(jenjang)}</span>`;
+}
+
+function getJftAsnCount(jItem) {
+  if (typeof PEGAWAI_DATA === 'undefined' || !Array.isArray(PEGAWAI_DATA)) {
+    return jItem.count || 0;
+  }
+  const nameNorm = (jItem.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const matched = PEGAWAI_DATA.filter(p => {
+    const pJabNorm = (p.jabatan || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    return pJabNorm === nameNorm || 
+      (nameNorm.includes(pJabNorm) && pJabNorm.length > 6) ||
+      (pJabNorm.includes(nameNorm) && nameNorm.length > 6);
+  });
+  return matched.length;
+}
+
 function handleDaftarJftFilter() {
+  daftarJftCurrentPage = 1;
   renderDaftarJft();
 }
 
@@ -817,49 +908,124 @@ function renderDaftarJft() {
   const filterJenjang = document.getElementById('filter-jft-jenjang');
   const jenjangVal = filterJenjang ? filterJenjang.value : 'Semua';
 
+  const filterStatus = document.getElementById('filter-jft-status');
+  const statusVal = filterStatus ? filterStatus.value : 'Semua';
+
   const filtered = JFT_MASTER_LIST.filter(j => {
     const matchQuery = !query ||
       j.name.toLowerCase().includes(query) ||
       j.code.toLowerCase().includes(query) ||
+      (j.rumpun && j.rumpun.toLowerCase().includes(query)) ||
       j.jenjang.toLowerCase().includes(query);
 
-    const matchJenjang = (jenjangVal === 'Semua') || j.jenjang.toLowerCase().includes(jenjangVal.toLowerCase());
-    return matchQuery && matchJenjang;
+    const matchJenjang = (jenjangVal === 'Semua') || 
+      j.jenjang.toLowerCase() === jenjangVal.toLowerCase() ||
+      j.jenjang.toLowerCase().includes(jenjangVal.toLowerCase());
+
+    const matchStatus = (statusVal === 'Semua') ||
+      j.status.toLowerCase() === statusVal.toLowerCase();
+
+    return matchQuery && matchJenjang && matchStatus;
   });
 
-  if (filtered.length === 0) {
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / daftarJftPerPage));
+
+  if (daftarJftCurrentPage > totalPages) {
+    daftarJftCurrentPage = totalPages;
+  }
+
+  const startIdx = (daftarJftCurrentPage - 1) * daftarJftPerPage;
+  const endIdx = Math.min(startIdx + daftarJftPerPage, total);
+  const pageItems = filtered.slice(startIdx, endIdx);
+
+  // Update table info text
+  const infoEl = document.getElementById('info-daftar-jft');
+  if (infoEl) {
+    if (total === 0) {
+      infoEl.textContent = 'Tidak ada jabatan fungsional yang cocok dengan filter.';
+    } else {
+      infoEl.textContent = `Menampilkan ${startIdx + 1} - ${endIdx} dari ${total} Jabatan Fungsional Tertentu`;
+    }
+  }
+
+  if (pageItems.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted)">
-          Tidak ada jenis jabatan yang cocok dengan pencarian.
+        <td colspan="7" style="text-align:center;padding:36px;color:var(--text-muted)">
+          <div style="font-weight:500;color:var(--text)">Tidak ada jenis jabatan yang cocok dengan pencarian/filter.</div>
         </td>
       </tr>
     `;
+    renderDaftarJftPagination(totalPages);
     return;
   }
 
-  tbody.innerHTML = filtered.map(j => `
-    <tr>
-      <td><code style="font-size:11px;color:var(--text-muted)">${j.code}</code></td>
-      <td><strong>${j.name}</strong></td>
-      <td>${j.jenjang}</td>
-      <td><strong>${j.count}</strong></td>
-      <td>${j.formasi}</td>
-      <td><span class="badge badge-aktif">${j.status}</span></td>
-      <td>
-        <a href="#" class="link-action" onclick="filterByJftAndNavigate('${j.name}'); return false">Lihat Pegawai →</a>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = pageItems.map(j => {
+    const asnCount = getJftAsnCount(j);
+    return `
+      <tr>
+        <td><code style="font-size:11px;font-weight:600;color:var(--text-muted);background:var(--bg-secondary);padding:3px 6px;border-radius:4px;">${escapeHtml(j.code)}</code></td>
+        <td>
+          <strong style="color:var(--text);font-size:13.5px;">${escapeHtml(j.name)}</strong>
+          ${j.rumpun ? `<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Rumpun: ${escapeHtml(j.rumpun)}</div>` : ''}
+        </td>
+        <td>${getJenjangBadgeHtml(j.jenjang)}</td>
+        <td><strong style="font-size:13px;color:var(--text)">${asnCount}</strong> <span style="font-size:11px;color:var(--text-muted)">Orang</span></td>
+        <td><span style="font-weight:600;color:var(--primary)">${j.formasi}</span> <span style="font-size:11px;color:var(--text-muted)">Formasi</span></td>
+        <td><span class="badge badge-aktif">${escapeHtml(j.status)}</span></td>
+        <td>
+          <a href="#" class="link-action" onclick="filterByJftAndNavigate('${escapeHtml(j.name)}'); return false">Lihat Pegawai →</a>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  renderDaftarJftPagination(totalPages);
+}
+
+function renderDaftarJftPagination(totalPages) {
+  const container = document.getElementById('pagination-daftar-jft');
+  if (!container) return;
+
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let html = `
+    <button class="page-btn" ${daftarJftCurrentPage === 1 ? 'disabled' : ''} onclick="changeDaftarJftPage(${daftarJftCurrentPage - 1})">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+      <button class="page-btn ${i === daftarJftCurrentPage ? 'active' : ''}" onclick="changeDaftarJftPage(${i})">${i}</button>
+    `;
+  }
+
+  html += `
+    <button class="page-btn" ${daftarJftCurrentPage === totalPages ? 'disabled' : ''} onclick="changeDaftarJftPage(${daftarJftCurrentPage + 1})">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  `;
+
+  container.innerHTML = html;
+}
+
+function changeDaftarJftPage(p) {
+  daftarJftCurrentPage = p;
+  renderDaftarJft();
 }
 
 /* ----------------------------------------------------------------
    FILTER BY JFT & DIRECT NAVIGATION
    ---------------------------------------------------------------- */
 function filterByJftAndNavigate(jabatanName) {
-  // 1. Reset text search
+  // 1. Set text search to specific jabatan
   const searchInput = document.getElementById('search-individu');
-  if (searchInput) searchInput.value = '';
+  if (searchInput) searchInput.value = jabatanName;
 
   // 2. Reset Golongan & Status filter
   const filterGol = document.getElementById('filter-gol');
@@ -868,28 +1034,10 @@ function filterByJftAndNavigate(jabatanName) {
   const filterStatus = document.getElementById('filter-status');
   if (filterStatus) filterStatus.value = 'Semua';
 
-  // 3. Set JFT dropdown filter
+  // 3. Reset or match category filter
   const filterSelect = document.getElementById('filter-jft');
   if (filterSelect) {
-    let matched = false;
-    const targetLow = jabatanName.toLowerCase().trim();
-    for (let opt of filterSelect.options) {
-      const optValLow = opt.value.toLowerCase().trim();
-      const optTxtLow = opt.text.toLowerCase().trim();
-      if (optValLow === targetLow ||
-          optValLow.includes(targetLow) ||
-          targetLow.includes(optValLow) ||
-          optTxtLow.includes(targetLow) ||
-          targetLow.includes(optTxtLow)) {
-        filterSelect.value = opt.value;
-        matched = true;
-        break;
-      }
-    }
-    if (!matched) {
-      filterSelect.value = 'Semua';
-      if (searchInput) searchInput.value = jabatanName;
-    }
+    filterSelect.value = 'Semua';
   }
 
   // 4. Reset pagination to page 1

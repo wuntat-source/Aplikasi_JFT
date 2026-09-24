@@ -808,14 +808,16 @@
         <div class="filter-bar">
           <div class="search-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" class="search-input" id="search-daftar-jft" placeholder="Cari jenis jabatan, kode..." oninput="handleDaftarJftFilter()">
+            <input type="text" class="search-input" id="search-daftar-jft" placeholder="Cari nama jabatan, jenjang, rumpun, kode..." oninput="handleDaftarJftFilter()">
           </div>
           <select class="select-filter" id="filter-jft-jenjang" onchange="handleDaftarJftFilter()">
-            <option value="Semua">Jenjang: Semua</option>
-            <option value="Madya">Ahli Madya</option>
-            <option value="Muda">Ahli Muda</option>
-            <option value="Pertama">Ahli Pertama</option>
-            <option value="Penyelia">Penyelia / Keterampilan</option>
+            <option value="Semua">Semua Jenjang</option>
+            <option value="Ahli Madya">Ahli Madya</option>
+            <option value="Ahli Muda">Ahli Muda</option>
+            <option value="Ahli Pertama">Ahli Pertama</option>
+            <option value="Penyelia">Penyelia</option>
+            <option value="Mahir">Mahir</option>
+            <option value="Terampil">Terampil</option>
           </select>
           <select class="select-filter" id="filter-jft-status" onchange="handleDaftarJftFilter()">
             <option value="Semua">Status: Semua</option>
@@ -841,13 +843,8 @@
             </table>
           </div>
           <div class="table-footer">
-            <div class="table-info">Menampilkan 11 Rumpun Jabatan Fungsional Tertentu</div>
-            <div class="pagination">
-              <button class="page-btn" disabled><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
-              <button class="page-btn active">1</button>
-              <button class="page-btn">2</button>
-              <button class="page-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
-            </div>
+            <div class="table-info" id="info-daftar-jft">Menampilkan Data Jabatan Fungsional</div>
+            <div class="pagination" id="pagination-daftar-jft"></div>
           </div>
         </div>
       </div><!-- /#page-daftar-jft -->
