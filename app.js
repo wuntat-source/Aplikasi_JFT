@@ -1852,7 +1852,7 @@ document.addEventListener('mousedown', () => {
    (Sesuai Dokumen Resmi BKN / 29.PAK Konversi 2025- Manikowati.xlsx - PAK.pdf)
    ---------------------------------------------------------------- */
 let currentDocPegawaiId = 20; // Default to Pegawai ID 20 (Astuti Subekti, M.Pd.)
-let currentDocType = 'pak'; // 'pak', 'akumulasi', or 'konversi'
+let currentDocType = 'konversi'; // 'konversi', 'akumulasi', or 'pak'
 
 function openPakReportModal(pegawaiId) {
   currentDocType = 'pak';
