@@ -802,18 +802,14 @@ function renderPakTable() {
           </span>
         </td>
         <td>
-          <div style="display:flex;gap:4px;">
-            <button class="btn btn-ghost btn-sm" title="Simulasi Perolehan AK" onclick="loadPegawaiIntoSimulasi(${p.id})">
+          <div style="display:flex;gap:4px;align-items:center;flex-wrap:nowrap;">
+            <button class="btn btn-ghost btn-sm" title="Simulasi Perolehan AK Mandiri" onclick="loadPegawaiIntoSimulasi(${p.id})" style="font-size:11.5px;padding:4px 8px;">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
               Hitung
             </button>
-            <button class="btn btn-ghost btn-sm" title="Cetak Laporan Akumulasi Angka Kredit" onclick="openAkumulasiReportModal(${p.id})" style="color:#0284c7;font-weight:600;">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-              Akumulasi AK
-            </button>
-            <button class="btn btn-ghost btn-sm" title="Cetak Laporan Konversi Predikat Kinerja" onclick="openKonversiReportModal(${p.id})">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-              Konversi
+            <button class="btn btn-primary btn-sm" title="Ajukan Usulan PAK / KP / KJ ke Usulan & Pengajuan" onclick="ajukanUsulanDariPegawai(${p.id})" style="font-size:11.5px;padding:4px 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Ajukan
             </button>
             <button class="btn-icon" title="Lihat Profil Pegawai" onclick="viewPegawaiDetail(${p.id})">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -2459,7 +2455,16 @@ function renderUsulanPage() {
       `;
     }
 
-    const pegawaiLink = u.pegawai_id ? `viewPegawaiDetail(${u.pegawai_id})` : `filterByJftAndNavigate('${escapeHtml(u.jabatan || '')}')`;
+    const docButtons = u.pegawai_id ? `
+      <button class="btn btn-ghost btn-sm" title="Lihat Laporan Akumulasi Angka Kredit Resmi BKN" onclick="openAkumulasiReportModal(${u.pegawai_id})" style="color:#0284c7;font-weight:600;padding:4px 7px;font-size:11.5px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Akumulasi AK
+      </button>
+      <button class="btn btn-ghost btn-sm" title="Lihat Laporan Konversi Predikat Kinerja ke Angka Kredit" onclick="openKonversiReportModal(${u.pegawai_id})" style="color:var(--primary);font-weight:600;padding:4px 7px;font-size:11.5px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Konversi SKP
+      </button>
+    ` : '';
 
     return `
       <tr>
@@ -2479,9 +2484,10 @@ function renderUsulanPage() {
         <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${escapeHtml(u.tanggal_indo || u.tanggal)}</td>
         <td>${getUsulanStatusBadgeHtml(u.status)}</td>
         <td>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:nowrap;">
+          <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
             ${actionButtons}
-            <button class="btn btn-ghost btn-sm" title="Lihat Profil & Angka Kredit Pegawai" onclick="${pegawaiLink}; return false;">Lihat AK →</button>
+            ${docButtons}
+            <button class="btn btn-ghost btn-sm" title="Lihat Profil & Angka Kredit Pegawai" onclick="${pegawaiLink}; return false;" style="padding:4px 7px;font-size:11.5px;">Profil →</button>
           </div>
         </td>
       </tr>
@@ -2678,6 +2684,21 @@ function ajukanUsulanDariSimulasiCurrent() {
   if (!p) return;
 
   // Open modal and prefill
+  populateUsulanPegawaiDropdown();
+  openModal('modal-tambah-usulan');
+  const inpPeg = document.getElementById('inp-usulan-pegawai');
+  if (inpPeg) {
+    inpPeg.value = p.id;
+    handleUsulanPegawaiSelectChange();
+  }
+}
+
+function ajukanUsulanDariPegawai(pegawaiId) {
+  if (typeof PEGAWAI_DATA === 'undefined') return;
+  const p = PEGAWAI_DATA.find(item => item.id === pegawaiId);
+  if (!p) return;
+
+  populateUsulanPegawaiDropdown();
   openModal('modal-tambah-usulan');
   const inpPeg = document.getElementById('inp-usulan-pegawai');
   if (inpPeg) {
