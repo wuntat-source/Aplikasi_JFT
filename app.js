@@ -2466,6 +2466,8 @@ function renderUsulanPage() {
       </button>
     ` : '';
 
+    const pegawaiLink = u.pegawai_id ? `viewPegawaiDetail(${u.pegawai_id})` : `filterByJftAndNavigate('${escapeHtml(u.jabatan || '')}')`;
+
     return `
       <tr>
         <td>${startIdx + idx + 1}</td>
